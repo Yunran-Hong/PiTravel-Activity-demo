@@ -1,0 +1,1822 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>圆周旅迹｜记忆行李箱</title>
+  <style>
+    :root {
+      --brand: #20b8f5;
+      --brand-deep: #0b83c7;
+      --ink: #111722;
+      --muted: #6f7c89;
+      --paper: #fffaf0;
+      --cream: #fff3c8;
+      --warm: #ffb86b;
+      --coral: #ff7e73;
+      --mint: #a9dfc3;
+      --sky: #dff4ff;
+      --line: rgba(23, 32, 42, .1);
+      --shadow: 0 18px 40px rgba(29, 54, 83, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 220, 122, .34), transparent 26%),
+        radial-gradient(circle at 86% 16%, rgba(32, 184, 245, .18), transparent 22%),
+        linear-gradient(145deg, #f8fdff 0%, #fff8e9 55%, #edf9ff 100%);
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .stage {
+      width: min(430px, 100%);
+      min-height: min(900px, calc(100vh - 36px));
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene {
+      min-height: min(900px, calc(100vh - 36px));
+      display: none;
+      position: relative;
+      padding: 22px;
+      isolation: isolate;
+      overflow-y: auto;
+    }
+
+    .scene.active {
+      display: flex;
+      flex-direction: column;
+      animation: sceneIn .34s ease both;
+    }
+
+    @keyframes sceneIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(255, 126, 115, .11) 0 2px, transparent 3px),
+        radial-gradient(circle at 88% 24%, rgba(255, 184, 107, .2) 0 4px, transparent 5px),
+        radial-gradient(circle at 20% 80%, rgba(32, 184, 245, .13) 0 5px, transparent 6px),
+        radial-gradient(circle at 74% 84%, rgba(169, 223, 195, .28) 0 6px, transparent 7px);
+      background-size: 72px 72px, 94px 94px, 110px 110px, 88px 88px;
+    }
+
+    .topbar {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #111;
+      font-weight: 800;
+      letter-spacing: 0;
+      margin-bottom: 12px;
+      flex: 0 0 auto;
+    }
+
+    .mark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      color: var(--brand);
+      font-weight: 800;
+    }
+
+    .flag {
+      width: 26px;
+      height: 15px;
+      background: var(--brand);
+      border-radius: 0 0 9px 9px;
+      position: relative;
+    }
+
+    .flag::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 14px;
+      height: 9px;
+      background: white;
+      border-radius: 9px 9px 0 0;
+      transform: translateX(-50%);
+    }
+
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 300px;
+      font-size: 36px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 28px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    .pill {
+      white-space: nowrap;
+      background: #111;
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+    }
+
+    .suitcase-wrap {
+      position: relative;
+      flex: 1;
+      display: grid;
+      place-items: center;
+      min-height: 286px;
+      margin: 4px 0 12px;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 18px 12px 0;
+      border: 2px dashed rgba(32, 184, 245, .24);
+      border-radius: 50%;
+      transform: rotate(-12deg);
+    }
+
+    .suitcase {
+      width: 306px;
+      height: 214px;
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .35), transparent 48%),
+        linear-gradient(180deg, #ffcf74 0%, #ffb553 100%);
+      box-shadow: 0 22px 36px rgba(158, 93, 20, .18), inset 0 -8px rgba(141, 84, 23, .08);
+      border: 3px solid rgba(117, 75, 35, .16);
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      transition: transform .28s ease;
+    }
+
+    .suitcase:hover {
+      transform: translateY(-2px) rotate(-.5deg);
+    }
+
+    .suitcase.pack-away {
+      animation: packAway .72s cubic-bezier(.18, .85, .22, 1) both;
+    }
+
+    .suitcase::before {
+      content: "";
+      position: absolute;
+      top: -32px;
+      width: 94px;
+      height: 44px;
+      border: 13px solid #ffb553;
+      border-bottom: 0;
+      border-radius: 28px 28px 0 0;
+      filter: drop-shadow(0 8px 9px rgba(136, 84, 26, .12));
+    }
+
+    .suitcase::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: rgba(130, 78, 26, .14);
+      transform: translateX(-50%);
+    }
+
+    .sticker {
+      position: absolute;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid rgba(255, 255, 255, .86);
+      box-shadow: 0 8px 14px rgba(100, 75, 45, .08);
+      font-weight: 900;
+    }
+
+    .sticker.one {
+      left: 22px;
+      top: 24px;
+      color: var(--brand-deep);
+      border-radius: 999px;
+      padding: 8px 12px;
+      transform: rotate(-9deg);
+      z-index: 2;
+    }
+
+    .sticker.two {
+      right: 22px;
+      bottom: 22px;
+      color: #ff7e73;
+      border-radius: 12px;
+      padding: 8px 10px;
+      transform: rotate(8deg);
+      z-index: 2;
+    }
+
+    .inside-grid {
+      position: relative;
+      z-index: 3;
+      width: 226px;
+      min-height: 132px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .memory-object {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .74);
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      box-shadow: 0 8px 18px rgba(86, 55, 22, .12);
+      border: 2px solid rgba(255, 255, 255, .8);
+      position: relative;
+      transition: transform .18s ease, filter .18s ease, opacity .18s ease;
+    }
+
+    .memory-object.selected {
+      animation: pop .24s ease both;
+    }
+
+    .memory-object.just-added {
+      animation: flyIn .46s cubic-bezier(.2, .9, .2, 1.12) both;
+    }
+
+    .memory-object.ghost {
+      opacity: .22;
+      filter: grayscale(.45);
+    }
+
+    .memory-object.opened {
+      background: #fff;
+    }
+
+    .memory-object.opened::after {
+      content: "已回忆";
+      position: absolute;
+      right: -12px;
+      top: -9px;
+      background: var(--coral);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 4px 7px;
+      border-radius: 999px;
+      transform: rotate(8deg);
+    }
+
+    .memory-object.locked {
+      box-shadow: inset 0 0 0 999px rgba(255, 255, 255, .44), 0 8px 18px rgba(86, 55, 22, .12);
+    }
+
+    .memory-object.locked::before {
+      content: "?";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(17, 23, 34, .36);
+      background: rgba(255, 255, 255, .64);
+      border-radius: 16px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(.84) rotate(-4deg);
+      }
+      70% {
+        transform: scale(1.08) rotate(2deg);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes flyIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-42px) scale(.72) rotate(-12deg);
+      }
+      72% {
+        opacity: 1;
+        transform: translateY(5px) scale(1.08) rotate(4deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes packAway {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      35% {
+        transform: translateY(-8px) scale(1.04) rotate(-2deg);
+      }
+      100% {
+        transform: translateY(22px) scale(.86) rotate(5deg);
+        opacity: .22;
+      }
+    }
+
+    .empty-slot {
+      grid-column: 1 / -1;
+      min-height: 132px;
+      width: 100%;
+      border-radius: 24px;
+      border: 2px dashed rgba(255, 255, 255, .64);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: rgba(87, 60, 24, .62);
+      font-weight: 900;
+      line-height: 1.45;
+      background: rgba(255, 255, 255, .18);
+    }
+
+    .tray {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 10px 0 12px;
+      flex: 0 0 auto;
+    }
+
+    .tray button {
+      min-height: 72px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: 0 10px 22px rgba(45, 75, 93, .08);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .tray button.active {
+      background: #fff;
+      border-color: rgba(32, 184, 245, .48);
+      transform: translateY(-2px);
+    }
+
+    .tray .icon {
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .tray .name {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 900;
+      margin: 2px 0 10px;
+    }
+
+    .tray button .check {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--brand);
+      color: #fff;
+      font-size: 12px;
+      opacity: 0;
+      transform: scale(.7);
+      transition: .16s ease;
+    }
+
+    .tray button {
+      position: relative;
+    }
+
+    .tray button.active .check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .note-panel {
+      background: rgba(255, 255, 255, .8);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 12px 28px rgba(38, 73, 96, .08);
+      flex: 0 0 auto;
+    }
+
+    .edit-list {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0 12px;
+    }
+
+    .edit-card {
+      background: rgba(255, 255, 255, .82);
+      border: 1px solid rgba(255, 255, 255, .92);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 12px 28px rgba(38, 73, 96, .08);
+    }
+
+    .edit-card-top {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .edit-object {
+      min-height: 108px;
+      border-radius: 20px;
+      background: var(--cream);
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      padding: 10px 6px;
+      text-align: center;
+      color: #6a4d23;
+      font-weight: 900;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .72);
+      overflow: hidden;
+    }
+
+    .edit-object .big {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .edit-object small {
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .upload-preview {
+      width: 100%;
+      height: 74px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: none;
+    }
+
+    .edit-object.has-photo {
+      background: #fff;
+      padding: 7px;
+    }
+
+    .edit-object.has-photo .big,
+    .edit-object.has-photo small {
+      display: none;
+    }
+
+    .edit-object.has-photo .upload-preview {
+      display: block;
+    }
+
+    .edit-tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tool-btn {
+      min-height: 38px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(18, 29, 43, .1);
+      color: #111;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .note-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 900;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .fields {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(18, 29, 43, .1);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .76);
+      color: var(--ink);
+      padding: 11px 12px;
+      outline: 0;
+    }
+
+    textarea {
+      min-height: 58px;
+      resize: none;
+      line-height: 1.35;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(32, 184, 245, .58);
+      box-shadow: 0 0 0 3px rgba(32, 184, 245, .12);
+    }
+
+    .primary,
+    .secondary,
+    .ghost-btn {
+      min-height: 50px;
+      border-radius: 999px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .primary {
+      width: 100%;
+      background: #111;
+      color: white;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .16);
+    }
+
+    .primary:disabled {
+      opacity: .36;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .secondary {
+      background: #fff;
+      color: #111;
+      border: 1px solid var(--line);
+      padding: 0 18px;
+    }
+
+    .ghost-btn {
+      background: rgba(255, 255, 255, .56);
+      color: #111;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, .82);
+    }
+
+    .bottom-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .split-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .progress {
+      height: 9px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(32, 184, 245, .14);
+      margin: 10px 0 14px;
+    }
+
+    .progress i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--brand), var(--warm));
+      border-radius: inherit;
+      transition: width .28s ease;
+    }
+
+    .share-card {
+      background: linear-gradient(180deg, rgba(255, 253, 246, .95), rgba(255, 255, 255, .78));
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-top: 16px;
+    }
+
+    .envelope {
+      height: 156px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      margin: 16px 0;
+    }
+
+    .envelope-shape {
+      width: 260px;
+      height: 142px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #ffe7a6, #ffd183);
+      border: 2px solid rgba(130, 78, 26, .1);
+      box-shadow: 0 16px 28px rgba(160, 95, 25, .13);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .envelope-shape::before,
+    .envelope-shape::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 49%, rgba(255, 255, 255, .44) 50%, transparent 51%);
+    }
+
+    .envelope-shape::after {
+      background: linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, .28) 50%, transparent 51%);
+    }
+
+    .stamp {
+      position: absolute;
+      right: 46px;
+      top: 22px;
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: var(--brand);
+      font-weight: 900;
+      border: 2px dashed rgba(32, 184, 245, .42);
+      transform: rotate(8deg);
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(17, 23, 34, .08);
+      border-bottom: 1px solid rgba(17, 23, 34, .08);
+      margin: 14px 0;
+    }
+
+    .switch {
+      width: 58px;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--brand);
+      padding: 4px;
+      display: flex;
+      justify-content: flex-end;
+      transition: background .2s ease;
+    }
+
+    .switch.off {
+      background: rgba(17, 23, 34, .18);
+      justify-content: flex-start;
+    }
+
+    .switch span {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .14);
+    }
+
+    .blindbox-copy {
+      text-align: center;
+      margin: 8px 0 16px;
+    }
+
+    .tap-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #7f6134;
+      background: rgba(255, 243, 200, .78);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .memory-pop {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, .95);
+      border: 1px solid rgba(255, 255, 255, .92);
+      box-shadow: 0 18px 44px rgba(38, 71, 92, .22);
+      padding: 14px;
+      transform: translateY(22px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .24s ease;
+      z-index: 8;
+    }
+
+    .memory-pop.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .report-teaser {
+      display: none;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(255, 245, 211, .88)),
+        radial-gradient(circle at 86% 18%, rgba(32, 184, 245, .16), transparent 32%);
+      border: 1px solid rgba(255, 255, 255, .92);
+      border-radius: 24px;
+      padding: 15px;
+      box-shadow: 0 16px 34px rgba(38, 73, 96, .12);
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-teaser.show {
+      display: grid;
+      gap: 12px;
+      animation: sceneIn .3s ease both;
+    }
+
+    .report-teaser::after {
+      content: "NEXT";
+      position: absolute;
+      right: -6px;
+      bottom: -8px;
+      color: rgba(32, 184, 245, .1);
+      font-size: 58px;
+      font-weight: 900;
+      transform: rotate(-8deg);
+    }
+
+    .report-teaser h3,
+    .report-teaser p,
+    .report-teaser button {
+      position: relative;
+      z-index: 1;
+    }
+
+    .memory-top {
+      display: grid;
+      grid-template-columns: 102px 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .photo {
+      min-height: 126px;
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .18), transparent),
+        linear-gradient(135deg, #78c7f5, #ffe1a1);
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .52);
+    }
+
+    .photo::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 20px;
+      height: 34px;
+      border-radius: 50% 50% 0 0;
+      background: rgba(255, 255, 255, .4);
+      transform: rotate(-5deg);
+    }
+
+    .photo::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 0;
+      height: 54px;
+      border-radius: 24px 24px 0 0;
+      background: rgba(44, 130, 173, .36);
+      clip-path: polygon(0 100%, 32% 24%, 50% 60%, 70% 16%, 100% 100%);
+    }
+
+    .photo.coral {
+      background: linear-gradient(135deg, #ff9b8e, #fff2b8);
+    }
+
+    .photo.mint {
+      background: linear-gradient(135deg, #89d9b6, #dff4ff);
+    }
+
+    .photo.violet {
+      background: linear-gradient(135deg, #9fb7ff, #ffe0d0);
+    }
+
+    .memory-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .memory-text h3 {
+      font-size: 20px;
+      line-height: 1.15;
+    }
+
+    .memory-text p {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #3d4853;
+    }
+
+    .voice {
+      align-self: flex-start;
+      color: #111;
+      background: var(--sky);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 8px 10px;
+    }
+
+    .report {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .report-hero {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, .74);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 24px;
+      padding: 12px;
+      margin-top: 16px;
+      box-shadow: 0 12px 28px rgba(38, 73, 96, .08);
+    }
+
+    .report-seal {
+      width: 76px;
+      height: 76px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: #111;
+      color: #fff;
+      font-size: 30px;
+      box-shadow: 0 12px 22px rgba(0, 0, 0, .15);
+      transform: rotate(-5deg);
+    }
+
+    .report-hero p {
+      margin-top: 5px;
+      color: var(--muted);
+      line-height: 1.42;
+      font-size: 14px;
+    }
+
+    .report-card {
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 22px;
+      padding: 15px;
+      box-shadow: 0 12px 28px rgba(38, 73, 96, .08);
+    }
+
+    .report-card strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      background: var(--cream);
+      color: #775627;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .destination {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, .72)),
+        linear-gradient(135deg, #c7ecff, #fff0b8 58%, #ffd4bd);
+      min-height: 168px;
+      border-radius: 26px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .85);
+      box-shadow: var(--shadow);
+    }
+
+    .destination::after {
+      content: "";
+      position: absolute;
+      right: -32px;
+      bottom: -32px;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .46);
+      box-shadow: -30px -20px 0 rgba(32, 184, 245, .08);
+    }
+
+    .destination h3 {
+      font-size: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .destination p {
+      margin-top: 8px;
+      max-width: 270px;
+      color: #33404b;
+      line-height: 1.5;
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .plan-item {
+      background: rgba(255, 255, 255, .76);
+      border: 1px solid rgba(255, 255, 255, .88);
+      border-radius: 18px;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 900;
+      font-size: 13px;
+      color: #263442;
+    }
+
+    .plan-item span {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .invite-card {
+      display: none;
+      margin-top: 12px;
+      background: #111;
+      color: #fff;
+      border-radius: 24px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .invite-card.show {
+      display: block;
+      animation: sceneIn .28s ease both;
+    }
+
+    .invite-card::after {
+      content: "下一站";
+      position: absolute;
+      right: -10px;
+      bottom: 10px;
+      color: rgba(255, 255, 255, .1);
+      font-size: 50px;
+      font-weight: 900;
+      transform: rotate(-9deg);
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      translate: -50% 14px;
+      background: #111;
+      color: #fff;
+      border-radius: 999px;
+      padding: 12px 15px;
+      font-size: 13px;
+      font-weight: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: .22s ease;
+      z-index: 20;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      translate: -50% 0;
+    }
+
+    .confetti {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 7;
+    }
+
+    .confetti i {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      border-radius: 3px;
+      background: var(--warm);
+      animation: fall 780ms ease-out forwards;
+    }
+
+    @keyframes fall {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+        transform: translateY(170px) rotate(260deg);
+      }
+    }
+
+    .back-link {
+      align-self: flex-start;
+      color: #111;
+      background: rgba(255, 255, 255, .7);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .guide {
+      display: grid;
+      gap: 8px;
+      color: #3e4b56;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .guide b {
+      color: #111;
+    }
+
+    @media (max-width: 390px) {
+      body {
+        padding: 0;
+      }
+
+      .stage,
+      .scene {
+        min-height: 100vh;
+        border-radius: 0;
+      }
+
+      .scene {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .suitcase {
+        width: 282px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-live="polite">
+    <section class="scene active" data-scene="build">
+      <div class="topbar">
+        <span>12:00</span>
+        <span class="mark"><i class="flag"></i>圆周旅迹</span>
+        <span>87%</span>
+      </div>
+
+      <div class="hero">
+        <div>
+          <h1>记忆<br>行李箱</h1>
+          <p class="subtitle">先挑 3-6 件旅行小物，把空箱子一点点装满。</p>
+        </div>
+        <span class="pill" id="countPill">已装 0 件</span>
+      </div>
+
+      <div class="suitcase-wrap">
+        <div class="orbit"></div>
+        <div class="suitcase" aria-label="正在打包的记忆行李箱">
+          <span class="sticker one">ROUND</span>
+          <span class="sticker two">一起去</span>
+          <div class="inside-grid" id="buildGrid"></div>
+        </div>
+      </div>
+
+      <p class="section-label">可以装进箱子的旅行小物</p>
+      <div class="tray" id="tray"></div>
+
+      <div class="bottom-actions">
+        <button class="primary" id="startEditBtn" disabled>至少选 3 件小物</button>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="edit">
+      <button class="back-link" data-go="build">← 重新挑选小物</button>
+      <div>
+        <h2>给好友写回忆</h2>
+        <p class="subtitle">每件小物可以放一张照片、一句话、一个地点，也可以录一段语音。</p>
+      </div>
+
+      <div class="edit-list" id="editList"></div>
+
+      <div class="bottom-actions">
+        <button class="primary" id="sealBtn">封箱寄给好友</button>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="share">
+      <button class="back-link" data-go="edit">← 继续调整</button>
+      <div>
+        <h2>行李箱封好了</h2>
+        <p class="subtitle">它会像一封旅行来信，寄到好友手里。对方需要逐个拆开小物，才会看见完整回忆。</p>
+      </div>
+
+      <div class="share-card">
+        <div class="envelope">
+          <div class="envelope-shape"></div>
+          <div class="stamp">旅迹</div>
+        </div>
+        <h3>寄给：好朋友</h3>
+        <p class="subtitle">发送方式可以是链接，也可以是匿名邮箱。这里先模拟好友收到后的拆箱体验。</p>
+
+        <div class="toggle-row">
+          <div>
+            <strong>匿名投递</strong>
+            <p class="mini">好友打开后再猜是谁寄来的</p>
+          </div>
+          <button class="switch" id="anonSwitch" aria-label="匿名投递开关"><span></span></button>
+        </div>
+
+        <div class="field-row">
+          <button class="secondary" id="copyLink">复制链接</button>
+          <button class="secondary" id="mailIt">填写邮箱</button>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="primary" data-go="unbox">切到好友视角拆箱</button>
+        <button class="ghost-btn" id="previewReport">先看报告和邀请卡效果</button>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="unbox">
+      <div class="confetti" id="confetti"></div>
+      <div class="topbar">
+        <span>12:01</span>
+        <span class="mark"><i class="flag"></i>圆周旅迹</span>
+        <span>87%</span>
+      </div>
+      <div class="blindbox-copy">
+        <h2>有人寄来一只<br>记忆行李箱</h2>
+        <p class="subtitle" id="senderLine">寄件人暂时保密。拆完也许就猜到了。</p>
+        <div class="progress"><i id="openProgress"></i></div>
+        <span class="tap-hint" id="openHint">点一个小物，打开一段过去</span>
+      </div>
+
+      <div class="suitcase-wrap">
+        <div class="orbit"></div>
+        <div class="suitcase">
+          <span class="sticker one">MEMORY</span>
+          <span class="sticker two">盲盒</span>
+          <div class="inside-grid" id="unboxGrid"></div>
+        </div>
+      </div>
+
+      <div class="report-teaser" id="reportTeaser">
+        <h3>回忆都拆完了</h3>
+        <p class="subtitle">现在可以把这些地点和关键词，生成一份只属于你们的旅行回忆报告。</p>
+        <button class="primary" id="reportTeaserBtn">生成报告，看下一站</button>
+      </div>
+
+      <div class="memory-pop" id="memoryPop">
+        <div class="memory-top">
+          <div class="photo" id="popPhoto"></div>
+          <div class="memory-text">
+            <h3 id="popTitle">旧车票</h3>
+            <p id="popCopy">那天我们坐错车，却误打误撞看见了最好看的日落。</p>
+            <button class="voice" id="voiceBtn">▶ 听 8 秒语音</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="primary" id="reportBtn" disabled>生成好朋友旅行回忆报告</button>
+        <button class="ghost-btn" data-go="share">返回寄出页</button>
+      </div>
+    </section>
+
+    <section class="scene" data-scene="report">
+      <button class="back-link" data-go="unbox">← 回到行李箱</button>
+      <div>
+        <h2>你们的旅行<br>回忆报告</h2>
+        <p class="subtitle">系统从地点、关键词和小物里拼出你们的旅行默契。</p>
+      </div>
+
+      <div class="report-hero">
+        <div class="report-seal">🧳</div>
+        <div>
+          <h3 id="reportCount">4 件回忆已整理</h3>
+          <p id="reportSummary">车票、相机、明信片和小票被拼成一张好友旅行画像。</p>
+        </div>
+      </div>
+
+      <div class="report">
+        <div class="destination">
+          <span class="mini">下一站推荐</span>
+          <h3 id="destName">青岛</h3>
+          <p id="destReason">你们的回忆里有海风、老街和慢慢散步，适合去一个可以边走边聊的城市。</p>
+        </div>
+
+        <div class="report-card">
+          <strong>你们是这样的旅行搭子</strong>
+          <h3 id="friendType">很适合一起迷路的人</h3>
+          <p class="subtitle" id="friendReason">计划可以松一点，快乐通常发生在多拐出去的那条路。</p>
+        </div>
+
+        <div class="report-card">
+          <strong>旅行关键词</strong>
+          <div class="tags" id="tagList"></div>
+        </div>
+
+        <div class="report-card guide">
+          <strong>给你们的 1 日攻略</strong>
+          <p><b>上午</b> 老街散步，找一家有窗的位置吃早餐。</p>
+          <p><b>下午</b> 去海边或旧城区拍照，顺手买一张明信片。</p>
+          <p><b>晚上</b> 找夜景好的地方慢慢走，把新的回忆装进下一只箱子。</p>
+        </div>
+
+        <div class="plans">
+          <div class="plan-item"><span>🧭</span>路线</div>
+          <div class="plan-item"><span>📷</span>拍照</div>
+          <div class="plan-item"><span>🍜</span>小店</div>
+        </div>
+
+        <div class="field-row">
+          <button class="secondary" id="savePlan">保存到规划</button>
+          <button class="secondary" id="inviteBtn">下次一起去吗</button>
+        </div>
+
+        <div class="invite-card" id="inviteCard">
+          <p class="mini" style="color: rgba(255,255,255,.62)">邀请卡</p>
+          <h3>我们下次一起去 <span id="invitePlace">青岛</span> 吗？</h3>
+          <p style="margin-top: 8px; color: rgba(255,255,255,.76); line-height: 1.5">这次不把回忆只留在过去，直接把它变成下一次出发。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast">已复制</div>
+  </main>
+
+  <script>
+    const objects = [
+      {
+        id: "ticket",
+        icon: "🎫",
+        name: "旧车票",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "那天我们坐错车，却误打误撞看见了最好看的日落。",
+        samplePlace: "滨海老站",
+        sampleMood: "误打误撞",
+        color: "coral",
+        photo: "",
+        hasVoice: false,
+        tags: ["海风", "日落", "迷路也开心"]
+      },
+      {
+        id: "camera",
+        icon: "📷",
+        name: "小相机",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "你说这张糊了，但我觉得笑得最像我们。",
+        samplePlace: "白色栈桥",
+        sampleMood: "拍到笑场",
+        color: "mint",
+        photo: "",
+        hasVoice: false,
+        tags: ["拍照", "笑场", "海边"]
+      },
+      {
+        id: "postcard",
+        icon: "💌",
+        name: "明信片",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "盖章的时候，我们都认真得像在寄一件大事。",
+        samplePlace: "邮局街角",
+        sampleMood: "认真可爱",
+        color: "",
+        photo: "",
+        hasVoice: false,
+        tags: ["老街", "邮戳", "慢慢走"]
+      },
+      {
+        id: "receipt",
+        icon: "🧾",
+        name: "小票",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "这顿饭并没有很贵，但我们聊到店都快打烊。",
+        samplePlace: "夜市小店",
+        sampleMood: "吃到打烊",
+        color: "violet",
+        photo: "",
+        hasVoice: false,
+        tags: ["夜市", "小店", "聊天"]
+      },
+      {
+        id: "card",
+        icon: "🔑",
+        name: "房卡",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "回酒店的路上买了汽水，窗外的灯一直亮到很晚。",
+        samplePlace: "山海旅店",
+        sampleMood: "夜风很好",
+        color: "mint",
+        photo: "",
+        hasVoice: false,
+        tags: ["夜景", "旅店", "汽水"]
+      },
+      {
+        id: "map",
+        icon: "🗺️",
+        name: "折叠地图",
+        line: "",
+        place: "",
+        mood: "",
+        sampleLine: "我们说随便走走，结果那天的路线后来谁也忘不了。",
+        samplePlace: "旧城坡道",
+        sampleMood: "乱走也行",
+        color: "coral",
+        photo: "",
+        hasVoice: false,
+        tags: ["旧城", "散步", "转角"]
+      }
+    ];
+
+    let selected = [];
+    let lastAddedId = "";
+    let opened = new Set();
+    let anonymous = true;
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    function currentObjects() {
+      return objects.filter((item) => selected.includes(item.id));
+    }
+
+    function displayLine(item) {
+      return item.line.trim() || item.sampleLine;
+    }
+
+    function displayPlace(item) {
+      return item.place.trim() || item.samplePlace;
+    }
+
+    function displayMood(item) {
+      return item.mood.trim() || item.sampleMood;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function showToast(text) {
+      const toast = $("#toast");
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    function go(scene) {
+      $$(".scene").forEach((el) => el.classList.toggle("active", el.dataset.scene === scene));
+      const activeScene = document.querySelector(`.scene[data-scene="${scene}"]`);
+      if (activeScene) activeScene.scrollTop = 0;
+      if (scene === "build") renderBuild();
+      if (scene === "edit") renderEdit();
+      if (scene === "unbox") renderUnbox();
+      if (scene === "report") renderReport();
+    }
+
+    function renderBuild() {
+      const grid = $("#buildGrid");
+      grid.innerHTML = "";
+      if (!selected.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-slot";
+        empty.innerHTML = "箱子还是空的<br>从下面挑几件小物放进来";
+        grid.appendChild(empty);
+      }
+      currentObjects().forEach((item) => {
+        const node = document.createElement("button");
+        node.className = "memory-object selected" + (lastAddedId === item.id ? " just-added" : "");
+        node.type = "button";
+        node.textContent = item.icon;
+        node.title = `移出${item.name}`;
+        node.addEventListener("click", () => toggleObject(item.id));
+        grid.appendChild(node);
+      });
+
+      $("#countPill").textContent = `已装 ${selected.length} 件`;
+      $("#startEditBtn").disabled = selected.length < 3;
+      $("#startEditBtn").textContent = selected.length < 3 ? `还要再选 ${3 - selected.length} 件` : "选好了，去写回忆";
+      renderTray();
+      setTimeout(() => {
+        lastAddedId = "";
+      }, 520);
+    }
+
+    function renderTray() {
+      const tray = $("#tray");
+      tray.innerHTML = "";
+      objects.forEach((item) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = selected.includes(item.id) ? "active" : "";
+        btn.innerHTML = `<span class="check">✓</span><span class="icon">${item.icon}</span><span class="name">${item.name}</span>`;
+        btn.addEventListener("click", () => toggleObject(item.id));
+        tray.appendChild(btn);
+      });
+    }
+
+    function toggleObject(id) {
+      const has = selected.includes(id);
+      if (!has && selected.length >= 6) {
+        showToast("最多装 6 件回忆");
+        return;
+      }
+      lastAddedId = has ? "" : id;
+      selected = has ? selected.filter((item) => item !== id) : [...selected, id];
+      opened = new Set([...opened].filter((item) => selected.includes(item)));
+      renderBuild();
+      showToast(has ? "已从箱子里拿出" : "已放进行李箱");
+    }
+
+    function renderEdit() {
+      const list = $("#editList");
+      list.innerHTML = "";
+      currentObjects().forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = "edit-card";
+        card.innerHTML = `
+          <div class="edit-card-top">
+            <div class="edit-object ${item.photo ? "has-photo" : ""}" id="object-${item.id}">
+              <img class="upload-preview" src="${escapeHtml(item.photo)}" alt="${item.name}照片预览">
+              <span class="big">${item.icon}</span>
+              <small>${item.name}</small>
+            </div>
+            <div>
+              <div class="note-head">
+                <span>${index + 1}. ${item.name}</span>
+                <span class="mini">给好友打开的小彩蛋</span>
+              </div>
+              <div class="edit-tools">
+                <button class="tool-btn upload-btn" type="button" data-upload="${item.id}">＋ 上传照片</button>
+                <button class="tool-btn voice-record" type="button" data-voice="${item.id}">${item.hasVoice ? "✓ 已录音" : "● 录一段语音"}</button>
+              </div>
+              <input type="file" accept="image/*" hidden data-file="${item.id}">
+            </div>
+          </div>
+          <div class="fields">
+            <textarea maxlength="42" data-field="line" data-id="${item.id}" placeholder="写一句只有你们懂的回忆，比如：那天我们坐错车，却看见了最好看的日落。">${escapeHtml(item.line)}</textarea>
+            <div class="field-row">
+              <input maxlength="12" data-field="place" data-id="${item.id}" placeholder="地点，比如：滨海老站" value="${escapeHtml(item.place)}">
+              <input maxlength="10" data-field="mood" data-id="${item.id}" placeholder="关键词，比如：笑到打烊" value="${escapeHtml(item.mood)}">
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      list.querySelectorAll("[data-field]").forEach((field) => {
+        field.addEventListener("input", () => {
+          const item = objects.find((entry) => entry.id === field.dataset.id);
+          if (item) item[field.dataset.field] = field.value;
+        });
+      });
+
+      list.querySelectorAll("[data-upload]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const input = list.querySelector(`[data-file="${button.dataset.upload}"]`);
+          input.click();
+        });
+      });
+
+      list.querySelectorAll("[data-file]").forEach((input) => {
+        input.addEventListener("change", () => {
+          const file = input.files && input.files[0];
+          if (!file) return;
+          const item = objects.find((entry) => entry.id === input.dataset.file);
+          if (!item) return;
+          item.photo = URL.createObjectURL(file);
+          showToast("照片已放进小物里");
+          renderEdit();
+        });
+      });
+
+      list.querySelectorAll("[data-voice]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const item = objects.find((entry) => entry.id === button.dataset.voice);
+          if (!item) return;
+          item.hasVoice = !item.hasVoice;
+          showToast(item.hasVoice ? "模拟录音已保存" : "已移除录音");
+          renderEdit();
+        });
+      });
+    }
+
+    function renderUnbox() {
+      const grid = $("#unboxGrid");
+      grid.innerHTML = "";
+      currentObjects().forEach((item) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "memory-object " + (opened.has(item.id) ? "opened" : "locked");
+        btn.textContent = item.icon;
+        btn.title = opened.has(item.id) ? item.name : "未拆开的回忆";
+        btn.addEventListener("click", () => openMemory(item.id));
+        grid.appendChild(btn);
+      });
+      updateProgress();
+      $("#senderLine").textContent = anonymous ? "寄件人暂时保密。拆完也许就猜到了。" : "来自一个很想和你再出发的朋友。";
+    }
+
+    function openMemory(id) {
+      const item = objects.find((entry) => entry.id === id);
+      if (!item) return;
+      const firstOpen = !opened.has(id);
+      opened.add(id);
+      $("#popTitle").textContent = `${item.icon} ${item.name}`;
+      $("#popCopy").textContent = displayLine(item);
+      $("#popPhoto").className = `photo ${item.color}`;
+      if (item.photo) {
+        $("#popPhoto").style.backgroundImage = `url("${item.photo}")`;
+        $("#popPhoto").style.backgroundSize = "cover";
+        $("#popPhoto").style.backgroundPosition = "center";
+      } else {
+        $("#popPhoto").style.backgroundImage = "";
+      }
+      $("#memoryPop").classList.add("show");
+      renderUnbox();
+      if (firstOpen) burst();
+      if (opened.size === selected.length) {
+        $("#openHint").textContent = "全部拆完啦，可以生成报告";
+      }
+    }
+
+    function updateProgress() {
+      const total = selected.length || 1;
+      const percent = Math.round((opened.size / total) * 100);
+      $("#openProgress").style.width = `${percent}%`;
+      $("#reportBtn").disabled = opened.size !== selected.length;
+      $("#reportBtn").textContent = opened.size === selected.length ? "生成好朋友旅行回忆报告" : `还剩 ${selected.length - opened.size} 件没拆`;
+      $("#reportTeaser").classList.toggle("show", opened.size === selected.length);
+    }
+
+    function burst() {
+      const box = $("#confetti");
+      const colors = ["#20b8f5", "#ffb86b", "#ff7e73", "#a9dfc3", "#fff3c8"];
+      for (let i = 0; i < 18; i += 1) {
+        const piece = document.createElement("i");
+        piece.style.left = `${24 + Math.random() * 52}%`;
+        piece.style.top = `${18 + Math.random() * 18}%`;
+        piece.style.background = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * 110}ms`;
+        piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+        box.appendChild(piece);
+        setTimeout(() => piece.remove(), 900);
+      }
+    }
+
+    function renderReport() {
+      const chosen = currentObjects();
+      const tags = [...new Set(chosen.flatMap((item) => [displayMood(item), displayPlace(item), ...item.tags]))].slice(0, 8);
+      $("#tagList").innerHTML = tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+      $("#reportCount").textContent = `${chosen.length} 件回忆已整理`;
+      $("#reportSummary").textContent = `${chosen.map((item) => item.name).join("、")}被拼成一张好友旅行画像。`;
+
+      const joined = tags.join("");
+      const isSea = /海|滨|栈桥|日落/.test(joined);
+      const isOldTown = /旧|老街|邮|散步|转角/.test(joined);
+      const isNight = /夜|灯|打烊|聊天/.test(joined);
+
+      let place = "青岛";
+      let reason = "你们的回忆里有海风、老街和慢慢散步，适合去一个可以边走边聊的城市。";
+      if (!isSea && isOldTown) {
+        place = "泉州";
+        reason = "你们的关键词偏向老街、邮戳和转角，很适合去一座能慢慢走、慢慢吃的小城。";
+      } else if (isNight && !isSea) {
+        place = "长沙";
+        reason = "你们好像很会把夜晚变好玩，适合去一座可以从晚饭聊到夜宵的城市。";
+      }
+
+      $("#destName").textContent = place;
+      $("#destReason").textContent = reason;
+      $("#invitePlace").textContent = place;
+      $("#friendType").textContent = isOldTown ? "很适合一起迷路的人" : "很适合一起吹风的人";
+      $("#friendReason").textContent = isOldTown
+        ? "计划可以松一点，快乐通常发生在多拐出去的那条路。"
+        : "你们不一定要安排很多景点，只要有风、有路、有话聊就够了。";
+      $("#inviteCard").classList.remove("show");
+    }
+
+    $$(".scene").forEach((scene) => {
+      scene.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-go]");
+        if (target) go(target.dataset.go);
+      });
+    });
+
+    $("#startEditBtn").addEventListener("click", () => {
+      const suitcase = document.querySelector('[data-scene="build"] .suitcase');
+      suitcase.classList.add("pack-away");
+      $("#startEditBtn").textContent = "正在把小物装进行李箱";
+      setTimeout(() => {
+        suitcase.classList.remove("pack-away");
+        go("edit");
+      }, 620);
+    });
+    $("#sealBtn").addEventListener("click", () => {
+      go("share");
+    });
+
+    $("#anonSwitch").addEventListener("click", () => {
+      anonymous = !anonymous;
+      $("#anonSwitch").classList.toggle("off", !anonymous);
+      showToast(anonymous ? "匿名投递已打开" : "会显示寄件人");
+    });
+
+    $("#copyLink").addEventListener("click", () => showToast("模拟链接已复制"));
+    $("#mailIt").addEventListener("click", () => showToast("模拟邮箱邀请已生成"));
+    $("#voiceBtn").addEventListener("click", () => showToast("正在播放：哈哈你还记得这里吗"));
+    $("#reportBtn").addEventListener("click", () => go("report"));
+    $("#reportTeaserBtn").addEventListener("click", () => go("report"));
+    $("#previewReport").addEventListener("click", () => {
+      if (selected.length < 3) {
+        selected = ["ticket", "camera", "postcard", "receipt"];
+      }
+      opened = new Set(selected);
+      go("report");
+    });
+    $("#savePlan").addEventListener("click", () => showToast("已保存到旅行规划"));
+    $("#inviteBtn").addEventListener("click", () => {
+      $("#inviteCard").classList.toggle("show");
+      showToast("邀请卡已生成");
+    });
+
+    renderBuild();
+    window.addEventListener("load", () => {
+      document.querySelector(".scene.active")?.scrollTo(0, 0);
+    });
+  </script>
+</body>
+</html>
