@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PiTravel 活动 Demo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #111827;
+        --muted: #6f7b8f;
+        --line: #e8eef7;
+        --blue: #1677ff;
+        --soft-blue: #edf6ff;
+        --bg: #f7fbff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f2f8ff 0%, #ffffff 42%, #f8fbff 100%);
+        color: var(--ink);
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei",
+          sans-serif;
+      }
+
+      main {
+        width: min(720px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 56px 0;
+      }
+
+      header {
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 34px;
+        line-height: 1.15;
+        letter-spacing: 0;
+      }
+
+      header p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .demo-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .demo-card {
+        display: grid;
+        grid-template-columns: 56px minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 14px 34px rgba(37, 72, 126, 0.08);
+      }
+
+      .demo-card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(22, 119, 255, 0.26);
+      }
+
+      .icon {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        background: var(--soft-blue);
+        font-size: 28px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.2;
+      }
+
+      .demo-card p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .action {
+        padding: 9px 13px;
+        border-radius: 999px;
+        color: var(--blue);
+        background: var(--soft-blue);
+        font-size: 13px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      footer {
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 520px) {
+        main {
+          width: min(100% - 28px, 420px);
+          padding-top: 38px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+
+        .demo-card {
+          grid-template-columns: 48px minmax(0, 1fr);
+        }
+
+        .icon {
+          width: 48px;
+          height: 48px;
+          font-size: 24px;
+        }
+
+        .action {
+          grid-column: 2;
+          width: fit-content;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>PiTravel 活动 Demo</h1>
+        <p>这里会统一收纳活动原型和可交互页面，方便发给团队查看。</p>
+      </header>
+
+      <section class="demo-list" aria-label="Demo 列表">
+        <a class="demo-card" href="./shared-map-public-single-file%204.html">
+          <span class="icon">🗺️</span>
+          <span>
+            <h2>共享地图活动</h2>
+            <p>地图共建、点位收藏、贴纸奖励和刮刮卡流程。</p>
+          </span>
+          <span class="action">打开</span>
+        </a>
+      </section>
+
+      <footer>之后新的活动页面也可以继续放在这里。</footer>
+    </main>
+  </body>
+</html>
