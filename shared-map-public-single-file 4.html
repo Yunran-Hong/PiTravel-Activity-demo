@@ -1,0 +1,3003 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>共享地图活动完整流程原型</title>
+    <style>
+:root {
+  --ink: #111827;
+  --muted: #717b8e;
+  --line: #e8eef7;
+  --blue: #1677ff;
+  --soft-blue: #eaf4ff;
+  --green: #69c779;
+  --shadow: 0 22px 58px rgba(30, 50, 92, 0.18);
+  color-scheme: light;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 18% 14%, rgba(117, 207, 255, 0.25), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(255, 216, 116, 0.22), transparent 25%),
+    linear-gradient(180deg, #fbfdff 0%, #fff9ef 100%);
+}
+
+button {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.stage {
+  min-height: 100vh;
+  display: grid;
+  place-items: start center;
+  padding: 0;
+}
+
+.phone {
+  position: relative;
+  width: min(430px, 100vw);
+  height: 100vh;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.phone::after,
+.phone-sensor {
+  display: none;
+}
+
+/* kept only for older markup; the prototype now renders as a direct app page */
+.phone::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 44px;
+  pointer-events: none;
+}
+
+.phone-sensor {
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  z-index: 50;
+  width: 106px;
+  height: 28px;
+  border-radius: 20px;
+  background: #05070b;
+  transform: translateX(-50%);
+}
+
+.app {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  border-radius: 0;
+  background: #fff;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow-y: auto;
+  padding: 62px 18px 28px;
+  scrollbar-width: none;
+  background:
+    linear-gradient(180deg, rgba(237, 248, 255, 0.88), rgba(255, 255, 255, 0) 36%),
+    #fff;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+  animation: screenIn 220ms ease both;
+}
+
+.home-header,
+.plain-header,
+.map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home-header p {
+  margin: 0 0 2px;
+  color: #293244;
+  font-size: 20px;
+  font-weight: 760;
+}
+
+.home-header h1,
+.plain-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.award-button {
+  width: 58px;
+  min-width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: #925f00;
+  background: linear-gradient(145deg, #fff8d8, #ffffff);
+  box-shadow: 0 9px 20px rgba(164, 120, 16, 0.18);
+}
+
+.award-button span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.award-button small {
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.stone-cloud {
+  position: relative;
+  height: 382px;
+  margin: 18px -2px 0;
+}
+
+.stone-card {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  min-width: 118px;
+  min-height: 58px;
+  padding: 12px 15px;
+  border: 1px solid rgba(70, 111, 185, 0.12);
+  border-radius: 19px 24px 18px 23px;
+  color: #213555;
+  background: #f4f9ff;
+  box-shadow: 0 12px 26px rgba(52, 82, 145, 0.12);
+  text-align: center;
+  transform-origin: 50% 80%;
+  translate: 0 -190px;
+  animation: stoneDrop 760ms cubic-bezier(0.2, 1.05, 0.28, 1) forwards,
+    floatStone 4.8s ease-in-out infinite;
+}
+
+.stone-card strong {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.stone-card em {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 760;
+}
+
+.stone-card span {
+  font-size: 25px;
+}
+
+.stone-card.hero {
+  z-index: 6;
+  left: 50%;
+  top: 96px;
+  width: 202px;
+  min-height: 82px;
+  padding: 11px 14px;
+  color: #0864df;
+  background: linear-gradient(180deg, #eef8ff, #e2f0ff);
+  transform: translateX(-50%) rotate(-1deg);
+}
+
+.stone-card.hero strong {
+  font-size: 22px;
+}
+
+.left-a {
+  left: 0;
+  top: 22px;
+  width: 146px;
+  color: #5e4bd8;
+  background: #f3f0ff;
+  transform: rotate(-6deg);
+  animation-delay: 20ms;
+}
+
+.right-a {
+  right: 0;
+  top: 30px;
+  width: 160px;
+  color: #805118;
+  background: #fff4dc;
+  transform: rotate(5deg);
+  animation-delay: 120ms;
+}
+
+.left-b {
+  left: 4px;
+  top: 220px;
+  width: 138px;
+  color: #0b8872;
+  background: #e9fbf4;
+  transform: rotate(-4deg);
+  animation-delay: 230ms;
+}
+
+.right-b {
+  z-index: 2;
+  right: 4px;
+  top: 222px;
+  width: 174px;
+  color: #93551b;
+  background: #fff6df;
+  transform: rotate(4deg);
+  animation-delay: 310ms;
+}
+
+.bottom-a {
+  left: 36px;
+  top: 304px;
+  width: 142px;
+  color: #e24360;
+  background: #fff1f4;
+  transform: rotate(-2deg);
+  animation-delay: 410ms;
+}
+
+.bottom-b {
+  right: 42px;
+  top: 308px;
+  width: 138px;
+  color: #5c59d7;
+  background: #f3f0ff;
+  transform: rotate(3deg);
+  animation-delay: 500ms;
+}
+
+.stone-card.is-picked {
+  outline: 3px solid rgba(22, 119, 255, 0.2);
+  box-shadow: 0 20px 38px rgba(22, 119, 255, 0.2);
+}
+
+.home-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 16px 16px;
+}
+
+.home-actions button,
+.section-title button,
+.wide-primary {
+  height: 42px;
+  border-radius: 16px;
+  color: var(--blue);
+  background: #eef6ff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sticker-card {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+  padding: 16px 14px;
+  border: 1px solid rgba(22, 119, 255, 0.14);
+  border-radius: 24px;
+  background: linear-gradient(145deg, #f1f8ff, #ffffff);
+  box-shadow: 0 14px 30px rgba(39, 82, 160, 0.12);
+}
+
+.sticker-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, #dff0ff);
+  font-size: 26px;
+  animation: spinSlow 5s linear infinite;
+}
+
+.sticker-copy p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sticker-copy strong {
+  color: var(--blue);
+  font-size: 27px;
+}
+
+.sticker-copy small {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.progress {
+  position: relative;
+  height: 12px;
+  margin-top: 10px;
+  overflow: visible;
+  border-radius: 999px;
+  background: #dfeafb;
+}
+
+.progress span {
+  display: block;
+  width: 60%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.26) 0 6px, transparent 6px 12px),
+    linear-gradient(90deg, #0f6df3, #5eb4ff);
+}
+
+.sticker-card button,
+.reward-summary button {
+  height: 42px;
+  padding: 0 15px;
+  border-radius: 16px;
+  color: white;
+  background: linear-gradient(135deg, #0f6df3, #2a8fff);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sticker-card button:disabled {
+  color: #7c8798;
+  background: #dce4ef;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.section-title p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.section-title button {
+  width: 62px;
+  height: 34px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.map-stack {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 12px;
+}
+
+.map-groups {
+  display: grid;
+  padding: 4px 0;
+}
+
+.map-group {
+  display: grid;
+  gap: 8px;
+  padding: 12px 0;
+  background: transparent;
+}
+
+.map-group[hidden] {
+  display: none;
+}
+
+.map-group + .map-group {
+  border-top: 1px solid rgba(99, 132, 184, 0.12);
+}
+
+.map-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.map-group h3,
+.sub-header h1 {
+  margin: 0;
+  color: #273348;
+  font-size: 14px;
+}
+
+.map-group-head button {
+  min-width: 72px;
+  height: 30px;
+  margin-right: 12px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #627089;
+  background: #f1f5fa;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.map-group-head button.is-empty {
+  color: var(--blue);
+  background: #eef6ff;
+}
+
+.empty-maps {
+  display: grid;
+  place-items: center;
+  min-height: 126px;
+  padding: 18px;
+  border: 1px dashed rgba(99, 132, 184, 0.2);
+  border-radius: 18px;
+  color: var(--muted);
+  background: rgba(248, 251, 255, 0.72);
+  text-align: center;
+}
+
+.empty-maps span {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.empty-maps strong {
+  color: #243049;
+  font-size: 16px;
+}
+
+.empty-maps p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.empty-maps.compact {
+  min-height: 58px;
+  padding: 14px;
+  border-radius: 18px;
+  font-size: 12px;
+}
+
+.map-groups .empty-maps {
+  min-height: auto;
+  display: block;
+  padding: 8px 0 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.map-groups .empty-maps span {
+  display: none;
+}
+
+.map-groups .empty-maps strong {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.map-groups .empty-maps p {
+  margin-top: 4px;
+}
+
+.map-groups .empty-maps.compact {
+  padding: 8px 0 2px;
+}
+
+.sub-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0 18px;
+}
+
+.sub-header h1 {
+  font-size: 20px;
+}
+
+.map-list-full {
+  display: grid;
+  gap: 12px;
+}
+
+.progress-map {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid #edf2fa;
+  border-radius: 20px;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(42, 73, 132, 0.08);
+}
+
+.progress-map:hover,
+.progress-map.is-picked {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 28px rgba(38, 79, 154, 0.14);
+}
+
+.map-cover {
+  grid-row: span 2;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+}
+
+.map-cover.dynamic-cover {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #eaf5ff, #d7ebff);
+  color: #0d6ff2;
+  font-size: 26px;
+  box-shadow: inset 0 0 0 1px rgba(61, 131, 235, 0.08);
+}
+
+.progress-map strong {
+  font-size: 15px;
+  align-self: end;
+}
+
+.progress-map small {
+  display: block;
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.32;
+}
+
+.progress-map i {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 72px;
+  white-space: nowrap;
+  padding: 7px 0;
+  border-radius: 999px;
+  text-align: center;
+  color: var(--blue);
+  background: var(--soft-blue);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.progress-map small b {
+  color: var(--blue);
+}
+
+.c1 {
+  background: radial-gradient(circle at 70% 28%, #ffd86b 0 10%, transparent 11%),
+    linear-gradient(145deg, #1d4c4e, #15331f 58%, #f5b15a);
+}
+
+.c2 {
+  background: radial-gradient(circle at 36% 38%, #7fd5ff 0 14%, transparent 15%),
+    linear-gradient(145deg, #07183d, #496bd9);
+}
+
+.c3 {
+  background: radial-gradient(circle at 24% 36%, #fff 0 10%, transparent 11%),
+    radial-gradient(circle at 70% 58%, #fff 0 12%, transparent 13%),
+    linear-gradient(145deg, #ffbd70, #ffe4ab);
+}
+
+.c4 {
+  background: linear-gradient(120deg, transparent 52%, rgba(255, 255, 255, 0.65) 53% 56%, transparent 57%),
+    linear-gradient(145deg, #81d8ff, #2b8bd3);
+}
+
+.c5 {
+  background: radial-gradient(circle at 62% 31%, #fff2be 0 12%, transparent 13%),
+    linear-gradient(145deg, #91cdfb, #f3e4cf);
+}
+
+.map-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(28deg, transparent 0 38%, rgba(214, 224, 235, 0.82) 38% 39.2%, transparent 39.2% 100%),
+    linear-gradient(112deg, transparent 0 43%, rgba(214, 224, 235, 0.74) 43% 44.2%, transparent 44.2% 100%),
+    linear-gradient(0deg, transparent 0 28%, rgba(226, 233, 242, 0.78) 28% 29%, transparent 29% 100%),
+    linear-gradient(90deg, transparent 0 18%, rgba(226, 233, 242, 0.7) 18% 19%, transparent 19% 100%),
+    #f7fafc;
+  background-size: 390px 790px, 390px 790px, 86px 86px, 92px 92px, auto;
+}
+
+#mapScreen.theme-kiss .map-bg {
+  background:
+    radial-gradient(circle at 34% 38%, rgba(255, 152, 190, 0.2), transparent 21%),
+    linear-gradient(28deg, transparent 0 38%, rgba(225, 214, 235, 0.72) 38% 39.2%, transparent 39.2% 100%),
+    linear-gradient(112deg, transparent 0 43%, rgba(225, 214, 235, 0.68) 43% 44.2%, transparent 44.2% 100%),
+    linear-gradient(0deg, transparent 0 28%, rgba(236, 229, 241, 0.72) 28% 29%, transparent 29% 100%),
+    #fff8fb;
+}
+
+#mapScreen.theme-alien .map-bg {
+  background:
+    radial-gradient(circle at 70% 30%, rgba(139, 238, 160, 0.22), transparent 18%),
+    linear-gradient(28deg, transparent 0 38%, rgba(193, 226, 209, 0.7) 38% 39.2%, transparent 39.2% 100%),
+    linear-gradient(112deg, transparent 0 43%, rgba(193, 226, 209, 0.64) 43% 44.2%, transparent 44.2% 100%),
+    linear-gradient(90deg, transparent 0 18%, rgba(217, 237, 225, 0.72) 18% 19%, transparent 19% 100%),
+    #f7fff8;
+}
+
+#mapScreen.theme-restroom .map-bg {
+  background:
+    linear-gradient(28deg, transparent 0 38%, rgba(205, 221, 235, 0.76) 38% 39.2%, transparent 39.2% 100%),
+    linear-gradient(112deg, transparent 0 43%, rgba(205, 221, 235, 0.7) 43% 44.2%, transparent 44.2% 100%),
+    linear-gradient(0deg, transparent 0 28%, rgba(220, 232, 242, 0.72) 28% 29%, transparent 29% 100%),
+    #f6fbff;
+}
+
+.water {
+  position: absolute;
+  left: -120px;
+  right: -100px;
+  top: 322px;
+  height: 190px;
+  border-radius: 46% 54% 40% 60%;
+  background: linear-gradient(180deg, #bceaff, #dff5ff);
+  transform: rotate(-9deg);
+}
+
+.park {
+  position: absolute;
+  border-radius: 18px;
+  background: rgba(186, 231, 184, 0.34);
+  opacity: 1;
+}
+
+.park-a {
+  left: 58px;
+  top: 278px;
+  width: 92px;
+  height: 66px;
+}
+
+.park-b {
+  right: 45px;
+  top: 330px;
+  width: 72px;
+  height: 96px;
+}
+
+.park-c {
+  left: 250px;
+  top: 575px;
+  width: 72px;
+  height: 62px;
+}
+
+.road {
+  position: absolute;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #d8e0ea;
+  opacity: 0.9;
+}
+
+.r1 {
+  left: -70px;
+  top: 155px;
+  width: 600px;
+  transform: rotate(17deg);
+}
+
+.r2 {
+  left: -90px;
+  top: 275px;
+  width: 610px;
+  transform: rotate(-14deg);
+}
+
+.r3 {
+  left: 116px;
+  top: 70px;
+  width: 560px;
+  transform: rotate(86deg);
+}
+
+.r4 {
+  left: -70px;
+  top: 545px;
+  width: 620px;
+  transform: rotate(6deg);
+}
+
+.road.minor {
+  height: 5px;
+  border-width: 1px;
+  opacity: 0.68;
+  background: #e5ebf3;
+}
+
+.r5 {
+  left: -120px;
+  top: 238px;
+  width: 590px;
+  transform: rotate(2deg);
+}
+
+.r6 {
+  left: -76px;
+  top: 405px;
+  width: 610px;
+  transform: rotate(24deg);
+}
+
+.r7 {
+  left: -74px;
+  top: 654px;
+  width: 620px;
+  transform: rotate(-10deg);
+}
+
+.r8 {
+  left: 18px;
+  top: 94px;
+  width: 560px;
+  transform: rotate(67deg);
+}
+
+.r9 {
+  left: 84px;
+  top: 0;
+  width: 720px;
+  transform: rotate(112deg);
+}
+
+.r10 {
+  left: -94px;
+  top: 712px;
+  width: 620px;
+  transform: rotate(18deg);
+}
+
+.label {
+  position: absolute;
+  color: rgba(42, 52, 68, 0.38);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.l1 {
+  left: 42px;
+  top: 206px;
+}
+
+.l2 {
+  left: 38px;
+  top: 452px;
+}
+
+.l3 {
+  right: 18px;
+  top: 184px;
+}
+
+.l4 {
+  right: 42px;
+  top: 392px;
+}
+
+.l5 {
+  left: 92px;
+  top: 588px;
+}
+
+.l6 {
+  right: 20px;
+  top: 612px;
+}
+
+.micro-dot {
+  position: absolute;
+  z-index: 2;
+  width: 11px;
+  height: 11px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #a6e66e;
+  box-shadow: 0 2px 7px rgba(49, 83, 126, 0.14);
+}
+
+.d1 { left: 76px; top: 356px; }
+.d2 { left: 145px; top: 394px; background: #f4d75d; }
+.d3 { left: 242px; top: 332px; background: #ef8bd6; }
+.d4 { right: 78px; top: 472px; }
+.d5 { left: 54px; top: 632px; background: #ef8bd6; }
+.d6 { right: 30px; top: 552px; background: #f4d75d; }
+.d7 { left: 208px; top: 686px; }
+.d8 { right: 112px; top: 252px; background: #f4d75d; }
+
+#mapScreen {
+  padding: 0;
+  overflow: hidden;
+  background: #f7fafc;
+}
+
+.map-header {
+  position: relative;
+  z-index: 4;
+  padding: 8px 18px 0;
+  transform: translateY(-8px);
+}
+
+.round {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #11151b;
+  background: rgba(255, 255, 255, 0.88);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #4aaef0;
+  background: rgba(255, 255, 255, 0.94);
+  font-weight: 900;
+}
+
+.invite-top {
+  padding: 11px 14px;
+  border-radius: 999px;
+  color: white;
+  background: #080b10;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.map-name {
+  position: absolute;
+  left: 18px;
+  top: 126px;
+  z-index: 4;
+  width: fit-content;
+  max-width: 190px;
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 8px 18px rgba(37, 69, 118, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.map-name p,
+.map-name span {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.map-name h1 {
+  margin: 1px 0 3px;
+  font-size: 16px;
+}
+
+.poi {
+  position: absolute;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 20px rgba(48, 79, 130, 0.18);
+}
+
+.poi-detail {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 136px;
+  z-index: 10;
+  padding: 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 16px 36px rgba(32, 56, 100, 0.18);
+}
+
+.poi-detail[hidden] {
+  display: none;
+}
+
+.poi-detail h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.poi-detail p:not(.mini-label) {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.close-detail {
+  position: absolute;
+  right: 13px;
+  top: 10px;
+  color: #8a94a5;
+  background: transparent;
+  font-size: 24px;
+}
+
+.poi span {
+  font-size: 22px;
+}
+
+.poi.is-themed {
+  width: 40px;
+  height: 40px;
+}
+
+.poi.is-themed span {
+  font-size: 20px;
+}
+
+.p1 {
+  left: 54px;
+  top: 258px;
+}
+
+.p2 {
+  right: 72px;
+  top: 294px;
+}
+
+.p3 {
+  left: 178px;
+  top: 384px;
+}
+
+.p4 {
+  right: 40px;
+  top: 440px;
+}
+
+.p6 { left: 34px; top: 500px; }
+.p7 { right: 76px; top: 612px; }
+.p8 { left: 38px; top: 338px; }
+.p9 { left: 116px; top: 454px; }
+.p10 { left: 236px; top: 520px; }
+.p11 { right: 128px; top: 218px; }
+.p12 { right: 44px; top: 332px; }
+.p13 { left: 154px; top: 650px; }
+.p14 { right: 124px; top: 706px; }
+.p15 { left: 30px; top: 710px; }
+
+.poi.mini {
+  width: 18px;
+  height: 18px;
+  border-width: 3px;
+  background: #a6e66e;
+}
+
+.poi.mini.pink {
+  background: #ef8bd6;
+}
+
+.poi.mini.yellow {
+  background: #f4d75d;
+}
+
+.mini-label {
+  margin: 0 0 7px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.map-task-bubbles {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 22px;
+  z-index: 7;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(22, 119, 255, 0.12);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 28px rgba(36, 62, 108, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.map-task-bubbles p {
+  display: none;
+}
+
+.task-bubble {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 18px;
+  color: white;
+  background: linear-gradient(135deg, #1677ff, #4aa3ff);
+  font-size: 13px;
+  font-weight: 900;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(22, 119, 255, 0.2);
+}
+
+.task-bubble span {
+  justify-self: center;
+  line-height: 1.18;
+  max-width: 4.8em;
+  text-wrap: balance;
+}
+
+.task-bubble em {
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #0d63d7;
+  background: white;
+  font-size: 11px;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.task-bubble.is-done,
+.task-bubble:disabled {
+  color: #0b7b48;
+  background: linear-gradient(135deg, #dff8e8, #effff5);
+  box-shadow: 0 8px 18px rgba(40, 153, 86, 0.14);
+  cursor: default;
+}
+
+.task-bubble.is-done em,
+.task-bubble:disabled em {
+  color: #0b7b48;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.sheet-actions,
+.invite-actions,
+.permission-grid,
+.theme-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sheet-actions .primary,
+.wide-primary {
+  color: white;
+  background: #080b10;
+}
+
+.sheet-actions .secondary {
+  color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.sheet-actions button,
+.invite-actions button,
+.permission-grid button,
+.theme-groups button {
+  height: 42px;
+  border-radius: 16px;
+  font-weight: 900;
+}
+
+.plain-header {
+  margin-bottom: 20px;
+}
+
+.plain-header h1 {
+  flex: 1;
+  font-size: 24px;
+}
+
+.create-card,
+.invite-card,
+.friend-card,
+.reward-log,
+.reward-summary {
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(42, 74, 132, 0.09);
+}
+
+.create-card h2,
+.invite-card h2,
+.friend-card h2,
+.reward-log h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.create-card p:not(.mini-label) {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.note-field {
+  padding: 14px;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+.note-input {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.note-input span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.note-input input,
+.note-input textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  padding: 13px 14px;
+  color: #111827;
+  background: #f8fbff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 760;
+  outline: 2px solid transparent;
+  resize: none;
+}
+
+.note-input input:focus,
+.note-input textarea:focus {
+  background: #fff;
+  outline-color: rgba(22, 119, 255, 0.22);
+}
+
+.note-input input[readonly] {
+  color: #273348;
+  background: #eef6ff;
+}
+
+.theme-groups {
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 12px;
+}
+
+.theme-groups button,
+.permission-grid button {
+  color: #566176;
+  background: #f3f7fc;
+}
+
+.theme-groups .active,
+.permission-grid .active,
+.theme-option.active {
+  color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.theme-examples {
+  display: grid;
+  gap: 8px;
+}
+
+.theme-examples button {
+  padding: 12px;
+  border-radius: 15px;
+  color: #26334a;
+  background: #f8fbff;
+  text-align: left;
+  font-weight: 820;
+}
+
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.icon-picker button {
+  height: 38px;
+  border-radius: 14px;
+  background: #f3f7fc;
+  font-size: 18px;
+}
+
+.icon-picker .active {
+  background: var(--soft-blue);
+  outline: 2px solid rgba(22, 119, 255, 0.24);
+}
+
+.permission-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.point-type-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.point-type-grid button {
+  padding: 0 9px;
+  font-size: 13px;
+  line-height: 1.18;
+}
+
+.coordinate-panel {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 18px;
+  background: #f6f9ff;
+}
+
+.coordinate-panel[hidden] {
+  display: none;
+}
+
+.coordinate-panel label {
+  display: flex;
+  justify-content: space-between;
+  color: #59657a;
+  font-size: 12px;
+  font-weight: 820;
+}
+
+.coordinate-panel output {
+  color: #0f6df3;
+  font-variant-numeric: tabular-nums;
+}
+
+.coordinate-panel input {
+  width: 100%;
+  accent-color: var(--blue);
+}
+
+.invite-code {
+  margin: 14px 0;
+  padding: 16px;
+  border: 1px dashed rgba(22, 119, 255, 0.32);
+  border-radius: 18px;
+  color: var(--blue);
+  background: #f4f9ff;
+  text-align: center;
+  font-size: 23px;
+  font-weight: 950;
+}
+
+.invite-actions button {
+  color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.friend-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.friend-head span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.avatars {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.avatars span {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #96a0b2;
+  background: #eef2f7;
+  font-weight: 900;
+}
+
+.avatars .entered {
+  color: white;
+  background: linear-gradient(145deg, #55b3ff, #1677ff);
+}
+
+.reward-summary {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.reward-summary > span {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #eaf4ff;
+  font-size: 27px;
+}
+
+.reward-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.reward-summary strong {
+  font-size: 24px;
+}
+
+.reward-log article {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.mystery-prizes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.mystery-prizes span {
+  height: 70px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: transparent;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.55), transparent 28%),
+    linear-gradient(145deg, #eef1f6, #d8dee9);
+  font-size: 28px;
+  font-weight: 950;
+  text-shadow: 0 0 0 rgba(112, 126, 148, 0.42);
+  filter: grayscale(1) blur(0.5px);
+  opacity: 0.72;
+}
+
+.mystery-prizes span.is-unlocked {
+  color: inherit;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.86), transparent 30%),
+    linear-gradient(145deg, #f7fbff, #dbeeff);
+  text-shadow: none;
+  filter: none;
+  opacity: 1;
+  box-shadow: inset 0 0 0 1px rgba(32, 127, 255, 0.14);
+}
+
+.reward-hint {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.activity-log {
+  display: grid;
+}
+
+.activity-log article,
+.empty-log {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  color: #26334a;
+  font-size: 13px;
+  font-weight: 820;
+}
+
+.activity-log .empty-log {
+  display: block;
+  color: var(--muted);
+  font-weight: 760;
+  line-height: 1.5;
+}
+
+.activity-log article span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #eef6ff;
+}
+
+.activity-log article small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reward-log article span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #f3f8ff;
+  font-size: 22px;
+}
+
+.reward-log strong {
+  font-size: 15px;
+}
+
+.reward-log p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 198px;
+  z-index: 80;
+  min-width: 150px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  color: white;
+  background: rgba(8, 13, 25, 0.9);
+  box-shadow: 0 14px 28px rgba(6, 12, 28, 0.22);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 900;
+  transform: translateX(-50%);
+}
+
+.toast[hidden],
+.modal[hidden] {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.modal-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 25, 48, 0.36);
+  backdrop-filter: blur(10px);
+}
+
+.scratch-panel {
+  position: relative;
+  width: min(410px, 100%);
+  padding: 25px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.confirm-panel {
+  position: relative;
+  width: min(330px, 100%);
+  padding: 24px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.confirm-panel h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.confirm-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 760;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.confirm-actions button {
+  height: 42px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.ghost-confirm {
+  color: var(--muted);
+  background: #eef3f8;
+}
+
+.primary-confirm {
+  color: #fff;
+  background: linear-gradient(135deg, #0f6df3, #2a8fff);
+}
+
+.scratch-panel h2 {
+  margin: 0 0 18px;
+  font-size: 26px;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: #7f899b;
+  background: transparent;
+  font-size: 28px;
+}
+
+.scratch-ticket {
+  position: relative;
+  min-height: 176px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.35), transparent 18%),
+    linear-gradient(145deg, #2493ff, #0f6df3);
+}
+
+.prize {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 7px;
+  padding: 28px;
+  color: #fff;
+  text-align: center;
+}
+
+.prize span {
+  font-size: 32px;
+}
+
+.prize strong {
+  font-size: 22px;
+}
+
+.prize p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#scratchCanvas {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 176px;
+  display: block;
+  cursor: grab;
+}
+
+@keyframes stoneDrop {
+  0% {
+    opacity: 0;
+    translate: 0 -190px;
+  }
+  62% {
+    opacity: 1;
+    translate: 0 10px;
+  }
+  82% {
+    translate: 0 -5px;
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes floatStone {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: -5px;
+  }
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 460px) {
+  .phone {
+    width: 100vw;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone">
+        <div class="app">
+          <section class="screen is-active" id="homeScreen" aria-label="活动首页">
+            <header class="home-header">
+              <div>
+                <p>Hi，欢迎来到</p>
+                <h1>共享地图活动</h1>
+              </div>
+              <button class="award-button" data-go="rewards" aria-label="我的奖励">
+                <span>🏆</span>
+                <small>我的奖励</small>
+              </button>
+            </header>
+
+            <section class="stone-cloud" aria-label="热门共享地图">
+              <button class="stone-card hero open-map is-picked" data-title="周末逃跑计划" data-points="128">
+                <span>🏕️</span>
+                <strong>周末逃跑计划</strong>
+                <em>2.4k 人浏览</em>
+              </button>
+              <button class="stone-card left-a open-map" data-title="深夜便利店地图" data-points="63">
+                <strong>深夜便利店地图</strong>
+                <em>728 人共建</em>
+              </button>
+              <button class="stone-card right-a open-map" data-title="雨天咖啡馆地图" data-points="86">
+                <strong>雨天咖啡馆地图</strong>
+                <em>1.2k 人共建</em>
+              </button>
+              <button class="stone-card left-b open-map" data-title="城市夜景地图" data-points="94">
+                <strong>城市夜景地图</strong>
+                <em>1.5k 人共建</em>
+              </button>
+              <button class="stone-card right-b open-map" data-title="老城区漫步指南" data-points="76">
+                <strong>老城区漫步指南</strong>
+                <em>1.3k 人共建</em>
+              </button>
+              <button class="stone-card bottom-a open-map" data-title="一个人的治愈角落" data-points="42">
+                <strong>一个人的治愈角落</strong>
+                <em>1.1k 人共建</em>
+              </button>
+              <button class="stone-card bottom-b open-map" data-title="夏日晚风地图" data-points="38">
+                <strong>夏日晚风地图</strong>
+                <em>642 人共建</em>
+              </button>
+            </section>
+
+            <div class="home-actions">
+              <button id="shuffleCloud">换一批新地图</button>
+              <button data-go="create">创建地图</button>
+            </div>
+
+            <section class="sticker-card">
+              <div class="sticker-icon">🌍</div>
+              <div class="sticker-copy">
+                <p>本轮 <strong id="stickerCount">0/10</strong> 张地图贴纸</p>
+                <div class="progress"><span id="progressFill"></span></div>
+                <small>未兑换累计 <b id="bankedCount">0</b> 张</small>
+                <small id="stickerHint">参与地图活动得贴纸，还差 10 张</small>
+              </div>
+              <button id="openScratch" disabled>兑换</button>
+            </section>
+
+            <section class="section-title">
+              <div>
+                <h2>我的地图</h2>
+              </div>
+            </section>
+
+            <section class="map-groups" aria-label="我的地图分组">
+              <div class="map-group" data-map-group="viewed">
+                <header class="map-group-head">
+                  <h3>我浏览的</h3>
+                  <button type="button" data-view-all="viewed">查看全部</button>
+                </header>
+                <div class="map-stack" id="viewedMaps">
+                  <div class="empty-maps" id="emptyViewed">
+                    <span>🗺️</span>
+                    <strong>还没有浏览记录</strong>
+                    <p>点进上方任意共享地图后，会出现在这里。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="map-group" data-map-group="owned">
+                <header class="map-group-head">
+                  <h3>我创建 / 参与的</h3>
+                  <button type="button" data-view-all="owned">查看全部</button>
+                </header>
+                <div class="map-stack" id="ownedMaps">
+                  <div class="empty-maps compact" id="emptyOwned">创建地图、收藏点位、新增备注或邀请好友后会出现。</div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="screen" id="allMapsScreen" aria-label="地图列表">
+            <header class="sub-header">
+              <button class="round" data-go="home" aria-label="返回">‹</button>
+              <h1 id="allMapsTitle">我浏览的</h1>
+            </header>
+            <section class="map-list-full" id="allMapsList"></section>
+          </section>
+
+          <section class="screen" id="mapScreen" aria-label="主题共享地图页">
+            <div class="map-bg">
+              <div class="water"></div>
+              <div class="park park-a"></div>
+              <div class="park park-b"></div>
+              <div class="park park-c"></div>
+              <div class="road r1"></div>
+              <div class="road r2"></div>
+              <div class="road r3"></div>
+              <div class="road r4"></div>
+              <div class="road minor r5"></div>
+              <div class="road minor r6"></div>
+              <div class="road minor r7"></div>
+              <div class="road minor r8"></div>
+              <div class="road minor r9"></div>
+              <div class="road minor r10"></div>
+              <span class="label l1">静安寺</span>
+              <span class="label l2">愚园路</span>
+              <span class="label l3">南京西路</span>
+              <span class="label l4">苏河湾</span>
+              <span class="label l5">巨鹿路</span>
+              <span class="label l6">陕西北路</span>
+              <span class="micro-dot d1"></span>
+              <span class="micro-dot d2"></span>
+              <span class="micro-dot d3"></span>
+              <span class="micro-dot d4"></span>
+              <span class="micro-dot d5"></span>
+              <span class="micro-dot d6"></span>
+              <span class="micro-dot d7"></span>
+              <span class="micro-dot d8"></span>
+            </div>
+
+            <header class="map-header">
+              <button class="round" data-go="home" aria-label="返回">‹</button>
+              <div class="brand">圆周旅迹</div>
+              <button class="invite-top" data-go="invite">邀请好友</button>
+            </header>
+
+            <section class="map-name">
+              <p>共享地图活动中</p>
+              <h1 id="mapTitle">周末逃跑计划</h1>
+              <span id="mapMeta">128 个地点 · 2.4k 人浏览</span>
+            </section>
+
+            <button class="poi scenic p1 poi-open" data-poi="海边晚风观景点" data-desc="傍晚 6 点之后风最舒服，桥边能看到很完整的日落。"><span>🌳</span></button>
+            <button class="poi food p2 poi-open" data-poi="不排队小食铺" data-desc="工作日午后比较空，适合顺路补给。"><span>🍴</span></button>
+            <button class="poi cafe p3 poi-open" data-poi="雨天窗边咖啡" data-desc="靠窗座位能看到街角积水反光，适合发呆。"><span>☕</span></button>
+            <button class="poi scenic p4 poi-open" data-poi="蓝色栏杆转角" data-desc="这不是热门景点，但拍照时海和路牌会刚好在同一条线上。"><span>🌳</span></button>
+            <button class="poi shop p6 poi-open" data-poi="小巷手帐店" data-desc="门口贴满了旅行贴纸，适合给共享地图找一个主题封面灵感。"><span>🛍️</span></button>
+            <button class="poi hotel p7 poi-open" data-poi="屋顶白噪音旅店" data-desc="晚上能听到很轻的城市声，适合把一天的散步路线写成备注。"><span>🛏️</span></button>
+            <button class="poi mini p8 poi-open" data-poi="转角长椅" data-desc="午后树影会落在椅背上，是一个很安静的休息点。"></button>
+            <button class="poi mini pink p9 poi-open" data-poi="旧书店门口" data-desc="老板会把当天推荐写在小黑板上，路过可以顺手记录。"></button>
+            <button class="poi mini yellow p10 poi-open" data-poi="桥下风口" data-desc="风很大，但傍晚拍水面反光很好看。"></button>
+            <button class="poi mini p11 poi-open" data-poi="梧桐树影" data-desc="夏天很凉，适合标记成散步路线里的缓冲点。"></button>
+            <button class="poi mini pink p12 poi-open" data-poi="便利店雨棚" data-desc="下雨时很多人会在这里停一下，适合做雨天地图。"></button>
+            <button class="poi mini yellow p13 poi-open" data-poi="夜跑路口" data-desc="路灯亮度刚好，不刺眼，夜跑的人很多。"></button>
+            <button class="poi mini p14 poi-open" data-poi="无名小花坛" data-desc="春天会开一片很小的花，导航地图上完全没有名字。"></button>
+            <button class="poi mini pink p15 poi-open" data-poi="邮筒旁边" data-desc="红色邮筒和蓝色路牌在同一侧，很适合做地图封面。"></button>
+
+            <section class="map-task-bubbles" aria-label="地图内可获得贴纸">
+              <button class="task-bubble collect-all" id="collectTask">
+                <span>收藏全图点位</span>
+                <em>+2 🌍</em>
+              </button>
+              <button class="task-bubble add-new" id="noteTask">
+                <span>新增点位</span>
+                <em>+3 🌍</em>
+              </button>
+            </section>
+
+            <section class="poi-detail" id="poiDetail" hidden>
+              <button class="close-detail" id="closePoi" aria-label="关闭">×</button>
+              <p class="mini-label">点位详情</p>
+              <h2 id="poiTitle">海边晚风观景点</h2>
+              <p id="poiDesc">傍晚 6 点之后风最舒服，桥边能看到很完整的日落。</p>
+              <button class="wide-primary" id="collectPoi">收藏这个点位（+1🌍）</button>
+            </section>
+          </section>
+
+          <section class="screen" id="noteScreen" aria-label="新增点位备注">
+            <header class="plain-header">
+              <button class="round" data-go="map" aria-label="返回">‹</button>
+              <h1>新增点位备注</h1>
+            </header>
+            <section class="create-card">
+              <p class="mini-label">选择点位类型</p>
+              <div class="permission-grid point-type-grid" id="pointTypeGrid">
+                <button class="active" data-point-type="official">官方 POI</button>
+                <button data-point-type="custom">自定义一个点</button>
+                <button data-point-type="current">我所在位置</button>
+              </div>
+              <div class="coordinate-panel" id="coordinatePanel" hidden>
+                <label>
+                  <span>纬度</span>
+                  <output id="latValue">31.230416</output>
+                </label>
+                <input id="latInput" type="range" min="30.900000" max="31.400000" step="0.000001" value="31.230416" />
+                <label>
+                  <span>经度</span>
+                  <output id="lngValue">121.473701</output>
+                </label>
+                <input id="lngInput" type="range" min="121.100000" max="121.800000" step="0.000001" value="121.473701" />
+              </div>
+            </section>
+            <section class="create-card">
+              <p class="mini-label">选择本地图的点位图标</p>
+              <div class="icon-picker">
+                <button class="active">🌳</button>
+                <button>👄</button>
+                <button>👽</button>
+                <button>🚽</button>
+                <button>🪑</button>
+                <button>☕</button>
+                <button>🍷</button>
+                <button>🐟</button>
+                <button>🥢</button>
+                <button>🚴</button>
+                <button>🎏</button>
+                <button>🏺</button>
+                <button>🏬</button>
+                <button>🌛</button>
+                <button>👧</button>
+                <button>🚶</button>
+                <button>🩵</button>
+              </div>
+            </section>
+            <section class="create-card">
+              <p class="mini-label">备注</p>
+              <label class="note-input">
+                <span>点位名称</span>
+                <input id="notePointName" type="text" value="海边晚风观景点" />
+              </label>
+              <label class="note-input">
+                <span>备注内容</span>
+                <textarea id="noteText" rows="4" placeholder="例：傍晚 6 点以后风很舒服，桥边可以看到完整日落。"></textarea>
+              </label>
+              <button class="wide-primary" id="submitNote">提交备注 · 领 3 张贴纸</button>
+            </section>
+          </section>
+
+          <section class="screen" id="createScreen" aria-label="创建地图">
+            <header class="plain-header">
+              <button class="round" data-go="home" aria-label="返回">‹</button>
+              <h1>创建共享地图</h1>
+            </header>
+            <section class="create-card">
+              <p class="mini-label">选择一个主题方向</p>
+              <div class="theme-groups">
+                <button class="theme-option active">情绪共鸣</button>
+                <button class="theme-option">长期工具</button>
+                <button class="theme-option">抽象整活</button>
+              </div>
+              <div class="theme-examples">
+                <button>上海 100 个适合 i 人发呆的长椅</button>
+                <button>公司周边带薪摸鱼地点</button>
+                <button>全国「我在XX很想你」查重地图</button>
+              </div>
+            </section>
+            <section class="create-card">
+              <p class="mini-label">权限预设</p>
+              <div class="permission-grid">
+                <button>私密</button>
+                <button class="active">链接协作</button>
+                <button>站内公开</button>
+              </div>
+            </section>
+            <section class="create-card">
+              <p class="mini-label">先行填充</p>
+              <h2>先添加 3 个基础点位</h2>
+              <p>可以是官方 POI，也可以是无名坐标。只需要名称和一句备注。</p>
+              <button class="wide-primary" id="finishCreate">创建并进入地图</button>
+            </section>
+          </section>
+
+          <section class="screen" id="inviteScreen" aria-label="邀请好友">
+            <header class="plain-header">
+              <button class="round" data-go="map" aria-label="返回">‹</button>
+              <h1>邀请好友共建</h1>
+            </header>
+            <section class="invite-card">
+              <p class="mini-label">活动邀请链接</p>
+              <h2 id="inviteTitle">周末逃跑计划</h2>
+              <div class="invite-code">YZ-MAP-2048</div>
+              <div class="invite-actions">
+                <button>复制链接</button>
+                <button>生成海报</button>
+              </div>
+            </section>
+            <section class="friend-card">
+              <div class="friend-head">
+                <h2>好友进入记录</h2>
+                <span>成功进入后才发贴纸</span>
+              </div>
+              <div class="avatars">
+                <span class="entered">林</span>
+                <span class="entered">J</span>
+                <span>待</span>
+                <span>待</span>
+              </div>
+              <button class="wide-primary" id="friendEntered">模拟好友进入 · 领 4 张贴纸</button>
+            </section>
+          </section>
+
+          <section class="screen" id="rewardsScreen" aria-label="我的奖励">
+            <header class="plain-header">
+              <button class="round" data-go="home" aria-label="返回">‹</button>
+              <h1>我的奖励</h1>
+            </header>
+            <section class="reward-summary">
+              <span>🌍</span>
+              <div>
+                <p>当前贴纸</p>
+                <strong><b id="rewardCount">0</b> 张</strong>
+              </div>
+              <button id="openScratchFromRewards">去兑换</button>
+            </section>
+            <section class="reward-log">
+              <h2>可能刮出的奖励</h2>
+              <div class="mystery-prizes">
+                <span data-prize="5 张地图贴纸">🌍</span>
+                <span data-prize="城市弹窗明信片">💌</span>
+                <span data-prize="实体行李箱贴纸">🏷️</span>
+                <span data-prize="单个冰箱贴">🧲</span>
+                <span data-prize="完整地图冰箱贴套装">🗺️</span>
+                <span data-prize="小相机实体">📷</span>
+              </div>
+              <p class="reward-hint">刮开前只显示奖励影子，获得后会解锁到奖励记录。</p>
+            </section>
+            <section class="reward-log">
+              <h2>贴纸与奖励记录</h2>
+              <div id="activityLog" class="activity-log">
+                <article class="empty-log">还没有记录。浏览一张地图后，这里会开始记录贴纸来源。</article>
+              </div>
+            </section>
+          </section>
+
+          <div id="toast" class="toast" hidden>获得地图贴纸</div>
+        </div>
+      </section>
+    </main>
+
+    <div id="scratchModal" class="modal" hidden>
+      <div class="modal-bg" data-close="true"></div>
+      <section class="scratch-panel" role="dialog" aria-modal="true" aria-label="刮刮卡兑换">
+        <button class="close" id="closeScratch" aria-label="关闭">×</button>
+        <p class="mini-label">本次可刮开</p>
+        <h2>地图碎片刮刮卡</h2>
+        <div class="scratch-ticket">
+          <div class="prize">
+            <span id="prizeIcon">🧲</span>
+            <strong id="prizeName">单个冰箱贴</strong>
+            <p id="prizeDesc">获得一块地图碎片磁贴，继续收集可拼出完整世界地图。</p>
+          </div>
+          <canvas id="scratchCanvas" width="320" height="176"></canvas>
+        </div>
+        <button class="wide-primary" id="drawPrize">换一个奖品示例</button>
+      </section>
+    </div>
+
+    <div id="collectAllModal" class="modal" hidden>
+      <div class="modal-bg" data-close-collect="true"></div>
+      <section class="confirm-panel" role="dialog" aria-modal="true" aria-label="收藏全部点位确认">
+        <h2>收藏全部点位？</h2>
+        <p id="collectAllText">是否收藏该地图内的全部点位？共 128 个点位。</p>
+        <div class="confirm-actions">
+          <button class="ghost-confirm" id="cancelCollectAll">先不收藏</button>
+          <button class="primary-confirm" id="confirmCollectAll">确认收藏</button>
+        </div>
+      </section>
+    </div>
+
+    <script>
+const screens = {
+  home: document.querySelector("#homeScreen"),
+  map: document.querySelector("#mapScreen"),
+  create: document.querySelector("#createScreen"),
+  note: document.querySelector("#noteScreen"),
+  invite: document.querySelector("#inviteScreen"),
+  rewards: document.querySelector("#rewardsScreen"),
+  allMaps: document.querySelector("#allMapsScreen"),
+};
+
+const stickerCount = document.querySelector("#stickerCount");
+const rewardCount = document.querySelector("#rewardCount");
+const bankedCount = document.querySelector("#bankedCount");
+const stickerHint = document.querySelector("#stickerHint");
+const openScratchButton = document.querySelector("#openScratch");
+const progressFill = document.querySelector("#progressFill");
+const mapTitle = document.querySelector("#mapTitle");
+const mapMeta = document.querySelector("#mapMeta");
+const inviteTitle = document.querySelector("#inviteTitle");
+const toast = document.querySelector("#toast");
+const scratchModal = document.querySelector("#scratchModal");
+const collectAllModal = document.querySelector("#collectAllModal");
+const collectAllText = document.querySelector("#collectAllText");
+const scratchCanvas = document.querySelector("#scratchCanvas");
+const closeScratch = document.querySelector("#closeScratch");
+const prizeIcon = document.querySelector("#prizeIcon");
+const prizeName = document.querySelector("#prizeName");
+const prizeDesc = document.querySelector("#prizeDesc");
+const mapStacks = {
+  viewed: document.querySelector("#viewedMaps"),
+  owned: document.querySelector("#ownedMaps"),
+};
+const mapGroupEls = {
+  viewed: document.querySelector('[data-map-group="viewed"]'),
+  owned: document.querySelector('[data-map-group="owned"]'),
+};
+const mapGroupButtons = {
+  viewed: document.querySelector('[data-view-all="viewed"]'),
+  owned: document.querySelector('[data-view-all="owned"]'),
+};
+const allMapsTitle = document.querySelector("#allMapsTitle");
+const allMapsList = document.querySelector("#allMapsList");
+const emptyMaps = {
+  viewed: document.querySelector("#emptyViewed"),
+  owned: document.querySelector("#emptyOwned"),
+};
+const activityLog = document.querySelector("#activityLog");
+const poiDetail = document.querySelector("#poiDetail");
+const poiTitle = document.querySelector("#poiTitle");
+const poiDesc = document.querySelector("#poiDesc");
+const collectTask = document.querySelector("#collectTask");
+const noteTask = document.querySelector("#noteTask");
+const poiButtons = [...document.querySelectorAll(".poi-open")];
+const mapLabels = [...document.querySelectorAll(".map-bg .label")];
+const rewardSlots = [...document.querySelectorAll(".mystery-prizes span")];
+const iconPickerButtons = [...document.querySelectorAll(".icon-picker button")];
+const pointTypeButtons = [...document.querySelectorAll("#pointTypeGrid button")];
+const coordinatePanel = document.querySelector("#coordinatePanel");
+const notePointName = document.querySelector("#notePointName");
+const noteText = document.querySelector("#noteText");
+const latInput = document.querySelector("#latInput");
+const lngInput = document.querySelector("#lngInput");
+const latValue = document.querySelector("#latValue");
+const lngValue = document.querySelector("#lngValue");
+
+let stickers = 0;
+let redeemed = 0;
+let currentMapTitle = "周末逃跑计划";
+let currentMapPoints = "128";
+let toastTimer;
+let scratchReady = false;
+const progressMaps = {
+  viewed: new Set(),
+  joined: new Set(),
+  created: new Set(),
+};
+const progressMapData = {
+  viewed: [],
+  joined: [],
+  created: [],
+};
+const groupCopy = {
+  viewed: {
+    title: "我浏览的",
+    empty: `<div class="empty-maps"><span>🗺️</span><strong>还没有浏览记录</strong><p>点进上方任意共享地图后，会出现在这里。</p></div>`,
+    status: "刚浏览 · 待完成 <b>2 项</b>，可继续获得贴纸 🌍",
+  },
+  owned: {
+    title: "我创建 / 参与的",
+    empty: `<div class="empty-maps compact">还没有创建或参与的地图。可以先创建一个主题地图。</div>`,
+    status: "和我有关 · 可继续共建 🌍",
+  },
+  joined: {
+    title: "我参与的",
+    empty: `<div class="empty-maps compact">收藏点位、新增备注或邀请好友后会出现。</div>`,
+    status: "已参与 · 可继续获得贴纸 🌍",
+  },
+  created: {
+    title: "我创建的",
+    empty: `<div class="empty-maps compact">创建自己的主题地图后会出现。</div>`,
+    status: "你创建的 · 可邀请好友继续共建 🌍",
+  },
+};
+let selectedPoi = "海边晚风观景点";
+let selectedPointType = "official";
+
+const cloudBatches = [
+  [
+    ["周末逃跑计划", "128", "2.4k 人浏览", "🏕️"],
+    ["深夜便利店地图", "63", "728 人共建", ""],
+    ["雨天咖啡馆地图", "86", "1.2k 人共建", ""],
+    ["城市夜景地图", "94", "1.5k 人共建", ""],
+    ["老城区漫步指南", "76", "1.3k 人共建", ""],
+    ["一个人的治愈角落", "42", "1.1k 人共建", ""],
+    ["夏日晚风地图", "38", "642 人共建", ""],
+  ],
+  [
+    ["上海 i 人长椅地图", "77", "1.8k 人浏览", "🪑"],
+    ["带薪摸鱼地点", "45", "566 人共建", ""],
+    ["巨富长酒鬼地图", "52", "892 人共建", ""],
+    ["山西古建地图", "118", "2.1k 人共建", ""],
+    ["地球Online bug地图", "39", "711 人共建", ""],
+    ["如厕指引地图", "68", "1.4k 人共建", ""],
+    ["白月光 kiss 圣地", "23", "520 人共建", ""],
+  ],
+  [
+    ["顺德寻味不排队地图", "91", "1.6k 人浏览", "🥢"],
+    ["景德镇淘货地图", "64", "936 人共建", ""],
+    ["胡同秋天骑行线", "57", "804 人共建", ""],
+    ["泉州非遗巡游地图", "82", "1.1k 人共建", ""],
+    ["外星人首次着陆点", "29", "689 人共建", ""],
+    ["全国审丑地点大赏", "73", "1.3k 人共建", ""],
+    ["留学生爆改热门地点", "46", "903 人共建", ""],
+  ],
+];
+let batchIndex = 0;
+
+const prizes = [
+  {
+    icon: "🌍",
+    name: "5 张地图贴纸",
+    desc: "返还 5 张贴纸，距离下一次刮卡更近一步。",
+  },
+  {
+    icon: "💌",
+    name: "城市弹窗明信片",
+    desc: "来自京都的一句话和一份城市攻略已放入奖励箱。",
+  },
+  {
+    icon: "🏷️",
+    name: "实体行李箱贴纸",
+    desc: "把这次地图旅程贴到下一次出发的行李箱上。",
+  },
+  {
+    icon: "🧲",
+    name: "单个冰箱贴",
+    desc: "获得一块地图碎片磁贴，继续收集可拼出完整世界地图。",
+  },
+  {
+    icon: "🗺️",
+    name: "完整地图冰箱贴套装",
+    desc: "完整世界地图碎片套装，超低概率大奖。",
+  },
+  {
+    icon: "📷",
+    name: "小相机实体",
+    desc: "记录下一次被地图带去的地方。",
+  },
+];
+
+const themeConfigs = [
+  {
+    match: /白月光|kiss|圣地/,
+    icon: "👄",
+    theme: "theme-kiss",
+    labels: ["暧昧路口", "电影散场处", "旧相册墙", "夜风天台", "表白长椅", "心动拐角"],
+    pois: [
+      ["天台晚风吻点", "晚上 8 点后灯光很软，适合把电影里的浪漫搬到现实。"],
+      ["便利店门口", "这里有一盏很亮的灯，很多人会在门口停很久。"],
+      ["旧影院后巷", "散场后人群会慢慢消失，只剩一点霓虹反光。"],
+      ["河边白栏杆", "水面会把路灯晕开，适合标记成约会路线的终点。"],
+    ],
+  },
+  {
+    match: /外星人|着陆|地球Online|bug/,
+    icon: "👽",
+    theme: "theme-alien",
+    labels: ["异常坐标", "首次着陆点", "信号塔", "悬浮草坪", "地球漏洞", "观察站"],
+    pois: [
+      ["疑似首次着陆点", "这片空地看起来过分平整，很适合写进外星人访问地球路线。"],
+      ["信号最强路口", "手机信号突然满格，适合被标记为神秘通信点。"],
+      ["地球Online卡顿处", "地图上看很普通，现场却总觉得空间有点不连续。"],
+      ["夜间观察平台", "适合带外星朋友第一次认识城市灯光。"],
+    ],
+  },
+  {
+    match: /如厕|蹲坑|厕所|卫生间/,
+    icon: "🚽",
+    theme: "theme-restroom",
+    labels: ["救命公厕", "商场卫生间", "安静隔间", "排队预警", "补纸点", "干净指数"],
+    pois: [
+      ["最稳救急卫生间", "位置好找，通常不用排队，适合放进应急收藏。"],
+      ["商场三楼洗手间", "干净度不错，但周末下午需要绕开。"],
+      ["公园北门公厕", "离主路近，晚上灯光也够亮。"],
+      ["地铁口隐藏隔间", "入口不明显，但高峰期很好用。"],
+    ],
+  },
+  {
+    match: /长椅|发呆/,
+    icon: "🪑",
+    theme: "theme-city",
+    labels: ["树荫长椅", "安静角落", "午后晒太阳", "风口", "口袋公园", "独处路线"],
+    pois: [
+      ["树荫下的长椅", "下午三点有完整树影，适合 i 人恢复电量。"],
+      ["不被打扰的角落", "旁边人流少，可以坐很久。"],
+      ["路口短暂停靠点", "适合等朋友，也适合假装等朋友。"],
+      ["河边低矮长椅", "风吹过来很轻，不太晒。"],
+    ],
+  },
+  {
+    match: /酒鬼|酒|微醺|喝/,
+    icon: "🍷",
+    theme: "theme-city",
+    labels: ["微醺街角", "小酒馆", "夜宵路", "醒酒长椅", "碰杯点", "回家路"],
+    pois: [
+      ["下班第一杯", "适合和朋友碰杯，周中晚上也不会太吵。"],
+      ["微醺小巷", "巷口灯光很好看，适合标记成酒后散步路线。"],
+      ["醒酒便利店", "这里的冰水和饭团很救命。"],
+      ["深夜长椅", "喝完出来可以坐十分钟，风刚刚好。"],
+    ],
+  },
+  {
+    match: /摸鱼|带薪|公司周边/,
+    icon: "🐟",
+    theme: "theme-city",
+    labels: ["摸鱼据点", "老板盲区", "咖啡缓冲", "假装开会", "散步回血", "带薪角落"],
+    pois: [
+      ["老板看不见的长椅", "离公司不远，但刚好不在同事常走路线上。"],
+      ["假装买咖啡点", "排队时间稳定，适合作为合理消失 10 分钟的理由。"],
+      ["带薪散步路口", "一圈回来刚好像认真思考过工作。"],
+      ["午后回血角落", "有树荫，也有信号，可以慢慢回消息。"],
+    ],
+  },
+  {
+    match: /便利店/,
+    icon: "🏬",
+    theme: "theme-city",
+    labels: ["24h 门店", "夜间补给", "雨棚入口", "饭团货架", "热饮柜", "安全灯牌"],
+    pois: [
+      ["深夜补给便利店", "凌晨也亮着灯，适合标记成夜归路线里的安全点。"],
+      ["饭团最全货架", "晚上 10 点后还有选择，适合写进加班地图。"],
+      ["雨棚停靠点", "下雨时能临时躲一下，也适合等车。"],
+      ["热饮柜旁边", "冬天很救命，路过可以顺手收藏。"],
+    ],
+  },
+  {
+    match: /夜景/,
+    icon: "🌛",
+    theme: "theme-city",
+    labels: ["夜景天桥", "灯光路口", "月亮角落", "观景台", "散步线", "晚风点"],
+    pois: [
+      ["月亮天桥", "晚上 8 点后灯光很柔，桥上能看到一整段街景。"],
+      ["路灯反光口", "雨后路面会反光，适合夜景照片。"],
+      ["安静观景台", "人不多，适合停下来发呆。"],
+      ["晚风散步线", "从这里开始走十分钟，城市声音会慢慢变轻。"],
+    ],
+  },
+  {
+    match: /治愈角落|治愈/,
+    icon: "👧",
+    theme: "theme-city",
+    labels: ["独处角落", "回血路线", "收藏点", "安静长椅", "心情停靠", "共建坐标"],
+    pois: [
+      ["一个人的小角落", "适合不说话地待一会儿，把今天的心情写成备注。"],
+      ["蓝色窗台", "下午光会落在窗边，适合短暂停靠。"],
+      ["安静长椅", "旁边树影很好，人也不多。"],
+      ["慢慢走路口", "从这里开始散步，会比直接回家更轻松一点。"],
+    ],
+  },
+  {
+    match: /老城区|漫步指南|漫步/,
+    icon: "🚶",
+    icons: ["🚶", "🩵", "🚶", "🩵", "🚶", "🩵"],
+    theme: "theme-city",
+    labels: ["老街入口", "蓝色转角", "石库门", "慢行街", "旧书店", "梧桐路"],
+    pois: [
+      ["老街慢行入口", "适合从这里开始走，路边有很多旧门牌。"],
+      ["蓝色窗边转角", "颜色很温柔，适合被标成散步路线里的记忆点。"],
+      ["石库门门洞", "早上光线从门洞斜进来，很适合拍照。"],
+      ["梧桐树影", "夏天很凉，适合写一句路线备注。"],
+    ],
+  },
+  {
+    match: /晚风/,
+    icon: "🩵",
+    theme: "theme-city",
+    labels: ["晚风桥", "蓝色水岸", "日落口", "风很轻", "河边路", "停靠点"],
+    pois: [
+      ["海边晚风观景点", "傍晚 6 点之后风最舒服，桥边能看到很完整的日落。"],
+      ["蓝色栏杆转角", "海和路牌会刚好在同一条线上。"],
+      ["日落停靠点", "光线会慢慢变蓝，适合留下心情。"],
+      ["风很轻的路口", "适合把一天结束得慢一点。"],
+    ],
+  },
+  {
+    match: /逃跑/,
+    icon: "🏕️",
+    theme: "theme-city",
+    labels: ["出发点", "逃跑路线", "营地感", "补给处", "周末终点", "轻旅行"],
+    pois: [
+      ["周末出发点", "从这里开始走，像把普通周末折成一次小旅行。"],
+      ["城市露营感草地", "不用真的远行，也有一点出发感。"],
+      ["补给小店", "买完饮料继续走，路线不会中断。"],
+      ["逃跑终点长椅", "适合坐一会儿，把这张地图分享给朋友。"],
+    ],
+  },
+  {
+    match: /咖啡|雨天/,
+    icon: "☕",
+    theme: "theme-city",
+    labels: ["静安寺", "愚园路", "南京西路", "苏河湾", "巨鹿路", "陕西北路"],
+    pois: [
+      ["海边晚风观景点", "傍晚 6 点之后风最舒服，桥边能看到很完整的日落。"],
+      ["不排队小食铺", "工作日午后比较空，适合顺路补给。"],
+      ["雨天窗边咖啡", "靠窗座位能看到街角积水反光，适合发呆。"],
+      ["蓝色栏杆转角", "不是热门景点，但拍照时海和路牌会刚好在同一条线上。"],
+    ],
+  },
+  {
+    match: /顺德|寻味|不排队|美食|小食|吃/,
+    icon: "🥢",
+    theme: "theme-city",
+    labels: ["不排队店", "顺路小吃", "早茶点", "糖水铺", "夜宵街", "避峰路线"],
+    pois: [
+      ["不用排队的早茶", "工作日上午更稳，点心出品也不会慢。"],
+      ["巷子糖水铺", "饭后散步过去刚好，甜度比较温柔。"],
+      ["本地人夜宵点", "晚上 9 点后热闹，但翻台很快。"],
+      ["避峰小食店", "离热门店不远，但人少很多。"],
+    ],
+  },
+  {
+    match: /骑行/,
+    icon: "🚴",
+    theme: "theme-city",
+    labels: ["骑行起点", "树荫车道", "胡同弯道", "补水点", "慢行线", "终点长椅"],
+    pois: [
+      ["秋天骑行起点", "路面平整，早上人少，适合作为整条路线的开始。"],
+      ["树荫慢骑段", "两侧树影很好看，骑慢一点更舒服。"],
+      ["胡同弯道", "转弯处很有生活感，适合补一条路线备注。"],
+      ["补水小店", "骑到这里刚好可以停下来买水。"],
+    ],
+  },
+  {
+    match: /景德镇|瓷器|淘货/,
+    icon: "🏺",
+    theme: "theme-city",
+    labels: ["淘货巷", "瓷器摊", "手作窑口", "避坑店", "打包点", "老厂区"],
+    pois: [
+      ["老厂区淘货点", "适合慢慢翻，价格差异大，记得先问清瑕疵。"],
+      ["手作小窑口", "器型很有个性，适合标成地图里的重点点位。"],
+      ["打包最稳小店", "老板很会包，买完瓷器可以顺路过来。"],
+      ["避坑对比点", "款式多但价格浮动大，适合留下提醒备注。"],
+    ],
+  },
+  {
+    match: /非遗|泉州/,
+    icon: "🎏",
+    theme: "theme-city",
+    labels: ["巡游起点", "木偶戏台", "南音角落", "花灯街", "古早店", "非遗工坊"],
+    pois: [
+      ["木偶戏台旁", "表演前后很热闹，适合记录当天的巡游时间。"],
+      ["南音小角落", "声音会从巷子里飘出来，适合做非遗路线的停靠点。"],
+      ["花灯老街", "晚上灯亮之后更好看，适合收藏到个人行程。"],
+      ["手作工坊", "可以看到制作过程，建议补一句参观提醒。"],
+    ],
+  },
+  {
+    match: /审丑|奇怪|不对劲|见过最奇怪/,
+    icon: "🌀",
+    theme: "theme-alien",
+    labels: ["怪东西", "审丑坐标", "不对劲路口", "迷惑招牌", "离谱门头", "冷知识"],
+    pois: [
+      ["越看越怪的门头", "第一眼普通，第二眼开始不确定它到底想表达什么。"],
+      ["迷惑雕塑", "很难解释，但很适合发给朋友讨论。"],
+      ["审丑打卡墙", "丑得很有记忆点，适合收进整活地图。"],
+      ["奇怪路牌", "路牌文字和现场气质完全不搭。"],
+    ],
+  },
+  {
+    match: /留学生|爆改|热门地点/,
+    icon: "🧋",
+    theme: "theme-city",
+    labels: ["留学生据点", "本地替代", "奶茶点", "超市路线", "学习角", "夜归路"],
+    pois: [
+      ["被爆改的本地咖啡", "菜单已经开始很懂亚洲胃了。"],
+      ["深夜补给超市", "赶 deadline 的时候很有用。"],
+      ["奶茶替代点", "不一定正宗，但能救心情。"],
+      ["学习后散步路", "图书馆出来走一圈刚好回血。"],
+    ],
+  },
+  {
+    match: /山西|古建|胡同|古镇/,
+    icon: "🏯",
+    theme: "theme-city",
+    labels: ["古建群", "旧巷入口", "木构屋檐", "碑刻墙", "慢行线", "非遗点"],
+    pois: [
+      ["木构屋檐观察点", "抬头能看到很漂亮的斗拱细节，适合补一条建筑备注。"],
+      ["旧巷入口", "上午光线最好，游客也相对少。"],
+      ["碑刻墙角", "信息密度很高，适合做文化地图里的重点点位。"],
+      ["慢行休息点", "走累了可以停一下，旁边有树荫。"],
+    ],
+  },
+];
+
+const fallbackTheme = {
+  icon: "📍",
+  theme: "theme-city",
+  labels: ["中心街区", "共享路线", "隐藏角落", "收藏点", "共建坐标", "探索中"],
+  pois: [
+    ["被大家标记的角落", "这里暂时没有官方名字，但已经被很多人收藏。"],
+    ["顺路补给点", "适合在路线中途停一下。"],
+    ["情绪停靠点", "可以留下今天的心情备注。"],
+    ["地图封面点", "视野开阔，适合当作这张地图的第一印象。"],
+  ],
+};
+
+function getThemeConfig(title) {
+  return themeConfigs.find((config) => config.match.test(title)) || fallbackTheme;
+}
+
+function applyMapTheme(title) {
+  const config = getThemeConfig(title);
+  screens.map.classList.remove("theme-kiss", "theme-alien", "theme-restroom", "theme-city");
+  screens.map.classList.add(config.theme);
+  iconPickerButtons.forEach((button) => {
+    button.classList.toggle("active", button.textContent.trim() === config.icon);
+  });
+  mapLabels.forEach((label, index) => {
+    label.textContent = config.labels[index] || "";
+  });
+  poiButtons.forEach((button, index) => {
+    const poi = config.pois[index % config.pois.length];
+    const icon = config.icons?.[index % config.icons.length] || config.icon;
+    button.classList.remove("mini", "pink", "yellow", "scenic", "food", "cafe", "shop", "hotel");
+    button.classList.add("is-themed");
+    button.dataset.poi = poi[0];
+    button.dataset.desc = poi[1];
+    button.innerHTML = `<span>${icon}</span>`;
+  });
+}
+
+function go(screenName) {
+  Object.values(screens).forEach((screen) => screen.classList.remove("is-active"));
+  screens[screenName].classList.add("is-active");
+}
+
+function updateStickers() {
+  const remainder = stickers % 10;
+  const canRedeem = stickers >= 10;
+  const left = canRedeem ? 0 : 10 - remainder;
+  const roundProgress = stickers === 0 ? 0 : remainder === 0 ? 10 : remainder;
+  stickerCount.textContent = `${roundProgress}/10`;
+  rewardCount.textContent = String(stickers);
+  bankedCount.textContent = String(stickers);
+  openScratchButton.textContent = "兑换";
+  if (canRedeem) {
+    stickerHint.textContent = `未兑换贴纸 ${stickers} 张，可以开刮刮乐`;
+    openScratchButton.disabled = false;
+  } else {
+    stickerHint.textContent = `参与地图活动得贴纸，还差 ${left} 张`;
+    openScratchButton.disabled = true;
+  }
+  progressFill.style.width = `${stickers === 0 ? 0 : remainder === 0 ? 100 : remainder * 10}%`;
+}
+
+function showToast(text) {
+  clearTimeout(toastTimer);
+  toast.textContent = text;
+  toast.hidden = false;
+  toastTimer = setTimeout(() => {
+    toast.hidden = true;
+  }, 1300);
+}
+
+function addStickers(amount, reason) {
+  stickers += amount;
+  updateStickers();
+  addLog("🌍", reason, `获得 ${amount} 张地图贴纸`);
+  showToast(`${reason} · 获得 ${amount} 张🌍贴纸`);
+}
+
+function addLog(icon, title, detail) {
+  const empty = activityLog.querySelector(".empty-log");
+  if (empty) empty.remove();
+  const article = document.createElement("article");
+  article.innerHTML = `<span>${icon}</span><div><strong>${title}</strong><small>${detail}</small></div>`;
+  activityLog.prepend(article);
+}
+
+function ensureProgressMap(title, points, group = "viewed") {
+  if (progressMaps[group].has(title)) return;
+  progressMaps[group].add(title);
+  progressMapData[group].unshift({ title, points });
+  renderHomeMapGroups();
+}
+
+function createProgressMapCard(item, group) {
+  const config = getThemeConfig(item.title);
+  const card = document.createElement("button");
+  card.className = "progress-map open-map";
+  card.dataset.title = item.title;
+  card.dataset.points = item.points;
+  const statusText = item.status || groupCopy[group].status;
+  card.innerHTML = `
+    <span class="map-cover dynamic-cover">${config.icon}</span>
+    <strong>${item.title}</strong>
+    <small>${statusText}</small>
+    <i>继续完成</i>
+  `;
+  card.addEventListener("click", () => openMap(item.title, item.points, false));
+  return card;
+}
+
+function renderMapGroup(group) {
+  const stack = mapStacks[group] || mapStacks.viewed;
+  const items = getMapGroupItems(group);
+  stack.replaceChildren();
+  if (!items.length) {
+    stack.innerHTML = groupCopy[group].empty;
+    return;
+  }
+  items.slice(0, 2).forEach((item) => stack.append(createProgressMapCard(item, group)));
+}
+
+function getMapGroupItems(group) {
+  return (
+    group === "owned"
+      ? [
+          ...progressMapData.created.map((item) => ({ ...item, status: groupCopy.created.status })),
+          ...progressMapData.joined.map((item) => ({ ...item, status: groupCopy.joined.status })),
+        ]
+      : progressMapData[group]
+  );
+}
+
+function renderHomeMapGroups() {
+  const viewedItems = getMapGroupItems("viewed");
+  const ownedItems = getMapGroupItems("owned");
+  const hasViewed = viewedItems.length > 0;
+  const hasOwned = ownedItems.length > 0;
+  renderMapGroup("viewed");
+  renderMapGroup("owned");
+  mapGroupButtons.viewed.textContent = hasViewed ? "查看全部" : "去浏览";
+  mapGroupButtons.owned.textContent = hasOwned ? "查看全部" : "去创建/去参与";
+  mapGroupButtons.viewed.classList.toggle("is-empty", !hasViewed);
+  mapGroupButtons.owned.classList.toggle("is-empty", !hasOwned);
+  mapGroupEls.viewed.hidden = false;
+  mapGroupEls.owned.hidden = false;
+  if (!hasViewed && !hasOwned) {
+    mapGroupEls.owned.hidden = true;
+    mapGroupEls.viewed.parentElement.append(mapGroupEls.viewed);
+    return;
+  }
+  if (hasOwned) {
+    mapGroupEls.owned.parentElement.prepend(mapGroupEls.owned);
+    mapGroupEls.viewed.hidden = !hasViewed;
+    return;
+  }
+  mapGroupEls.viewed.parentElement.append(mapGroupEls.viewed, mapGroupEls.owned);
+}
+
+function renderAllMaps(group) {
+  const items = getMapGroupItems(group);
+  allMapsTitle.textContent = groupCopy[group].title;
+  allMapsList.replaceChildren();
+  if (!items.length) {
+    allMapsList.innerHTML = groupCopy[group].empty;
+    return;
+  }
+  items.forEach((item) => allMapsList.append(createProgressMapCard(item, group)));
+}
+
+function openMap(title, points, shouldReward = true) {
+  currentMapTitle = title;
+  currentMapPoints = points;
+  mapTitle.textContent = title;
+  mapMeta.textContent = `${points} 个地点 · 共享地图活动中`;
+  inviteTitle.textContent = title;
+  applyMapTheme(title);
+  go("map");
+  ensureProgressMap(title, points, "viewed");
+  if (shouldReward) addStickers(1, `浏览《${title}》`);
+}
+
+document.querySelectorAll("[data-go]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.go;
+    if (target === "map") {
+      mapTitle.textContent = currentMapTitle;
+      mapMeta.textContent = `${currentMapPoints} 个地点 · 共享地图活动中`;
+      inviteTitle.textContent = currentMapTitle;
+      applyMapTheme(currentMapTitle);
+    }
+    go(target);
+  });
+});
+
+document.querySelectorAll("[data-view-all]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const group = button.dataset.viewAll;
+    const items = getMapGroupItems(group);
+    if (items.length) {
+      renderAllMaps(group);
+      go("allMaps");
+      return;
+    }
+    if (group === "owned") {
+      go("create");
+      return;
+    }
+    go("home");
+    showToast("从上方选择一张共享地图");
+  });
+});
+
+document.querySelectorAll(".open-map").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".open-map").forEach((item) => item.classList.remove("is-picked"));
+    button.classList.add("is-picked");
+    openMap(button.dataset.title, button.dataset.points);
+  });
+});
+
+document.querySelector("#shuffleCloud").addEventListener("click", () => {
+  batchIndex = (batchIndex + 1) % cloudBatches.length;
+  const cards = [...document.querySelectorAll(".stone-card")];
+  cloudBatches[batchIndex].forEach(([title, points, meta, emoji], index) => {
+    const card = cards[index];
+    card.dataset.title = title;
+    card.dataset.points = points;
+    const strong = card.querySelector("strong");
+    const em = card.querySelector("em");
+    strong.textContent = title;
+    em.textContent = meta;
+    const icon = card.querySelector("span");
+    if (card.classList.contains("hero") && icon) icon.textContent = emoji || "🗺️";
+  });
+  cards.forEach((card) => {
+    card.style.animation = "none";
+  });
+  void document.querySelector(".stone-cloud").offsetWidth;
+  cards.forEach((card) => {
+    card.style.animation = "";
+  });
+  showToast("换了一批新地图");
+});
+
+document.querySelectorAll(".poi-open").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedPoi = button.dataset.poi;
+    poiTitle.textContent = button.dataset.poi;
+    poiDesc.textContent = button.dataset.desc;
+    poiDetail.hidden = false;
+  });
+});
+
+document.querySelector("#closePoi").addEventListener("click", () => {
+  poiDetail.hidden = true;
+});
+
+document.querySelector("#collectPoi").addEventListener("click", () => {
+  poiDetail.hidden = true;
+  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
+  addStickers(1, `收藏点位「${selectedPoi}」`);
+});
+
+collectTask.addEventListener("click", () => {
+  collectAllText.textContent = `是否收藏该地图内的全部点位？共 ${currentMapPoints} 个点位。`;
+  collectAllModal.hidden = false;
+});
+
+document.querySelector("#cancelCollectAll").addEventListener("click", () => {
+  collectAllModal.hidden = true;
+});
+
+document.querySelector("#confirmCollectAll").addEventListener("click", () => {
+  collectAllModal.hidden = true;
+  collectTask.classList.add("is-done");
+  collectTask.disabled = true;
+  poiDetail.hidden = true;
+  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
+  addStickers(2, `收藏《${currentMapTitle}》全部点位`);
+});
+
+function prepareNoteForm() {
+  const isOfficial = selectedPointType === "official";
+  notePointName.readOnly = isOfficial;
+  notePointName.value = isOfficial ? selectedPoi : "";
+  notePointName.placeholder = isOfficial ? "" : "给这个点位起个名字";
+  noteText.value = "";
+}
+
+noteTask.addEventListener("click", () => {
+  prepareNoteForm();
+  go("note");
+});
+iconPickerButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    iconPickerButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    showToast(`已选择 ${button.textContent} 作为点位图标`);
+  });
+});
+
+function updateCoordinateOutput() {
+  latValue.textContent = Number(latInput.value).toFixed(6);
+  lngValue.textContent = Number(lngInput.value).toFixed(6);
+}
+
+pointTypeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    pointTypeButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    const type = button.dataset.pointType;
+    selectedPointType = type;
+    coordinatePanel.hidden = type !== "custom";
+    if (type === "custom") {
+      notePointName.readOnly = false;
+      notePointName.value = "";
+      notePointName.placeholder = "给自定义点位起个名字";
+      updateCoordinateOutput();
+      showToast("已切换为自定义坐标点");
+    } else if (type === "current") {
+      notePointName.readOnly = false;
+      notePointName.value = "";
+      notePointName.placeholder = "给当前位置起个名字";
+      showToast("已切换为我所在位置");
+    } else {
+      notePointName.readOnly = true;
+      notePointName.value = selectedPoi;
+      showToast("已切换为官方 POI");
+    }
+  });
+});
+
+[latInput, lngInput].forEach((input) => {
+  input.addEventListener("input", updateCoordinateOutput);
+});
+
+document.querySelector("#submitNote").addEventListener("click", () => {
+  const pointName = notePointName.value.trim();
+  const note = noteText.value.trim();
+  if (!pointName) {
+    showToast("请先填写点位名称");
+    notePointName.focus();
+    return;
+  }
+  if (!note) {
+    showToast("请先填写备注内容");
+    noteText.focus();
+    return;
+  }
+  go("map");
+  noteTask.classList.add("is-done");
+  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
+  addStickers(3, `备注「${pointName}」`);
+});
+
+document.querySelector("#finishCreate").addEventListener("click", () => {
+  currentMapTitle = "上海 100 个适合 i 人发呆的长椅";
+  currentMapPoints = "3";
+  mapTitle.textContent = currentMapTitle;
+  mapMeta.textContent = "3 个基础点位 · 链接协作";
+  inviteTitle.textContent = currentMapTitle;
+  applyMapTheme(currentMapTitle);
+  go("map");
+  ensureProgressMap(currentMapTitle, currentMapPoints, "created");
+  addStickers(5, "创建地图");
+});
+
+document.querySelector("#friendEntered").addEventListener("click", () => {
+  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
+  addStickers(4, "好友成功进入");
+  addLog("👀", "参与地图新增 10 次浏览", "被动奖励 · 全体参与者获得 5 张贴纸");
+});
+
+function choosePrize() {
+  const prize = prizes[Math.floor(Math.random() * prizes.length)];
+  prizeIcon.textContent = prize.icon;
+  prizeName.textContent = prize.name;
+  prizeDesc.textContent = prize.desc;
+  unlockPrize(prize);
+  addLog(prize.icon, "刮刮卡奖励", `获得「${prize.name}」`);
+  if (prize.name === "5 张地图贴纸") {
+    addStickers(5, "刮刮卡奖励");
+  }
+}
+
+function unlockPrize(prize) {
+  const slot = rewardSlots.find((item) => item.dataset.prize === prize.name);
+  if (!slot) return;
+  slot.classList.add("is-unlocked");
+  slot.title = prize.name;
+}
+
+function openScratch() {
+  if (stickers < 10) {
+    const hadNoStickers = stickers === 0;
+    openMap(currentMapTitle, currentMapPoints);
+    showToast(hadNoStickers ? "参与地图活动可获得贴纸" : "继续收集贴纸");
+    return;
+  }
+  stickers -= 10;
+  redeemed += 1;
+  updateStickers();
+  addLog("🎫", "兑换刮刮卡", "消耗 10 张地图贴纸");
+  scratchModal.hidden = false;
+  scratchReady = true;
+  choosePrize();
+  drawScratchLayer();
+}
+
+openScratchButton.addEventListener("click", openScratch);
+document.querySelector("#openScratchFromRewards").addEventListener("click", openScratch);
+document.querySelector("#drawPrize").addEventListener("click", () => {
+  choosePrize();
+  drawScratchLayer();
+});
+
+closeScratch.addEventListener("click", () => {
+  scratchModal.hidden = true;
+});
+
+scratchModal.addEventListener("click", (event) => {
+  if (event.target.dataset.close) scratchModal.hidden = true;
+});
+
+collectAllModal.addEventListener("click", (event) => {
+  if (event.target.dataset.closeCollect) collectAllModal.hidden = true;
+});
+
+function drawScratchLayer() {
+  const ctx = scratchCanvas.getContext("2d");
+  const width = scratchCanvas.width;
+  const height = scratchCanvas.height;
+  ctx.globalCompositeOperation = "source-over";
+  const gradient = ctx.createLinearGradient(0, 0, width, height);
+  gradient.addColorStop(0, "#f8f9fc");
+  gradient.addColorStop(0.5, "#d2d9e7");
+  gradient.addColorStop(1, "#fbfcff");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+  ctx.lineWidth = 18;
+  for (let i = -120; i < width + 120; i += 42) {
+    ctx.beginPath();
+    ctx.moveTo(i, height + 20);
+    ctx.lineTo(i + 120, -20);
+    ctx.stroke();
+  }
+  ctx.fillStyle = "#8b95a8";
+  ctx.font = "700 50px -apple-system, BlinkMacSystemFont, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("?", width / 2, height / 2);
+}
+
+let scratching = false;
+
+function getCanvasPoint(event) {
+  const rect = scratchCanvas.getBoundingClientRect();
+  const pointer = event.touches ? event.touches[0] : event;
+  return {
+    x: ((pointer.clientX - rect.left) / rect.width) * scratchCanvas.width,
+    y: ((pointer.clientY - rect.top) / rect.height) * scratchCanvas.height,
+  };
+}
+
+function scratch(event) {
+  if (!scratching || !scratchReady) return;
+  event.preventDefault();
+  const point = getCanvasPoint(event);
+  const ctx = scratchCanvas.getContext("2d");
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.beginPath();
+  ctx.arc(point.x, point.y, 24, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+scratchCanvas.addEventListener("mousedown", (event) => {
+  scratching = true;
+  scratch(event);
+});
+scratchCanvas.addEventListener("mousemove", scratch);
+window.addEventListener("mouseup", () => {
+  scratching = false;
+});
+scratchCanvas.addEventListener("touchstart", (event) => {
+  scratching = true;
+  scratch(event);
+});
+scratchCanvas.addEventListener("touchmove", scratch, { passive: false });
+window.addEventListener("touchend", () => {
+  scratching = false;
+});
+
+updateStickers();
+renderHomeMapGroups();
+updateCoordinateOutput();
+
+</script>
+  </body>
+</html>
