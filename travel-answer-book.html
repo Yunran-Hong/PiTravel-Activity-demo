@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圆周旅迹 | 旅行答案之书</title>
+    <style>
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  --white: #f8fbff;
+  --mist: rgba(248, 251, 255, 0.72);
+  --line: rgba(255, 255, 255, 0.48);
+  --glass: rgba(255, 255, 255, 0.12);
+  --blue: #7fd8ff;
+  --deep-blue: #092b52;
+  --violet: #c797ff;
+  --rose: #f4a5d7;
+  --ink: #071525;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(83, 176, 255, 0.24), transparent 35%),
+    linear-gradient(135deg, #08111d 0%, #0e2238 58%, #10131f 100%);
+  color: var(--white);
+  overflow: hidden;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.phone-shell {
+  position: relative;
+  width: min(100vw, 430px);
+  height: min(100vh, 932px);
+  min-height: 720px;
+  overflow: hidden;
+  background: #081827;
+  isolation: isolate;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.ambient,
+.ambient::before,
+.ambient::after {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+}
+
+.ambient {
+  background:
+    radial-gradient(circle at 20% 16%, rgba(103, 217, 231, 0.75), transparent 26%),
+    radial-gradient(circle at 72% 20%, rgba(211, 133, 255, 0.86), transparent 28%),
+    radial-gradient(circle at 48% 52%, rgba(7, 35, 35, 0.92), transparent 33%),
+    radial-gradient(circle at 78% 78%, rgba(103, 217, 231, 0.74), transparent 24%),
+    linear-gradient(160deg, #123e63 0%, #8866b5 48%, #d091bd 100%);
+  filter: saturate(1.2);
+}
+
+.ambient::before {
+  content: "";
+  background:
+    linear-gradient(90deg, transparent 0 10%, rgba(255, 255, 255, 0.04) 10% 10.4%, transparent 10.4% 100%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 2px);
+  background-size: 100% 100%, 64px 64px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+.ambient::after {
+  content: "";
+  background: rgba(3, 9, 16, 0.1);
+  backdrop-filter: blur(34px);
+}
+
+.blob {
+  position: absolute;
+  width: 68%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  filter: blur(28px);
+  mix-blend-mode: screen;
+  opacity: 0.48;
+  animation: drift 13s ease-in-out infinite alternate;
+}
+
+.blob-a {
+  left: -22%;
+  top: 10%;
+  background: #6ee7ff;
+}
+
+.blob-b {
+  right: -24%;
+  top: 2%;
+  background: #da8cff;
+  animation-duration: 16s;
+}
+
+.blob-c {
+  left: 16%;
+  bottom: -20%;
+  background: #ff9ac9;
+  animation-duration: 18s;
+}
+
+.halo {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  width: 108%;
+  height: 84%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    inset 0 0 34px rgba(255, 255, 255, 0.18),
+    0 0 42px rgba(210, 180, 255, 0.22);
+  animation: breathe 5.8s ease-in-out infinite;
+}
+
+.star-field {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.84) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0 1px, transparent 1.6px);
+  background-position:
+    14px 90px,
+    80px 38px;
+  background-size:
+    112px 124px,
+    172px 150px;
+  opacity: 0.24;
+  animation: shimmer 9s linear infinite;
+}
+
+.topbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+  padding: 18px 22px 10px;
+}
+
+.icon-button,
+.mini-button,
+.brand-mark {
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(12px);
+}
+
+.icon-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--deep-blue);
+  font-weight: 900;
+}
+
+.top-actions {
+  display: flex;
+  gap: 9px;
+}
+
+.mini-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 98px 26px 92px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18px) scale(0.985);
+  visibility: hidden;
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease,
+    visibility 0s;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease;
+}
+
+.screen-heading {
+  text-align: center;
+  margin: 24px 0 30px;
+}
+
+.screen-heading.compact {
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 14px;
+  font-size: clamp(50px, 16vw, 76px);
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-shadow: 0 0 22px rgba(255, 255, 255, 0.54);
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
+}
+
+.intro-portal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 470px;
+}
+
+.portal-glass {
+  position: absolute;
+  width: min(92vw, 382px);
+  height: min(72vh, 650px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(8, 46, 42, 0.76), transparent 32%),
+    radial-gradient(circle at 26% 24%, rgba(255, 186, 219, 0.58), transparent 28%),
+    radial-gradient(circle at 78% 62%, rgba(107, 225, 255, 0.46), transparent 26%),
+    rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow:
+    inset 0 0 42px rgba(255, 255, 255, 0.15),
+    0 0 46px rgba(233, 176, 255, 0.36);
+  backdrop-filter: blur(14px);
+  animation: liquid 8s ease-in-out infinite alternate;
+}
+
+.intro-copy {
+  position: relative;
+  width: min(86%, 320px);
+  text-align: center;
+}
+
+.intro-copy p:last-child {
+  margin-bottom: 0;
+  color: var(--mist);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.primary-button,
+.ghost-button,
+.icon-text-button {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 12px 34px rgba(0, 0, 0, 0.16);
+}
+
+.primary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 58px;
+  width: min(100%, 310px);
+  margin: 0 auto;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.primary-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.ghost-button {
+  align-self: center;
+  min-width: 168px;
+  min-height: 46px;
+  margin-top: auto;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 800;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.category-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 128px;
+  padding: 14px 10px 12px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  text-align: left;
+}
+
+.category-card::before {
+  content: "";
+  position: absolute;
+  inset: -34%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 45%);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.category-card:hover::before,
+.category-card:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.category-card span {
+  position: relative;
+}
+
+.category-icon {
+  width: 42px;
+  height: 42px;
+  margin-inline: auto;
+  color: white;
+}
+
+.category-title {
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.question-list {
+  display: grid;
+  gap: 10px;
+  max-height: 294px;
+  overflow: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: none;
+}
+
+.question-list::-webkit-scrollbar {
+  display: none;
+}
+
+.question-option {
+  width: 100%;
+  min-height: 58px;
+  padding: 13px 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(3, 23, 38, 0.24);
+  color: rgba(255, 255, 255, 0.86);
+  text-align: left;
+  line-height: 1.35;
+  backdrop-filter: blur(10px);
+}
+
+.question-option.selected {
+  border-color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 22px rgba(183, 226, 255, 0.26);
+}
+
+.custom-question {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 18px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.custom-question textarea {
+  width: 100%;
+  resize: none;
+  min-height: 68px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  outline: 0;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  backdrop-filter: blur(12px);
+}
+
+.custom-question textarea::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.fingerprint {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 118px;
+  height: 118px;
+  margin: auto auto 24px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 58%),
+    rgba(2, 24, 37, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  box-shadow:
+    0 0 40px rgba(255, 255, 255, 0.24),
+    inset 0 0 28px rgba(255, 255, 255, 0.12);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.fingerprint span,
+.fingerprint::before,
+.fingerprint::after {
+  position: absolute;
+  display: block;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  content: "";
+}
+
+.fingerprint span {
+  width: 34px;
+  height: 52px;
+  transform: rotate(-25deg);
+}
+
+.fingerprint::before {
+  width: 54px;
+  height: 70px;
+  transform: rotate(-25deg);
+  opacity: 0.56;
+}
+
+.fingerprint::after {
+  width: 78px;
+  height: 94px;
+  transform: rotate(-25deg);
+  opacity: 0.28;
+}
+
+.ritual-tip {
+  margin-bottom: 42px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
+}
+
+.result-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.result-card h2 {
+  width: min(100%, 340px);
+  margin: 0 auto 26px;
+}
+
+.route-oracle {
+  width: min(100%, 328px);
+  min-height: 168px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  padding: 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22), transparent 34%),
+    rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 32px rgba(255, 255, 255, 0.12),
+    0 0 42px rgba(171, 223, 255, 0.2);
+  font-size: 36px;
+  font-weight: 950;
+  line-height: 1.08;
+  text-shadow: 0 0 22px rgba(255, 255, 255, 0.42);
+}
+
+.route-note {
+  width: min(100%, 330px);
+  margin: 0 auto 18px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.itinerary {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: min(100%, 330px);
+  margin: 0 auto;
+}
+
+.itinerary span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.icon-text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 50px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.bottom-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: min(62%, 260px);
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  transform: translateX(-50%);
+}
+
+.bottom-pill span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.56);
+  transition:
+    width 220ms ease,
+    background 220ms ease;
+}
+
+.bottom-pill span.active {
+  width: 22px;
+  border-radius: 999px;
+  background: white;
+}
+
+.toast {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 76px;
+  z-index: 30;
+  padding: 13px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 8px;
+  background: rgba(4, 20, 34, 0.78);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  backdrop-filter: blur(16px);
+  animation: toast 2s ease forwards;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(9%, 7%, 0) scale(1.16);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.98);
+    opacity: 0.52;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.03);
+    opacity: 0.86;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    background-position:
+      14px 214px,
+      80px 188px;
+  }
+}
+
+@keyframes liquid {
+  0% {
+    border-radius: 48% 52% 51% 49% / 56% 49% 51% 44%;
+    transform: scale(0.98) rotate(-1deg);
+  }
+
+  100% {
+    border-radius: 53% 47% 48% 52% / 48% 55% 45% 52%;
+    transform: scale(1.02) rotate(1deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 60px rgba(255, 255, 255, 0.34),
+      inset 0 0 34px rgba(255, 255, 255, 0.18);
+  }
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  14%,
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 360px) {
+  .phone-shell {
+    min-height: 640px;
+  }
+
+  .screen {
+    padding-inline: 18px;
+  }
+
+  .category-card {
+    min-height: 112px;
+  }
+
+  .category-title {
+    font-size: 12px;
+  }
+
+  .route-oracle {
+    font-size: 30px;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <main class="phone-shell" aria-live="polite">
+      <div class="ambient" aria-hidden="true">
+        <span class="blob blob-a"></span>
+        <span class="blob blob-b"></span>
+        <span class="blob blob-c"></span>
+        <span class="halo"></span>
+        <span class="star-field"></span>
+      </div>
+
+      <header class="topbar">
+        <button class="icon-button" type="button" data-back aria-label="返回">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="brand-mark" aria-label="圆周旅迹">圆</div>
+        <div class="top-actions">
+          <button class="mini-button" type="button" aria-label="活动说明">i</button>
+          <button class="mini-button" type="button" aria-label="更多">···</button>
+        </div>
+      </header>
+
+      <section class="screen active" data-screen="intro">
+        <div class="portal intro-portal">
+          <div class="portal-glass"></div>
+          <div class="intro-copy">
+            <p class="eyebrow">限时活动</p>
+            <h1>旅行答案之书</h1>
+            <p>把心里的问题交给一条城市路线。</p>
+          </div>
+        </div>
+        <button class="primary-button" type="button" data-start>
+          <span>开始占卜</span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section class="screen" data-screen="categories">
+        <div class="screen-heading">
+          <p class="eyebrow">选择占卜类别</p>
+          <h2>你想问哪一种风向？</h2>
+        </div>
+        <div class="category-grid" data-category-grid></div>
+        <button class="ghost-button" type="button" data-random-category>
+          替我抽一张
+        </button>
+      </section>
+
+      <section class="screen" data-screen="questions">
+        <div class="screen-heading compact">
+          <p class="eyebrow" data-selected-category-label>问题池</p>
+          <h2>选一个今天最有感的问题</h2>
+        </div>
+        <div class="question-list" data-question-list></div>
+        <label class="custom-question">
+          <span>或者自己写一句</span>
+          <textarea data-custom-question maxlength="42" rows="2" placeholder="例如：我该不该订下个月去大理的票？"></textarea>
+        </label>
+        <button class="primary-button" type="button" data-to-ritual disabled>
+          <span>把问题交给路线</span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section class="screen" data-screen="ritual">
+        <div class="screen-heading">
+          <p class="eyebrow">正在听取城市回声</p>
+          <h2 data-ritual-question></h2>
+        </div>
+        <button class="fingerprint" type="button" data-generate aria-label="生成答案">
+          <span></span>
+        </button>
+        <p class="ritual-tip">按住心跳，生成路线答案</p>
+      </section>
+
+      <section class="screen" data-screen="result">
+        <div class="result-card">
+          <p class="eyebrow" data-result-category></p>
+          <h2 data-result-question></h2>
+          <div class="route-oracle" data-result-route></div>
+          <p class="route-note" data-result-note></p>
+          <div class="itinerary" data-result-itinerary></div>
+        </div>
+        <div class="result-actions">
+          <button class="icon-text-button" type="button" data-regenerate>
+            <span aria-hidden="true">↻</span>
+            <span>再问一次</span>
+          </button>
+          <button class="icon-text-button" type="button" data-share>
+            <span aria-hidden="true">⇧</span>
+            <span>生成分享卡</span>
+          </button>
+        </div>
+      </section>
+
+      <nav class="bottom-pill" aria-label="流程">
+        <span data-step-dot="intro"></span>
+        <span data-step-dot="categories"></span>
+        <span data-step-dot="questions"></span>
+        <span data-step-dot="ritual"></span>
+        <span data-step-dot="result"></span>
+      </nav>
+    </main>
+
+    <script>
+const oracleData = [
+  {
+    id: "love",
+    title: "爱情",
+    icon: "♡",
+    questions: [
+      "crush 会喜欢我吗？",
+      "我是不是该放下 TA 了？",
+      "这段关系还值得继续吗？",
+      "我最近会遇到正缘吗？",
+    ],
+    yes: [
+      {
+        route: "厦门环岛路日落路线",
+        note: "海风已经把暧昧吹到你这边了。慢慢走，不用抢答。",
+        stops: ["黄厝海滩", "沙坡尾", "八市夜宵"],
+      },
+      {
+        route: "成都玉林小酒馆路线",
+        note: "这不是轰轰烈烈，是会有人把你的冷笑话接住。",
+        stops: ["玉林路", "芳草街", "夜晚小酒馆"],
+      },
+    ],
+    no: [
+      {
+        route: "杭州西湖断桥路线",
+        note: "桥可以走完，故事也可以停在好看的地方。",
+        stops: ["断桥残雪", "孤山", "湖滨晚风"],
+      },
+      {
+        route: "青岛栈桥退潮路线",
+        note: "海水退下去之后，才看得清哪里不该继续踩。",
+        stops: ["栈桥", "小青岛", "琴屿路"],
+      },
+    ],
+  },
+  {
+    id: "career",
+    title: "工作",
+    icon: "✦",
+    questions: [
+      "我的工作会升职加薪吗？",
+      "我要不要辞职？",
+      "这个项目能顺利收尾吗？",
+      "我适合换一个城市工作吗？",
+    ],
+    yes: [
+      {
+        route: "上海陆家嘴上行路线",
+        note: "电梯在往上走，但记得先把自己的楼层按亮。",
+        stops: ["滨江步道", "陆家嘴天桥", "外滩夜景"],
+      },
+      {
+        route: "深圳南山效率路线",
+        note: "风口不一定温柔，但你这次站得挺准。",
+        stops: ["人才公园", "粤海街道", "深圳湾"],
+      },
+    ],
+    no: [
+      {
+        route: "云南大理躺平路线",
+        note: "不是你不行，是这班车暂时不去你想去的站。",
+        stops: ["洱海西线", "喜洲稻田", "苍山脚下"],
+      },
+      {
+        route: "重庆下坡缓冲路线",
+        note: "先别硬冲，山城的路也知道什么时候该拐弯。",
+        stops: ["山城步道", "十八梯", "两江夜游"],
+      },
+    ],
+  },
+  {
+    id: "money",
+    title: "发财",
+    icon: "¥",
+    questions: [
+      "最近会发财吗？",
+      "我要不要买这个大件？",
+      "副业会有起色吗？",
+      "这笔钱能不能要回来？",
+    ],
+    yes: [
+      {
+        route: "泉州财神庙开运路线",
+        note: "香火很旺，钱包也有一点想抬头的意思。",
+        stops: ["关岳庙", "西街", "钟楼"],
+      },
+      {
+        route: "香港叮叮车进账路线",
+        note: "不一定暴富，但会有一笔钱像电车一样准点来。",
+        stops: ["中环", "上环", "坚尼地城"],
+      },
+    ],
+    no: [
+      {
+        route: "北京胡同省钱路线",
+        note: "这次适合把钱留在口袋里，逛一圈也能很快乐。",
+        stops: ["五道营", "国子监", "什刹海"],
+      },
+      {
+        route: "苏州园林慢算路线",
+        note: "账要一笔一笔算，别被漂亮窗景带跑预算。",
+        stops: ["拙政园", "平江路", "山塘街"],
+      },
+    ],
+  },
+  {
+    id: "friendship",
+    title: "友情",
+    icon: "♧",
+    questions: [
+      "TA 真的把我当朋友吗？",
+      "我们会和好吗？",
+      "这次旅行适合约朋友吗？",
+      "我要不要主动发消息？",
+    ],
+    yes: [
+      {
+        route: "长沙夜宵搭子路线",
+        note: "能一起排队吃小龙虾的人，关系没那么容易散。",
+        stops: ["坡子街", "文和友", "湘江边"],
+      },
+      {
+        route: "广州早茶续杯路线",
+        note: "有些朋友不说煽情话，但会给你夹最后一个虾饺。",
+        stops: ["泮溪酒家", "荔湾湖", "永庆坊"],
+      },
+    ],
+    no: [
+      {
+        route: "南京梧桐分岔路线",
+        note: "树影很好看，但不是每个人都要陪你走完整条路。",
+        stops: ["颐和路", "明孝陵", "灵谷寺"],
+      },
+      {
+        route: "天津海河散步路线",
+        note: "可以客气，可以怀念，但不用再把位置留到最中间。",
+        stops: ["解放桥", "意风区", "海河夜景"],
+      },
+    ],
+  },
+  {
+    id: "weekend",
+    title: "周末",
+    icon: "☾",
+    questions: [
+      "这个周末适合出门吗？",
+      "我要不要来一场短途旅行？",
+      "周末会有惊喜吗？",
+      "我该把周末留给自己吗？",
+    ],
+    yes: [
+      {
+        route: "苏州平江路松弛路线",
+        note: "出门吧，周末需要一点桥、一点水和一点甜。",
+        stops: ["平江路", "双塔市集", "金鸡湖"],
+      },
+      {
+        route: "阿那亚看海路线",
+        note: "把手机调成静音，浪会替你刷新状态。",
+        stops: ["孤独图书馆", "礼堂", "海边栈道"],
+      },
+    ],
+    no: [
+      {
+        route: "家里酒店式躺平路线",
+        note: "这周不赶路。把房间收拾成目的地，也算抵达。",
+        stops: ["床边早餐", "客厅电影", "热水澡"],
+      },
+      {
+        route: "昆明咖啡慢晒路线",
+        note: "不必远行，找一束阳光就够回血。",
+        stops: ["翠湖", "文林街", "篆新市场"],
+      },
+    ],
+  },
+  {
+    id: "travel",
+    title: "旅行",
+    icon: "⌖",
+    questions: [
+      "我该立刻订票吗？",
+      "这趟旅行会顺利吗？",
+      "我适合一个人出发吗？",
+      "目的地会给我答案吗？",
+    ],
+    yes: [
+      {
+        route: "西北环线追光路线",
+        note: "票可以买，风会把你吹到更开阔的地方。",
+        stops: ["青海湖", "茶卡盐湖", "敦煌"],
+      },
+      {
+        route: "丽江古城迷路路线",
+        note: "别把攻略排满，答案常常藏在转错的巷子里。",
+        stops: ["大研古城", "束河", "玉龙雪山"],
+      },
+    ],
+    no: [
+      {
+        route: "桂林等雨停路线",
+        note: "再等等。山水没跑，但你的状态还没晴。",
+        stops: ["象鼻山", "漓江", "阳朔西街"],
+      },
+      {
+        route: "哈尔滨保暖检查路线",
+        note: "先查预算、天气和同行人，别让热血冻在路上。",
+        stops: ["中央大街", "松花江", "冰雪大世界"],
+      },
+    ],
+  },
+  {
+    id: "life",
+    title: "人生状态",
+    icon: "∞",
+    questions: [
+      "我现在的方向对吗？",
+      "最近是不是该停下来？",
+      "我会变好吗？",
+      "这个决定会改变我吗？",
+    ],
+    yes: [
+      {
+        route: "拉萨转经路线",
+        note: "你正在绕一段很长的路，但每一步都在靠近自己。",
+        stops: ["八廓街", "大昭寺", "布达拉宫"],
+      },
+      {
+        route: "景德镇捏泥路线",
+        note: "形状还没定，但你已经开始成器。",
+        stops: ["陶溪川", "三宝村", "御窑博物馆"],
+      },
+    ],
+    no: [
+      {
+        route: "武夷山停云路线",
+        note: "先把脚步放慢，雾散了再判断山往哪边走。",
+        stops: ["天游峰", "九曲溪", "岩茶村"],
+      },
+      {
+        route: "腾冲温泉修复路线",
+        note: "现在不适合硬撑。先回温，再出发。",
+        stops: ["热海", "和顺古镇", "银杏村"],
+      },
+    ],
+  },
+  {
+    id: "study",
+    title: "学业",
+    icon: "⌂",
+    questions: [
+      "这次考试能过吗？",
+      "我该不该继续深造？",
+      "明天上课会无聊吗？",
+      "这个 ddl 能赶上吗？",
+    ],
+    yes: [
+      {
+        route: "武汉樱花上岸路线",
+        note: "知识点正在开花，别临门一脚跑去赏别人的景。",
+        stops: ["武大樱花", "东湖", "昙华林"],
+      },
+      {
+        route: "南京图书馆自习路线",
+        note: "稳住，笔记会把你带到该去的页码。",
+        stops: ["南图", "鸡鸣寺", "玄武湖"],
+      },
+    ],
+    no: [
+      {
+        route: "秦皇岛补觉路线",
+        note: "脑子已经退潮，先睡一觉再谈逆袭。",
+        stops: ["阿那亚", "鸽子窝", "老虎石"],
+      },
+      {
+        route: "西安错题回炉路线",
+        note: "别急着进考场，先把兵马俑一样整齐的错题复盘完。",
+        stops: ["碑林", "城墙", "大雁塔"],
+      },
+    ],
+  },
+  {
+    id: "food",
+    title: "饭搭子",
+    icon: "☊",
+    questions: [
+      "今天适合吃顿好的吗？",
+      "我要不要约 TA 吃饭？",
+      "这家店会踩雷吗？",
+      "夜宵会治好我的坏心情吗？",
+    ],
+    yes: [
+      {
+        route: "顺德碳水幸福路线",
+        note: "去吃吧，快乐正在砂锅里咕嘟咕嘟。",
+        stops: ["大良", "华盖路", "清晖园"],
+      },
+      {
+        route: "潮汕牛肉火锅路线",
+        note: "这一口值得。筷子落下去，烦恼会薄切。",
+        stops: ["小公园", "牛肉火锅", "广济桥"],
+      },
+    ],
+    no: [
+      {
+        route: "上海便利店克制路线",
+        note: "今天先别冲动排队，肚子和钱包都需要留白。",
+        stops: ["街角便利店", "苏州河", "回家早睡"],
+      },
+      {
+        route: "厦门沙茶面排队路线",
+        note: "不是不香，是这次等待成本比汤底更浓。",
+        stops: ["中山路", "八市", "白城沙滩"],
+      },
+    ],
+  },
+];
+
+const state = {
+  screen: "intro",
+  category: null,
+  question: "",
+  selectedQuestionIndex: null,
+  lastAnswer: null,
+};
+
+const screens = document.querySelectorAll("[data-screen]");
+const dots = document.querySelectorAll("[data-step-dot]");
+const backButton = document.querySelector("[data-back]");
+const categoryGrid = document.querySelector("[data-category-grid]");
+const questionList = document.querySelector("[data-question-list]");
+const categoryLabel = document.querySelector("[data-selected-category-label]");
+const customQuestion = document.querySelector("[data-custom-question]");
+const toRitualButton = document.querySelector("[data-to-ritual]");
+const ritualQuestion = document.querySelector("[data-ritual-question]");
+
+function setScreen(screen) {
+  state.screen = screen;
+  screens.forEach((item) => item.classList.toggle("active", item.dataset.screen === screen));
+  dots.forEach((dot) => dot.classList.toggle("active", dot.dataset.stepDot === screen));
+  backButton.style.visibility = screen === "intro" ? "hidden" : "visible";
+}
+
+function renderCategories() {
+  categoryGrid.innerHTML = oracleData
+    .map(
+      (category) => `
+        <button class="category-card" type="button" data-category="${category.id}">
+          <span class="category-icon">${category.icon}</span>
+          <span class="category-title">${category.title}</span>
+        </button>
+      `,
+    )
+    .join("");
+}
+
+function renderQuestions() {
+  categoryLabel.textContent = state.category.title;
+  questionList.innerHTML = state.category.questions
+    .map(
+      (question, index) => `
+        <button class="question-option" type="button" data-question-index="${index}">
+          ${question}
+        </button>
+      `,
+    )
+    .join("");
+  customQuestion.value = "";
+  state.question = "";
+  state.selectedQuestionIndex = null;
+  toRitualButton.disabled = true;
+}
+
+function chooseCategory(category) {
+  state.category = category;
+  renderQuestions();
+  setScreen("questions");
+}
+
+function chooseQuestion(question, index) {
+  state.question = question;
+  state.selectedQuestionIndex = index;
+  customQuestion.value = "";
+  document.querySelectorAll(".question-option").forEach((button) => {
+    button.classList.toggle("selected", Number(button.dataset.questionIndex) === index);
+  });
+  toRitualButton.disabled = false;
+}
+
+function getAnswerPool() {
+  if (!state.category) return [];
+  const text = state.question;
+  const yesSignals = ["会", "适合", "值得", "能", "该", "要不要", "能不能"];
+  const noSignals = ["放下", "辞职", "踩雷", "无聊", "停下来", "买这个大件"];
+  const wantsNo = noSignals.some((word) => text.includes(word));
+  const wantsYes = yesSignals.some((word) => text.includes(word));
+  if (wantsNo && Math.random() > 0.28) return state.category.no;
+  if (wantsYes && Math.random() > 0.42) return state.category.yes;
+  return Math.random() > 0.5 ? state.category.yes : state.category.no;
+}
+
+function generateAnswer() {
+  const pool = getAnswerPool();
+  const answer = pool[Math.floor(Math.random() * pool.length)];
+  state.lastAnswer = answer;
+  document.querySelector("[data-result-category]").textContent = state.category.title;
+  document.querySelector("[data-result-question]").textContent = state.question;
+  document.querySelector("[data-result-route]").textContent = answer.route;
+  document.querySelector("[data-result-note]").textContent = answer.note;
+  document.querySelector("[data-result-itinerary]").innerHTML = answer.stops
+    .map((stop) => `<span>${stop}</span>`)
+    .join("");
+  setScreen("result");
+}
+
+function showToast(message) {
+  const oldToast = document.querySelector(".toast");
+  if (oldToast) oldToast.remove();
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  document.querySelector(".phone-shell").append(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+document.querySelector("[data-start]").addEventListener("click", () => setScreen("categories"));
+
+document.querySelector("[data-random-category]").addEventListener("click", () => {
+  const category = oracleData[Math.floor(Math.random() * oracleData.length)];
+  chooseCategory(category);
+});
+
+categoryGrid.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-category]");
+  if (!card) return;
+  chooseCategory(oracleData.find((category) => category.id === card.dataset.category));
+});
+
+questionList.addEventListener("click", (event) => {
+  const item = event.target.closest("[data-question-index]");
+  if (!item) return;
+  const index = Number(item.dataset.questionIndex);
+  chooseQuestion(state.category.questions[index], index);
+});
+
+customQuestion.addEventListener("input", () => {
+  const text = customQuestion.value.trim();
+  state.question = text;
+  state.selectedQuestionIndex = null;
+  document.querySelectorAll(".question-option").forEach((button) => button.classList.remove("selected"));
+  toRitualButton.disabled = text.length < 2;
+});
+
+toRitualButton.addEventListener("click", () => {
+  if (!state.question) return;
+  ritualQuestion.textContent = state.question;
+  setScreen("ritual");
+});
+
+document.querySelector("[data-generate]").addEventListener("click", () => {
+  ritualQuestion.textContent = "路线正在显影...";
+  setTimeout(generateAnswer, 720);
+});
+
+document.querySelector("[data-regenerate]").addEventListener("click", () => {
+  setScreen("categories");
+});
+
+document.querySelector("[data-share]").addEventListener("click", () => {
+  showToast("分享卡文案已就绪：把这条路线发给朋友一起玄一下");
+});
+
+backButton.addEventListener("click", () => {
+  const order = ["intro", "categories", "questions", "ritual", "result"];
+  const currentIndex = order.indexOf(state.screen);
+  if (currentIndex <= 0) return;
+  setScreen(order[currentIndex - 1]);
+});
+
+renderCategories();
+setScreen("intro");
+
+</script>
+  </body>
+</html>
