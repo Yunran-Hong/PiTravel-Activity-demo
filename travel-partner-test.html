@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圆周旅迹｜旅行搭子默契测试</title>
+    <style>
+      :root {
+        --brand: #1bb8f0;
+        --ink: #202124;
+        --muted: #6d747d;
+        --paper: #fffdf4;
+        --mint: #dff8cf;
+        --lemon: #fff6a8;
+        --pink: #ffdce9;
+        --sky: #d9f2ff;
+        --line: #2d2d2d;
+        --shadow: 0 18px 45px rgba(49, 68, 89, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 8%, #fff6b8 0 11%, transparent 12%),
+          radial-gradient(circle at 92% 20%, #d5f4ff 0 13%, transparent 14%),
+          linear-gradient(135deg, #f5fbff 0%, #fff8dd 48%, #effde7 100%);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .phone {
+        width: min(100vw, 430px);
+        height: min(100vh, 932px);
+        overflow: hidden;
+        background: var(--paper);
+        position: relative;
+        box-shadow: var(--shadow);
+      }
+
+      .screen {
+        height: 100%;
+        overflow-y: auto;
+        padding: 18px 20px 116px;
+        scroll-behavior: smooth;
+      }
+
+      .status {
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .brand-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        color: var(--brand);
+        background: #fff;
+        box-shadow: 0 8px 22px rgba(56, 157, 199, 0.12);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .brand-mark {
+        width: 22px;
+        height: 13px;
+        border-radius: 1px 1px 9px 9px;
+        background: var(--brand);
+        display: inline-block;
+      }
+
+      .topbar {
+        margin: 12px 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        font-weight: 900;
+        box-shadow: 3px 4px 0 var(--line);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+        animation: pop 0.2s ease-out;
+      }
+
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero {
+        position: relative;
+        min-height: 356px;
+        padding: 20px 18px 18px;
+        border: 2.5px solid var(--line);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at 15% 18%, rgba(255, 246, 168, 0.92), transparent 35%),
+          radial-gradient(circle at 90% 20%, rgba(255, 220, 233, 0.72), transparent 30%),
+          linear-gradient(180deg, #fffefa 0%, #f9ffe8 100%);
+        box-shadow: 6px 8px 0 var(--line);
+        overflow: hidden;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        margin: 10px 0 12px;
+        max-width: 330px;
+        font-size: 39px;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 318px;
+        color: #525b65;
+        font-size: 18px;
+        line-height: 1.5;
+        font-weight: 800;
+      }
+
+      .doodle {
+        position: absolute;
+        right: -4px;
+        bottom: 0;
+        width: 176px;
+        height: 152px;
+        z-index: 1;
+      }
+
+      .star {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        font-size: 25px;
+        transform: rotate(-12deg);
+        z-index: 2;
+      }
+
+      .star.one {
+        right: 32px;
+        top: 56px;
+      }
+
+      .star.two {
+        left: 20px;
+        bottom: 24px;
+      }
+
+      .actions {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .primary,
+      .secondary,
+      .wide-action {
+        border: 2.5px solid var(--line);
+        border-radius: 18px;
+        padding: 15px 14px;
+        min-height: 88px;
+        text-align: left;
+        background: #fff;
+        box-shadow: 4px 5px 0 var(--line);
+      }
+
+      .primary {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .wide-action {
+        width: 100%;
+        min-height: 62px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 950;
+      }
+
+      .btn-title {
+        display: block;
+        font-size: 18px;
+        font-weight: 950;
+      }
+
+      .btn-sub {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+        font-weight: 750;
+        opacity: 0.78;
+      }
+
+      .section-title {
+        margin: 28px 0 14px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 25px;
+        letter-spacing: 0;
+      }
+
+      .section-title span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 24px;
+        background: #fff;
+        border: 2px solid var(--line);
+        box-shadow: 5px 6px 0 var(--line);
+      }
+
+      .room-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .room-code {
+        padding: 8px 11px;
+        border-radius: 14px;
+        background: var(--lemon);
+        border: 2px dashed var(--line);
+        font-size: 18px;
+        font-weight: 950;
+      }
+
+      .input-row {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+      }
+
+      .code-input {
+        min-width: 0;
+        height: 56px;
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        padding: 0 14px;
+        background: #fbfeff;
+        font-size: 20px;
+        font-weight: 950;
+        letter-spacing: 3px;
+      }
+
+      .small-action {
+        height: 56px;
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        padding: 0 15px;
+        background: var(--lemon);
+        font-weight: 950;
+      }
+
+      .players {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .player {
+        min-height: 106px;
+        padding: 12px;
+        border-radius: 18px;
+        border: 2px solid var(--line);
+        background: #f8fdff;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--pink);
+        font-size: 20px;
+        font-weight: 950;
+      }
+
+      .player strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 15px;
+      }
+
+      .muted,
+      .player small {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 10px;
+        align-items: center;
+        padding: 12px;
+        border-radius: 18px;
+        background: #fff;
+        border: 2px solid #e7e2cf;
+      }
+
+      .step-num {
+        width: 36px;
+        height: 36px;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--mint);
+        font-weight: 950;
+      }
+
+      .question-card {
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: 24px;
+        border: 2px solid var(--line);
+        background: var(--sky);
+        box-shadow: 5px 6px 0 var(--line);
+      }
+
+      .question-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #52636d;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .question-card h2 {
+        margin: 14px 0;
+        font-size: 25px;
+        line-height: 1.22;
+      }
+
+      .options {
+        display: grid;
+        gap: 9px;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 50px;
+        padding: 11px 13px;
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        font-size: 15px;
+        font-weight: 850;
+      }
+
+      .option.is-picked {
+        background: var(--lemon);
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 4px 0 var(--line);
+      }
+
+      .answer-bar {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .progress {
+        flex: 1;
+        height: 12px;
+        padding: 2px;
+        border-radius: 999px;
+        background: #fff;
+        border: 2px solid var(--line);
+      }
+
+      .progress span {
+        display: block;
+        width: 20%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--brand);
+        transition: width 0.2s ease;
+      }
+
+      .round-note {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 18px;
+        background: #fff;
+        border: 2px solid #cbefff;
+        color: #4f5f69;
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 750;
+      }
+
+      .report {
+        border-radius: 28px;
+        overflow: hidden;
+        border: 2.5px solid var(--line);
+        background: #fff;
+        box-shadow: 5px 6px 0 var(--line);
+      }
+
+      .score {
+        padding: 18px 18px 14px;
+        background:
+          radial-gradient(circle at 90% 30%, var(--pink), transparent 30%),
+          linear-gradient(135deg, #fff6a8, #dff7cf);
+      }
+
+      .score small {
+        color: #59605e;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .score-line {
+        display: flex;
+        align-items: flex-end;
+        gap: 7px;
+      }
+
+      .score-line strong {
+        font-size: 68px;
+        line-height: 0.95;
+      }
+
+      .score-line span {
+        padding-bottom: 8px;
+        font-size: 21px;
+        font-weight: 950;
+      }
+
+      .verdict {
+        margin-top: 8px;
+        font-size: 17px;
+        font-weight: 950;
+        line-height: 1.45;
+      }
+
+      .report-body {
+        padding: 16px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 8px 10px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .route {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        border-radius: 20px;
+        background: #f3fbff;
+        border: 2px solid #cceefc;
+      }
+
+      .route-art {
+        height: 82px;
+        border-radius: 18px;
+        border: 2px solid var(--line);
+        background:
+          linear-gradient(135deg, transparent 48%, #fff 49% 52%, transparent 53%),
+          radial-gradient(circle at 24% 76%, #ffbd4a 0 10%, transparent 11%),
+          radial-gradient(circle at 68% 34%, #ff7575 0 9%, transparent 10%),
+          linear-gradient(145deg, #1bb8f0, #bbeeff);
+        position: relative;
+      }
+
+      .route-art::after {
+        content: "夜市";
+        position: absolute;
+        right: -8px;
+        bottom: 8px;
+        padding: 5px 8px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: var(--lemon);
+        font-size: 12px;
+        font-weight: 950;
+        transform: rotate(-8deg);
+      }
+
+      .route h3 {
+        margin: 0 0 5px;
+        font-size: 18px;
+      }
+
+      .route p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+        font-weight: 750;
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .bottom-nav.hidden {
+        display: none;
+      }
+
+      .nav-action {
+        height: 56px;
+        border: 2.5px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+        font-size: 15px;
+        font-weight: 950;
+        box-shadow: 4px 5px 0 var(--line);
+      }
+
+      .nav-action.black {
+        background: #050505;
+        color: #fff;
+      }
+
+      .toast {
+        position: absolute;
+        left: 50%;
+        bottom: 88px;
+        transform: translateX(-50%) translateY(20px);
+        opacity: 0;
+        pointer-events: none;
+        width: max-content;
+        max-width: 320px;
+        padding: 10px 14px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+        box-shadow: 4px 5px 0 var(--line);
+        transition: 0.2s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 430px) {
+        body {
+          display: block;
+          background: var(--paper);
+        }
+
+        .phone {
+          width: 100vw;
+          height: 100vh;
+          box-shadow: none;
+        }
+
+        .hero h1 {
+          font-size: 39px;
+        }
+      }
+
+      @media (max-width: 370px) {
+        .screen {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        .hero h1 {
+          font-size: 34px;
+        }
+
+        .hero p {
+          font-size: 16px;
+        }
+
+        .doodle {
+          width: 156px;
+        }
+
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone" aria-label="圆周旅迹限时活动页">
+      <div class="screen" id="screen">
+        <header class="status">
+          <span>11:55</span>
+          <span class="brand-pill"><i class="brand-mark"></i>圆周旅迹</span>
+          <span>87</span>
+        </header>
+
+        <div class="topbar">
+          <button class="icon-btn" type="button" data-back aria-label="返回">‹</button>
+          <span class="tag" id="topTag">限时活动 · 双人房间</span>
+          <button class="icon-btn" type="button" data-toast="分享链接已复制">↗</button>
+        </div>
+
+        <section class="view active" data-view="home">
+          <div class="hero">
+            <div class="hero-copy">
+              <span class="tag">旅行搭子默契测试</span>
+              <h1>测测你俩<br />能不能一起出门</h1>
+              <p>5 道旅行默契题，猜猜对方会怎么选。答完生成默契报告和下一站路线。</p>
+            </div>
+            <span class="star one">✦</span>
+            <span class="star two">★</span>
+            <svg class="doodle" viewBox="0 0 188 162" aria-hidden="true">
+              <path d="M24 106C43 81 65 70 95 75c39 7 57 33 54 55-4 26-40 35-74 22-31-11-61-20-51-46Z" fill="#fff" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M44 82c-4-23 4-42 22-47 16-5 31 5 38 23 16-12 34-14 47 0 14 15 11 38-8 52" fill="#fff" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="72" cy="67" r="4" fill="#2c2c2c"/>
+              <circle cx="116" cy="70" r="4" fill="#2c2c2c"/>
+              <path d="M88 85c8 6 17 6 25 0" fill="none" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M42 132c-24-8-35-23-32-41" fill="none" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M153 126c20-6 30-19 28-39" fill="none" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M18 40c13-18 36-18 49-1-2 18-16 31-34 31C20 66 12 54 18 40Z" fill="#baf0c5" stroke="#2c2c2c" stroke-width="3"/>
+              <circle cx="35" cy="47" r="3" fill="#2c2c2c"/>
+              <path d="M47 50c5 4 9 4 13 0" fill="none" stroke="#2c2c2c" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M142 24l12 18 21 5-15 14 2 22-20-10-19 9 3-21-15-15 21-4 10-18Z" fill="#ffdce9" stroke="#2c2c2c" stroke-width="3" stroke-linejoin="round"/>
+              <circle cx="141" cy="52" r="3" fill="#2c2c2c"/>
+              <circle cx="159" cy="52" r="3" fill="#2c2c2c"/>
+              <path d="M144 63c5 4 10 4 15 0" fill="none" stroke="#2c2c2c" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="button" data-go="room">
+              <span class="btn-title">创建房间</span>
+              <span class="btn-sub">生成口令，拉好友进来</span>
+            </button>
+            <button class="secondary" type="button" data-go="join">
+              <span class="btn-title">输入口令</span>
+              <span class="btn-sub">加入 TA 的旅行脑洞</span>
+            </button>
+          </div>
+
+          <section class="section-title">
+            <h2>玩法预告</h2>
+            <span>约 1 分钟</span>
+          </section>
+          <div class="timeline">
+            <div class="step"><span class="step-num">1</span><strong>创建房间，好友用口令加入</strong></div>
+            <div class="step"><span class="step-num">2</span><strong>回答自己的真实答案，再猜 TA 怎么选</strong></div>
+            <div class="step"><span class="step-num">3</span><strong>生成默契报告和圆周推荐路线</strong></div>
+          </div>
+        </section>
+
+        <section class="view" data-view="join">
+          <section class="section-title">
+            <h2>加入房间</h2>
+            <span>输入好友口令</span>
+          </section>
+          <div class="card">
+            <p class="muted">好友发来的 4 位口令会把你们带进同一个旅行搭子测试房。</p>
+            <div class="input-row">
+              <input class="code-input" value="7ZQL" maxlength="4" aria-label="房间口令" />
+              <button class="small-action" type="button" data-go="room">加入</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" data-view="room">
+          <section class="section-title">
+            <h2>房间状态</h2>
+            <span>口令 7ZQL</span>
+          </section>
+          <section class="card">
+            <div class="room-head">
+              <div>
+                <strong>长沙夜市局 · 待开测</strong><br />
+                <small class="muted">双方进入后自动开 5 题</small>
+              </div>
+              <div class="room-code">7ZQL</div>
+            </div>
+            <div class="players">
+              <div class="player">
+                <div class="avatar">你</div>
+                <strong>已准备</strong>
+                <small>真实答案：保密中</small>
+              </div>
+              <div class="player">
+                <div class="avatar" style="background: var(--mint)">TA</div>
+                <strong>已加入</strong>
+                <small>正在偷笑选答案</small>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-title">
+            <h2>准备开测</h2>
+            <span>题目开局揭晓</span>
+          </section>
+          <div class="timeline">
+            <div class="step"><span class="step-num">?</span><strong>系统会随机抽 5 道旅行默契题</strong></div>
+            <div class="step"><span class="step-num">?</span><strong>你们各自作答，互相猜对方选择</strong></div>
+            <div class="step"><span class="step-num">?</span><strong>全部答完后生成默契报告和路线推荐</strong></div>
+          </div>
+          <button class="wide-action" style="margin-top: 16px; background: var(--brand); color: #fff" type="button" data-go="quiz">
+            开始默契问答
+          </button>
+        </section>
+
+        <section class="view" data-view="quiz">
+          <section class="section-title">
+            <h2 id="questionTitle">第 1 题</h2>
+            <span id="questionCount">1 / 3</span>
+          </section>
+
+          <section class="question-card">
+            <div class="question-meta">
+              <span id="questionMode">猜对方会怎么选</span>
+              <span>圆周出题</span>
+            </div>
+            <h2 id="questionText">和我旅行你最怕发生什么？</h2>
+
+            <div class="options" id="options"></div>
+
+            <div class="answer-bar">
+              <small class="muted" id="progressText">双方进度 1 / 3</small>
+              <div class="progress"><span id="progressBar"></span></div>
+            </div>
+            <div class="round-note" id="roundNote">选完后点“下一题”，最后会揭晓你们的旅行搭子默契值。</div>
+          </section>
+        </section>
+
+        <section class="view" data-view="result">
+          <section class="section-title">
+            <h2>默契报告</h2>
+            <span>已生成</span>
+          </section>
+          <section class="report">
+            <div class="score">
+              <small>你们的旅行默契值</small>
+              <div class="score-line"><strong>82</strong><span>%</span></div>
+              <div class="verdict">可以继续一起出门，但出发前必须确认拍照标准。</div>
+            </div>
+            <div class="report-body">
+              <div class="chips">
+                <span class="chip">夜市续摊</span>
+                <span class="chip">小城慢逛</span>
+                <span class="chip">深夜聊天</span>
+                <span class="chip">低压力出行</span>
+                <span class="chip">雷区：迟到</span>
+                <span class="chip">雷区：随便</span>
+              </div>
+              <div class="route">
+                <div class="route-art"></div>
+                <div>
+                  <h3>长沙 · 夜市续摊路线</h3>
+                  <p>3 天 2 晚，茶颜、湘菜、江边散步和凌晨宵夜都安排上。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <nav class="bottom-nav hidden" aria-label="活动操作" id="bottomNav">
+        <button class="nav-action" type="button" id="leftAction">输入口令</button>
+        <button class="nav-action black" type="button" id="rightAction">创建房间</button>
+      </nav>
+      <div class="toast" id="toast">已复制</div>
+    </main>
+
+    <script>
+      const views = [...document.querySelectorAll(".view")];
+      const screen = document.querySelector("#screen");
+      const topTag = document.querySelector("#topTag");
+      const bottomNav = document.querySelector("#bottomNav");
+      const leftAction = document.querySelector("#leftAction");
+      const rightAction = document.querySelector("#rightAction");
+      const toast = document.querySelector("#toast");
+      const progressBar = document.querySelector("#progressBar");
+      const progressText = document.querySelector("#progressText");
+      const questionTitle = document.querySelector("#questionTitle");
+      const questionCount = document.querySelector("#questionCount");
+      const questionText = document.querySelector("#questionText");
+      const questionMode = document.querySelector("#questionMode");
+      const roundNote = document.querySelector("#roundNote");
+      const optionsRoot = document.querySelector("#options");
+
+      const questions = [
+        {
+          text: "和我旅行你最怕发生什么？",
+          options: ["你迟到", "你拍照太丑", "你一直说“随便”", "你走两步就喊累", "你临时改计划", "你不做攻略还很有主见"],
+          icons: ["⏰", "📷", "🤷", "🪫", "🧭", "📝"],
+          picked: 1,
+          note: "系统评价：这题答对了可以继续同行，答错了请先补一节拍照课。"
+        },
+        {
+          text: "上次一起出门，哪一刻最想重来？",
+          options: ["出发那一刻", "吃到好吃的那顿", "深夜聊天那段", "迷路但很好笑那次", "拍到好照片那刻", "什么都没做但很舒服的时候"],
+          icons: ["🚄", "🍜", "🌙", "🧭", "📸", "🛋️"],
+          picked: 2,
+          note: "系统评价：你们不是不爱赶路，只是更爱把废话聊成纪念品。"
+        },
+        {
+          text: "我们下次适合哪种旅行？",
+          options: ["特种兵暴走型", "夜市吃到凌晨型", "海边放空型", "小城慢逛型", "拍照打卡型", "酒店躺平型"],
+          icons: ["🏃", "🍢", "🌊", "🚲", "📍", "🏨"],
+          picked: 1,
+          note: "系统评价：下一站最好有夜市、有江风、有可以慢慢走的路。"
+        },
+        {
+          text: "旅行中最容易吵起来的瞬间？",
+          options: ["早起赶车", "排队太久", "拍照审美不合", "突然下雨", "找不到吃的", "预算花超了"],
+          icons: ["⏱️", "🧍", "📸", "☔", "🍽️", "💸"],
+          picked: 3,
+          note: "系统评价：雷区不是下雨，是谁都没带伞还要假装淡定。"
+        },
+        {
+          text: "最想一起冲去哪座城市？",
+          options: ["长沙", "青岛", "厦门", "成都", "大理", "东京"],
+          icons: ["🌶️", "🌊", "🏝️", "🐼", "☁️", "🗼"],
+          picked: 0,
+          note: "系统评价：圆周建议下一站长沙，白天慢逛，晚上认真续摊。"
+        }
+      ];
+
+      let currentView = "home";
+      let questionIndex = 0;
+
+      const navConfig = {
+        home: ["输入口令", "创建房间"],
+        join: ["返回首页", "加入房间"],
+        room: ["分享口令", "开始答题"],
+        quiz: ["上一题", "下一题"],
+        result: ["保存路线", "下次一起去吗"]
+      };
+
+      const tagConfig = {
+        home: "限时活动 · 双人房间",
+        join: "输入口令加入",
+        room: "房间 7ZQL · 好友已加入",
+        quiz: "旅行题进行中",
+        result: "旅行搭子默契报告"
+      };
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1200);
+      }
+
+      function showView(name) {
+        currentView = name;
+        views.forEach((view) => view.classList.toggle("active", view.dataset.view === name));
+        topTag.textContent = tagConfig[name];
+        bottomNav.classList.toggle("hidden", name === "home");
+        const [left, right] = navConfig[name];
+        leftAction.textContent = left;
+        rightAction.textContent = right;
+        screen.scrollTop = 0;
+        if (name === "quiz") renderQuestion();
+      }
+
+      function renderQuestion() {
+        const item = questions[questionIndex];
+        questionTitle.textContent = `第 ${questionIndex + 1} 题`;
+        questionCount.textContent = `${questionIndex + 1} / ${questions.length}`;
+        questionText.textContent = item.text;
+        questionMode.textContent = "猜对方会怎么选";
+        roundNote.textContent = item.note;
+        progressText.textContent = `双方进度 ${questionIndex + 1} / ${questions.length}`;
+        progressBar.style.width = `${((questionIndex + 1) / questions.length) * 100}%`;
+        optionsRoot.innerHTML = item.options
+          .map((option, index) => `<button class="option ${index === item.picked ? "is-picked" : ""}" type="button">${option}<span>${item.icons[index] || "✨"}</span></button>`)
+          .join("");
+      }
+
+      document.addEventListener("click", (event) => {
+        const target = event.target.closest("button");
+        if (!target) return;
+
+        const go = target.dataset.go;
+        if (go) {
+          if (go === "quiz") questionIndex = 0;
+          showView(go);
+          return;
+        }
+
+        if (target.dataset.back !== undefined) {
+          if (currentView === "home") showToast("已经在活动首页");
+          else if (currentView === "quiz") showView("room");
+          else showView("home");
+          return;
+        }
+
+        if (target.dataset.toast) {
+          showToast(target.dataset.toast);
+          return;
+        }
+
+        if (target.classList.contains("option")) {
+          optionsRoot.querySelectorAll(".option").forEach((item) => item.classList.remove("is-picked"));
+          target.classList.add("is-picked");
+          showToast("已锁定这题答案");
+          return;
+        }
+      });
+
+      leftAction.addEventListener("click", () => {
+        if (currentView === "home") showView("join");
+        else if (currentView === "join") showView("home");
+        else if (currentView === "room") showToast("口令 7ZQL 已复制");
+        else if (currentView === "quiz") {
+          questionIndex = Math.max(0, questionIndex - 1);
+          renderQuestion();
+        } else if (currentView === "result") showToast("路线攻略已保存");
+      });
+
+      rightAction.addEventListener("click", () => {
+        if (currentView === "home" || currentView === "join") showView("room");
+        else if (currentView === "room") {
+          questionIndex = 0;
+          showView("quiz");
+        }
+        else if (currentView === "quiz") {
+          if (questionIndex < questions.length - 1) {
+            questionIndex += 1;
+            renderQuestion();
+          } else {
+            showView("result");
+          }
+        } else if (currentView === "result") showToast("邀请已发出：下次一起去吗");
+      });
+
+      renderQuestion();
+    </script>
+  </body>
+</html>
