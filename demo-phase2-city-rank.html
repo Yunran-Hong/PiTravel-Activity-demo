@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+#codex-browser-sidebar-comments-root {
+  pointer-events: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -267,6 +271,7 @@ button {
 
 .leaderboard-hero .award-button {
   position: absolute;
+  z-index: 4;
   right: 44px;
   top: auto;
   bottom: 24px;
@@ -680,9 +685,8 @@ button {
 }
 
 .activity-play-rules {
-  max-height: 212px;
   margin: 18px 0 14px;
-  padding: 14px 12px 16px;
+  padding: 14px 12px 18px;
   border-radius: 24px;
   background: linear-gradient(180deg, #eaf7ff 0%, #ffffff 58%);
   border: 1px solid rgba(64, 158, 255, 0.16);
@@ -727,7 +731,7 @@ button {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding: 6px 2px 2px;
+  padding: 8px 2px 4px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -739,9 +743,9 @@ button {
 
 .activity-play-rules__card {
   position: relative;
-  flex: 0 0 145px;
-  min-height: 104px;
-  padding: 14px 12px 12px;
+  flex: 0 0 168px;
+  min-height: 174px;
+  padding: 18px 14px 14px;
   border: 1px solid rgba(218, 230, 245, 0.9);
   border-radius: 18px;
   background: #ffffff;
@@ -778,7 +782,7 @@ button {
 }
 
 .activity-play-rules__card h4 {
-  margin: 10px 0 4px;
+  margin: 12px 0 5px;
   color: #12213a;
   font-size: 16px;
   font-weight: 800;
@@ -789,7 +793,7 @@ button {
   margin: 0;
   color: #66758f;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .rank-board-list {
@@ -2261,6 +2265,12 @@ button {
   font-weight: 840;
 }
 
+.city-grid button.active {
+  border-color: #0f6df3;
+  color: #0f6df3;
+  background: #e7f2ff;
+}
+
 .current-city-card {
   width: fit-content;
   min-width: 132px;
@@ -2583,6 +2593,588 @@ button {
   cursor: not-allowed;
 }
 
+.hero-status-row {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.hero-status-row span {
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 999px;
+  color: #17406f;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 24px rgba(31, 98, 184, 0.08);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.collection-search {
+  display: block;
+}
+
+.collection-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 15px;
+  border: 1px solid #e4edf8;
+  border-radius: 999px;
+  color: #152238;
+  background: rgba(255, 255, 255, 0.9);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  outline: none;
+}
+
+.city-collection-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(22, 119, 255, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 32px rgba(39, 82, 160, 0.1);
+}
+
+.city-collection-card.top-rank {
+  border-color: rgba(255, 177, 50, 0.36);
+  box-shadow: 0 18px 36px rgba(255, 164, 28, 0.16);
+}
+
+.city-collection-card .rank-map-open {
+  grid-template-columns: 86px minmax(0, 1fr);
+  align-items: stretch;
+  text-align: left;
+}
+
+.rank-cover-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.collection-cover {
+  width: 100%;
+  min-height: 86px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.collection-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-cover span {
+  font-size: 32px;
+}
+
+.collection-cover-mini {
+  width: 54px;
+  min-height: 54px;
+  border-radius: 17px;
+}
+
+.collection-cover-mini span {
+  font-size: 24px;
+}
+
+.collection-cover-share {
+  width: 88px;
+  height: 88px;
+  min-height: 88px;
+  border-radius: 22px;
+}
+
+.rank-badge {
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #1677ff, #35a5ff);
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.top-rank .rank-badge {
+  background: linear-gradient(135deg, #ff9f1c, #ff5c7a);
+}
+
+.rank-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rank-copy h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.28;
+}
+
+.rank-copy p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  color: #66758a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.avatar-mini {
+  width: 19px;
+  height: 19px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #0f6df3;
+  background: #eaf4ff;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.rank-tags,
+.rank-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.rank-tags span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: #1167d7;
+  background: #eaf4ff;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.rank-stats span {
+  color: #7a8798;
+  font-size: 10px;
+  font-weight: 780;
+}
+
+.rank-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 7px;
+}
+
+.rank-card-actions button {
+  height: 34px;
+  border-radius: 999px;
+  color: #0f6df3;
+  background: #eef6ff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.rank-card-actions button:first-child {
+  color: #fff;
+  background: linear-gradient(135deg, #1677ff, #39a1ff);
+}
+
+/* Restore the original compact leaderboard row treatment. */
+.hero-status-row,
+.collection-search {
+  display: none !important;
+}
+
+.rank-waterfall {
+  gap: 0;
+}
+
+.floating-create-tab {
+  position: sticky;
+  bottom: 14px;
+  z-index: 20;
+  margin: 18px 0 0;
+}
+
+.board-tabs button[data-board-tab="local"] .city-tab-city::after {
+  content: "⌄";
+  margin-left: 2px;
+  color: #66758a;
+  font-weight: 900;
+}
+
+.city-collection-card {
+  display: grid;
+  grid-template-columns: 56px 84px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin: 0;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid #e4edf7;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.city-collection-card:last-child {
+  border-bottom: 0;
+}
+
+.rank-list-number {
+  color: #1677ff;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.city-collection-card .rank-cover-wrap {
+  width: 84px;
+  height: 84px;
+  min-width: 84px;
+}
+
+.city-collection-card .collection-cover {
+  width: 84px;
+  height: 84px;
+  min-height: 84px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(39, 82, 160, 0.08);
+}
+
+.city-collection-card .rank-copy {
+  align-content: center;
+  gap: 10px;
+}
+
+.rank-title-button {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: #111827;
+  background: transparent;
+  font-size: 17px;
+  line-height: 1.25;
+  font-weight: 950;
+  text-align: left;
+}
+
+.rank-title-button:active {
+  opacity: 0.72;
+}
+
+.city-collection-card .rank-tags {
+  gap: 7px;
+}
+
+.city-collection-card .rank-tags span {
+  max-width: 96px;
+  padding: 5px 9px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 950;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.city-collection-card .rank-tags span:nth-child(1) {
+  color: #1677ff;
+  background: #eaf4ff;
+}
+
+.city-collection-card .rank-tags span:nth-child(2) {
+  color: #d96a00;
+  background: #fff0d9;
+}
+
+.city-collection-card .rank-card-actions,
+.city-collection-card .rank-stats,
+.city-collection-card .rank-copy p,
+.city-collection-card .avatar-mini {
+  display: none;
+}
+
+.mini-map-card {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 18px;
+  color: #172033;
+  background: #f7fbff;
+  text-align: left;
+}
+
+.mini-map-card strong,
+.mini-map-card small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mini-map-card small {
+  margin-top: 4px;
+  color: #718096;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.rank-empty-state {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  padding: 28px 18px;
+  border-radius: 24px;
+  color: #40506a;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.rank-empty-state button {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #1677ff, #35a5ff);
+  font-weight: 900;
+}
+
+.section-inline-head,
+.creator-reward-block header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.boost-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #7a8798;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.reward-exchange-list,
+.reward-task-list {
+  display: grid;
+  gap: 10px;
+}
+
+.reward-exchange-list,
+.reward-prize-grid,
+.reward-task-list,
+.reward-center-tasks {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.exchange-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #edf2fa;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.exchange-card > span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #eef7ff;
+  font-size: 24px;
+}
+
+.exchange-card strong,
+.exchange-card small {
+  display: block;
+}
+
+.exchange-card small {
+  margin-top: 4px;
+  color: #728098;
+  font-size: 11px;
+  font-weight: 760;
+}
+
+.exchange-card button {
+  min-width: 78px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #1677ff, #35a5ff);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.exchange-card button:disabled {
+  color: #8b96a8;
+  background: #eef2f7;
+}
+
+.log-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid #edf2fa;
+}
+
+.log-row span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #f1f5fa;
+}
+
+.log-row.is-drop span {
+  background: #fff5dc;
+}
+
+.log-row strong,
+.log-row small {
+  display: block;
+}
+
+.log-row small {
+  margin-top: 4px;
+  color: #8a95a7;
+  font-size: 11px;
+}
+
+.creator-reward-block ul {
+  display: grid;
+  gap: 7px;
+  margin: 10px 0;
+  padding-left: 18px;
+  color: #526176;
+  font-size: 12px;
+  font-weight: 760;
+  line-height: 1.42;
+}
+
+.creator-reward-block header button {
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #915c00;
+  background: #fff2ce;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.share-panel,
+.creator-panel {
+  position: relative;
+  width: min(360px, calc(100vw - 34px));
+  max-height: 82vh;
+  overflow: auto;
+  padding: 22px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.share-panel h2,
+.creator-panel h2 {
+  margin: 2px 0 5px;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.share-panel > small {
+  display: block;
+  color: #728098;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.share-card-preview {
+  display: flex;
+  align-items: center;
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f2fbff, #fff9e8);
+}
+
+.share-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.share-actions button {
+  height: 38px;
+  border-radius: 999px;
+  color: #0f6df3;
+  background: #eef6ff;
+  font-weight: 900;
+}
+
+.share-actions button:first-child {
+  grid-column: 1 / -1;
+}
+
+.address-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.address-form label {
+  display: grid;
+  gap: 6px;
+  color: #526176;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.address-form input,
+.address-form textarea {
+  width: 100%;
+  border: 1px solid #e2eaf5;
+  border-radius: 14px;
+  padding: 11px 12px;
+  font: inherit;
+  outline: none;
+}
+
+.address-success {
+  padding: 14px;
+  border-radius: 18px;
+  color: #0d6c46;
+  background: #e9fbf2;
+  font-weight: 900;
+}
+
 .daily-tasks {
   display: grid;
   gap: 10px;
@@ -2620,10 +3212,10 @@ button {
 
 .task-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
-  align-items: center;
-  padding: 13px 14px;
+  align-content: space-between;
+  min-height: 92px;
+  padding: 12px;
   border: 1px solid rgba(22, 119, 255, 0.12);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.88);
@@ -2632,13 +3224,14 @@ button {
 
 .task-card strong {
   display: block;
-  margin-bottom: 5px;
+  margin: 0;
   color: var(--ink);
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.25;
 }
 
 .task-card > div {
-  grid-row: 1 / span 2;
+  min-width: 0;
 }
 
 .task-card p {
@@ -2649,28 +3242,17 @@ button {
 }
 
 .task-card small {
-  display: block;
+  display: none;
   color: var(--muted);
   font-size: 12px;
   font-weight: 760;
   line-height: 1.4;
 }
 
-.task-card em {
-  justify-self: end;
-  display: inline-block;
-  margin-bottom: 6px;
-  color: #f28b18;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 950;
-}
-
 .task-card button {
-  grid-column: 2;
-  justify-self: end;
-  min-width: 72px;
-  height: 36px;
+  justify-self: stretch;
+  min-width: 0;
+  height: 34px;
   padding: 0 13px;
   border-radius: 999px;
   color: var(--blue);
@@ -2700,13 +3282,13 @@ button {
 .reward-center-panel {
   position: relative;
   width: min(430px, 100vw);
-  max-height: 82vh;
+  max-height: 88vh;
   display: grid;
   gap: 12px;
   overflow-y: auto;
-  padding: 22px 18px 24px;
+  padding: 22px 18px 26px;
   border-radius: 28px 28px 0 0;
-  background: #fff;
+  background: linear-gradient(180deg, #f3fbff 0%, #ffffff 45%);
   box-shadow: 0 -18px 44px rgba(15, 23, 42, 0.22);
 }
 
@@ -2778,6 +3360,139 @@ button {
 .reward-center-tasks {
   display: grid;
   gap: 10px;
+}
+
+.reward-center-section {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(22, 119, 255, 0.13);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 28px rgba(39, 82, 160, 0.08);
+}
+
+.reward-center-section > h2 {
+  margin: 0;
+  color: #13213a;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.reward-center-section > p {
+  margin: -6px 0 0;
+  color: #728096;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 780;
+}
+
+.reward-ticket-count {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 20px;
+  color: #073f50;
+  background: linear-gradient(135deg, #20d7ec, #37c8f5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.reward-ticket-count span {
+  position: relative;
+  padding-left: 15px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.reward-ticket-count span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #073f50;
+  transform: translateY(-50%);
+}
+
+.reward-ticket-count strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #063847;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.reward-ticket-count b {
+  font-size: 30px;
+}
+
+.reward-prize-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.reward-prize-card {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(31, 159, 209, 0.2);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, #f8fdff);
+}
+
+.reward-prize-visual {
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 70% 22%, rgba(255, 230, 135, 0.65), transparent 28%),
+    linear-gradient(145deg, #e6fbff, #ffffff);
+  font-size: 38px;
+}
+
+.reward-prize-card strong {
+  color: #12213a;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.reward-prize-card small {
+  color: #6f7d92;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.reward-prize-card button {
+  height: 32px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #16c8e9, #31a8ff);
+  font-size: 12px;
+  font-weight: 920;
+}
+
+.reward-prize-card button:disabled {
+  color: #fff;
+  background: #d6dce5;
+}
+
+.reward-record-list {
+  display: grid;
+  gap: 9px;
+}
+
+.reward-record-list .log-row,
+.reward-record-list .empty-log {
+  margin: 0;
 }
 
 .section-title {
@@ -3311,13 +4026,13 @@ button {
 .map-name {
   position: absolute;
   left: 18px;
-  top: 126px;
+  top: 98px;
   z-index: 4;
   width: fit-content;
-  max-width: 190px;
+  max-width: 168px;
   margin: 0;
-  padding: 7px 10px;
-  border-radius: 16px;
+  padding: 6px 9px;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.74);
   box-shadow: 0 8px 18px rgba(37, 69, 118, 0.06);
   backdrop-filter: blur(8px);
@@ -3333,7 +4048,8 @@ button {
 
 .map-name h1 {
   margin: 1px 0 3px;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.22;
 }
 
 .poi {
@@ -3454,27 +4170,28 @@ button {
 
 .map-task-bubbles {
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 22px;
+  left: 24px;
+  right: auto;
+  bottom: 28px;
   z-index: 7;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid rgba(22, 119, 255, 0.12);
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 12px 28px rgba(36, 62, 108, 0.12);
-  backdrop-filter: blur(12px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: calc(100% - 48px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .map-task-bubbles:not(.is-editing) {
-  display: none;
+  display: flex;
 }
 
 .map-task-bubbles.is-editing {
-  grid-template-columns: 1fr;
+  display: flex;
 }
 
 .map-task-bubbles p {
@@ -3482,19 +4199,20 @@ button {
 }
 
 .task-bubble {
-  min-height: 54px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  width: auto;
+  min-width: 112px;
+  height: 54px;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  border-radius: 18px;
+  justify-content: center;
+  padding: 0 20px;
+  border-radius: 999px;
   color: white;
   background: linear-gradient(135deg, #1677ff, #4aa3ff);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 900;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(22, 119, 255, 0.2);
+  box-shadow: 0 12px 26px rgba(22, 119, 255, 0.22);
 }
 
 .task-bubble[hidden] {
@@ -3502,20 +4220,11 @@ button {
 }
 
 .task-bubble span {
-  justify-self: center;
   line-height: 1.18;
-  max-width: 4.8em;
-  text-wrap: balance;
 }
 
 .task-bubble em {
-  padding: 5px 8px;
-  border-radius: 999px;
-  color: #0d63d7;
-  background: white;
-  font-size: 11px;
-  font-style: normal;
-  white-space: nowrap;
+  display: none;
 }
 
 .task-bubble.is-done,
@@ -3528,8 +4237,7 @@ button {
 
 .task-bubble.is-done em,
 .task-bubble:disabled em {
-  color: #0b7b48;
-  background: rgba(255, 255, 255, 0.95);
+  display: none;
 }
 
 .map-guidance-bubble[hidden] {
@@ -3857,6 +4565,38 @@ button {
   margin-bottom: 12px;
 }
 
+.collection-status-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.collection-status-grid button {
+  height: auto;
+  min-height: 76px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 10px;
+  text-align: left;
+}
+
+.collection-status-grid strong,
+.collection-status-grid small {
+  display: block;
+}
+
+.collection-status-grid small {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.map-theme-grid button {
+  min-height: 42px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
 .theme-groups button,
 .permission-grid button {
   color: #566176;
@@ -4034,6 +4774,23 @@ button {
   margin-top: 2px;
 }
 
+.ticket-progress {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e9eff7;
+  box-shadow: inset 0 0 0 1px rgba(77, 98, 128, 0.08);
+}
+
+.ticket-progress span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ffb84d, #1677ff);
+  transition: width 260ms ease;
+}
+
 .puzzle-progress__grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -4100,6 +4857,24 @@ button {
   filter: none;
   opacity: 1;
   box-shadow: inset 0 0 0 1px rgba(32, 127, 255, 0.14);
+}
+
+.reward-exchange-list span {
+  color: #1f2a3d;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.88), transparent 30%),
+    linear-gradient(145deg, #fff7df, #e8f3ff);
+  text-shadow: none;
+  filter: none;
+  opacity: 1;
+  gap: 4px;
+  font-size: 24px;
+}
+
+.reward-exchange-list small {
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 900;
 }
 
 .reward-hint {
@@ -4626,6 +5401,10 @@ button {
   padding-top: 12px;
 }
 
+.draft-drawer .visibility-choice {
+  display: none;
+}
+
 .draft-drawer footer .primary {
   color: #fff;
   background: linear-gradient(135deg, #0f6df3, #2a8fff);
@@ -4693,7 +5472,7 @@ button {
               <header class="home-header">
                 <div>
                   <div class="hero-title-mark"><h1>地球角落共享计划</h1></div>
-                  <p class="hero-subtitle">分享你发现的地球角落，看看大家正在创建哪些有趣地图</p>
+                  <p class="hero-subtitle">一起整理城市里的好去处，发现大家正在创建的地点合集</p>
                 </div>
                 <button class="award-button" id="openRewardCenter" aria-label="奖励中心">
                   <span>🏆</span>
@@ -4705,14 +5484,14 @@ button {
             <section class="daily-board" aria-label="地球角落热门榜单">
               <nav class="board-tabs" aria-label="榜单类型">
                 <button class="active" data-board-tab="hot">热门榜</button>
-                <button data-board-tab="city"><span class="city-tab-city" id="cityTabCity">上海⌄</span></button>
+                <button data-board-tab="local"><span class="city-tab-city" id="cityTabCity">上海</span></button>
               </nav>
               <nav class="rank-helper-row" aria-label="榜单说明">
                 <p class="board-mode-subtitle" id="boardModeSubtitle">每日更新，发现热门地点合集</p>
                 <button class="rank-rule-link" id="openBoardRules" type="button">榜单说明</button>
               </nav>
               <section class="rank-waterfall" id="rankWaterfall"></section>
-              <button class="floating-create-tab" type="button" data-go="create">创建我的地球角落</button>
+              <button class="floating-create-tab" type="button" data-go="create">创建我的地点合集</button>
             </section>
 
             <section class="activity-play-rules" id="activityPlayRules" aria-label="本次玩法">
@@ -4721,7 +5500,7 @@ button {
                   <div class="activity-play-rules__eyebrow">How to play</div>
                   <h3>本次玩法</h3>
                 </div>
-                <span class="activity-play-rules__hint">集齐 12 块拼图</span>
+                <span class="activity-play-rules__hint">奖券兑换实物</span>
               </div>
 
               <div class="activity-play-rules__scroll">
@@ -4729,41 +5508,37 @@ button {
                   <span class="activity-play-rules__step">1</span>
                   <div class="activity-play-rules__icon">🗺️</div>
                   <h4>完成行为</h4>
-                  <p>浏览合集、收藏点位、添加点位、分享合集和创建合集</p>
+                  <p>浏览合集、订阅合集、新增点位、分享合集和创建合集</p>
                 </div>
 
                 <div class="activity-play-rules__card">
                   <span class="activity-play-rules__step">2</span>
-                  <div class="activity-play-rules__icon">🧩</div>
-                  <h4>收拼图</h4>
-                  <p>每完成 1 个行为，可获得 1 块地图拼图</p>
+                  <div class="activity-play-rules__icon">🎟️</div>
+                  <h4>获得奖券</h4>
+                  <p>完成指定行为后，有机会获得奖券，用来兑换实物礼物</p>
                 </div>
 
                 <div class="activity-play-rules__card">
                   <span class="activity-play-rules__step">3</span>
                   <div class="activity-play-rules__icon">🎁</div>
-                  <h4>抽实体奖</h4>
-                  <p>集齐 12 块后，解锁 1 次实体奖品抽取机会</p>
+                  <h4>兑换奖励</h4>
+                  <p>累计奖券后，可兑换旅行箱贴纸、周边帽子、周边衣服和黄金奖牌</p>
                 </div>
               </div>
             </section>
 
-            <section class="reward-summary home-reward-summary" aria-label="我的地图拼图">
-              <span>🧩</span>
+            <section class="reward-summary home-reward-summary" aria-label="我的奖券">
+              <span>🎟️</span>
               <div>
-                <p>地图拼图</p>
-                <strong><b id="homeRewardCount">0</b>/12</strong>
+                <p>我的奖券</p>
+                <strong><b id="homeRewardCount">0</b> 张</strong>
               </div>
-              <button id="openScratchFromHome">集齐后抽奖</button>
-              <div class="puzzle-progress">
-                <div class="puzzle-progress__grid" data-puzzle-grid aria-label="12 块拼图进度"></div>
-                <small id="homePuzzleHint">完成行为即可点亮拼图，集齐 12 块后可抽实体奖品</small>
-              </div>
+              <button id="openScratchFromHome">去兑换</button>
             </section>
 
             <section class="section-title">
               <div>
-                <h2>我的地球角落</h2>
+                <h2>我的地点合集</h2>
               </div>
             </section>
 
@@ -4787,7 +5562,7 @@ button {
                   <button type="button" data-view-all="owned">查看全部</button>
                 </header>
                 <div class="map-stack" id="ownedMaps">
-                  <div class="empty-maps compact" id="emptyOwned">创建地球角落、收藏点位、添加点位或分享合集后会出现。</div>
+                        <div class="empty-maps compact" id="emptyOwned">创建的地点合集、订阅合集、新增点位或分享合集后会出现。</div>
                 </div>
               </div>
             </section>
@@ -4796,7 +5571,7 @@ button {
                 <button class="close-rules" id="closeBoardRules" aria-label="关闭">×</button>
                 <h2>榜单说明</h2>
                 <ul>
-                  <li>榜单每天更新，根据地图的浏览、收藏、分享等表现综合排序。</li>
+                  <li>榜单每天更新，根据地图的浏览、订阅、分享等表现综合排序。</li>
                   <li>榜单每天 10:00 更新，基于前一天数据生成。</li>
                   <li>每周日会结算本周榜单奖品，持续霸榜的创作者有机会拿到月度超级大奖。</li>
                   <li>如果你的地图适合全国用户发现，会出现在热门榜；如果主要记录某个城市，会进入这个城市的榜单。</li>
@@ -4835,12 +5610,12 @@ button {
             <header class="sub-header">
               <button class="round" data-go="home" aria-label="返回">‹</button>
               <div>
-                <h1 id="rankListTitle">上海城市榜</h1>
+                <h1 id="rankListTitle">上海</h1>
                 <p id="rankListSubtitle">每日更新，发现热门地点合集</p>
               </div>
             </header>
             <section class="rank-list-full" id="rankListFull"></section>
-            <p class="rank-list-end" id="rankListEnd">今天的上海城市榜先到这里啦</p>
+            <p class="rank-list-end" id="rankListEnd">今天的上海先到这里啦</p>
           </section>
 
           <section class="screen" id="mapScreen" aria-label="主题地球角落页">
@@ -4902,19 +5677,17 @@ button {
             <button class="poi mini p14 poi-open" data-poi="无名小花坛" data-desc="春天会开一片很小的花，导航地图上完全没有名字。"></button>
             <button class="poi mini pink p15 poi-open" data-poi="邮筒旁边" data-desc="红色邮筒和蓝色路牌在同一侧，很适合做地图封面。"></button>
 
-            <section class="map-task-bubbles" aria-label="地图内可获得拼图">
+            <section class="map-task-bubbles" aria-label="地图操作">
               <button class="task-bubble collect-all" id="collectTask">
-                <span>收藏点位</span>
-                <em>+1 🧩</em>
+                <span>订阅合集</span>
               </button>
               <button class="task-bubble add-new" id="noteTask">
-                <span>添加点位</span>
-                <em>+1 🧩</em>
+                <span>新增点位</span>
               </button>
             </section>
             <section class="map-guidance-bubble" id="mapGuidanceBubble" hidden>
-              <h3 id="mapGuidanceTitle">收藏点位</h3>
-              <p id="mapGuidanceText">收藏 1 个你感兴趣的点位，完成后拼图会自动到账。</p>
+              <h3 id="mapGuidanceTitle">订阅合集</h3>
+              <p id="mapGuidanceText">订阅这张地点合集，完成后有机会获得奖券。</p>
               <div class="map-guidance-actions">
                 <button class="primary" id="mapGuidanceAction" type="button">去完成</button>
                 <button class="ghost" id="closeMapGuidance" type="button" aria-label="关闭">×</button>
@@ -4926,15 +5699,22 @@ button {
               <p class="mini-label">点位详情</p>
               <h2 id="poiTitle">海边晚风观景点</h2>
               <p id="poiDesc">傍晚 6 点之后风最舒服，桥边能看到很完整的日落。</p>
-              <button class="wide-primary" id="collectPoi">收藏这个点位（+1 拼图）</button>
+              <button class="wide-primary" id="collectPoi">收藏这个点位</button>
             </section>
           </section>
 
-          <section class="screen" id="noteScreen" aria-label="添加点位备注">
+          <section class="screen" id="noteScreen" aria-label="新增点位备注">
             <header class="plain-header">
               <button class="round" data-go="map" aria-label="返回">‹</button>
-              <h1>添加点位备注</h1>
+              <h1>新增点位备注</h1>
             </header>
+            <section class="create-card">
+              <p class="mini-label">填写地点合集标题</p>
+              <label class="note-input">
+                <span>合集标题</span>
+                <input id="collectionTitleInput" type="text" value="上海我的地点合集" />
+              </label>
+            </section>
             <section class="create-card">
               <p class="mini-label">选择点位类型</p>
               <div class="permission-grid point-type-grid" id="pointTypeGrid">
@@ -4956,7 +5736,7 @@ button {
               </div>
             </section>
             <section class="create-card">
-              <p class="mini-label">选择本地图的点位图标</p>
+              <p class="mini-label">选择第一个点位的图标</p>
               <div class="icon-picker">
                 <button class="active">🌳</button>
                 <button>👄</button>
@@ -4987,88 +5767,27 @@ button {
                 <span>备注内容</span>
                 <textarea id="noteText" rows="4" placeholder="例：傍晚 6 点以后风很舒服，桥边可以看到完整日落。"></textarea>
               </label>
-              <button class="wide-primary" id="submitNote">提交备注 · 领 1 块拼图</button>
             </section>
-          </section>
-
-          <section class="screen" id="createScreen" aria-label="创建地球角落">
-            <header class="plain-header">
-              <button class="round" data-go="home" aria-label="返回">‹</button>
-              <div>
-                <h1>创建地球角落</h1>
-              </div>
-            </header>
-            <section class="create-card ai-create-card">
-              <div class="ai-create-pane is-active" id="themeCreatePane">
-                <textarea id="themePrompt" rows="4" placeholder="告诉我，你想做什么地图？也可以粘贴内容，我会帮你识别。"></textarea>
-                <div class="qstoken-panel" id="qstokenPanel" hidden>
-                  <p>请先配置 Qstoken</p>
-                  <div>
-                    <input id="qstokenInput" type="password" placeholder="粘贴你的 Qstoken" autocomplete="off" />
-                    <button id="saveQstoken" type="button">保存</button>
-                  </div>
-                </div>
-                <button class="wide-primary" id="generateDraft">确认</button>
-              </div>
-              <div class="preset-grid" id="presetGrid">
-                <button data-theme="上海咖啡地图">☕ 上海咖啡地图</button>
-                <button data-theme="遛狗友好地图">🐶 遛狗友好地图</button>
-                <button data-theme="周末散步地图">🌃 周末散步地图</button>
-                <button data-theme="深夜吃喝地图">🍜 深夜吃喝地图</button>
-                <button data-theme="博物馆打卡地图">🏛 博物馆打卡地图</button>
-                <button data-theme="公司周边摸鱼地图">🫠 公司周边摸鱼地图</button>
+            <section class="create-card">
+              <p class="mini-label">选择该合集的状态</p>
+              <div class="permission-grid collection-status-grid" id="collectionStatusGrid">
+                <button class="active" type="button" data-collection-status="publicCollaborative">
+                  <strong>公开可协作</strong>
+                  <small>别人可浏览，也可新增点位</small>
+                </button>
+                <button type="button" data-collection-status="publicViewOnly">
+                  <strong>公开不可协作</strong>
+                  <small>别人只能浏览和订阅</small>
+                </button>
+                <button type="button" data-collection-status="linkOnly">
+                  <strong>私密</strong>
+                  <small>仅自己和拿到链接的人可见</small>
+                </button>
               </div>
             </section>
-            <section class="create-card blank-create-card">
-              <p class="mini-label">从空白地图开始</p>
-              <button class="wide-primary" id="finishCreate">自行创建</button>
+            <section class="create-card">
+              <button class="wide-primary" id="submitNote">保存并进入地图</button>
             </section>
-
-            <div class="draft-drawer" id="draftDrawer" hidden>
-              <div class="drawer-handle"></div>
-              <header>
-                <div>
-                  <h2 id="draftTitle">AI 已为你找到 30 个候选点位</h2>
-                  <p id="draftSubtitle">先勾选你想加入地图的地点，之后还可以继续补充。</p>
-                </div>
-                <button id="closeDraft" aria-label="关闭">×</button>
-              </header>
-              <div class="draft-skeleton" id="draftSkeleton" hidden>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <p class="draft-alert" id="draftAlert" hidden></p>
-              <div class="draft-list" id="draftList"></div>
-              <div class="draft-error" id="draftError" hidden>
-                <strong>暂时没有找到合适地点</strong>
-                <p>可以换个主题，或直接从空白地图开始。</p>
-                <div>
-                  <button id="retryDraft">重新生成</button>
-                  <button id="blankFromError">空白创建</button>
-                </div>
-                <details class="draft-debug" id="draftDebug" hidden>
-                  <summary>调试信息</summary>
-                  <pre id="draftDebugText"></pre>
-                </details>
-              </div>
-              <footer>
-                <div class="visibility-choice" aria-label="地图可见性">
-                  <span>发布范围</span>
-                  <div class="visibility-options" id="visibilityOptions">
-                    <button class="active" type="button" data-visibility="public">
-                      <strong>公开</strong>
-                      <small>参加活动榜单，有机会获得创作者激励奖品</small>
-                    </button>
-                    <button type="button" data-visibility="link">
-                      <strong>仅链接可见</strong>
-                      <small>不会进入公开榜单，只分享给拿到链接的人</small>
-                    </button>
-                  </div>
-                </div>
-                <button class="primary" id="publishDraft">生成并发布地球角落</button>
-              </footer>
-            </div>
           </section>
 
           <section class="screen" id="inviteScreen" aria-label="邀请好友">
@@ -5088,7 +5807,7 @@ button {
             <section class="friend-card">
               <div class="friend-head">
                 <h2>好友进入记录</h2>
-                <span>当前玩法不计入拼图任务</span>
+                <span>浏览门槛达成后可获得奖券</span>
               </div>
               <div class="avatars">
                 <span class="entered">林</span>
@@ -5106,54 +5825,41 @@ button {
               <h1>我的奖励</h1>
             </header>
             <section class="reward-summary">
-              <span>🧩</span>
+              <span>🎟️</span>
               <div>
-                <p>地图拼图</p>
-                <strong><b id="rewardCount">0</b>/12</strong>
+                <p>当前奖券</p>
+                <strong><b id="rewardCount">0</b> 张</strong>
               </div>
-              <button id="openScratchFromRewards">集齐后抽奖</button>
-              <div class="puzzle-progress">
-                <div class="puzzle-progress__grid" data-puzzle-grid aria-label="12 块拼图进度"></div>
-                <small>浏览、收藏、添加、分享、创建都会点亮 1 块拼图</small>
-              </div>
+              <button id="openScratchFromRewards">兑换奖励</button>
             </section>
             <section class="reward-log">
-              <h2>实体奖品池</h2>
-              <div class="mystery-prizes">
-                <span data-prize="单个冰箱贴">🧲</span>
-                <span data-prize="完整地图冰箱贴套装">🗺️</span>
-                <span data-prize="黄金奖牌">🏅</span>
-              </div>
-              <p class="reward-hint">集齐 12 块地图拼图后，可获得 1 次实体奖品抽取机会。</p>
-            </section>
-            <section class="reward-log">
-              <h2>拼图与奖励记录</h2>
+              <h2>奖券与奖励记录</h2>
               <div id="activityLog" class="activity-log">
-                <article class="empty-log">还没有记录。完成指定行为后，这里会记录拼图来源。</article>
+                <article class="empty-log">还没有记录。完成指定行为后，这里会记录奖券获得过程。</article>
               </div>
             </section>
           </section>
 
-          <div id="toast" class="toast" hidden>获得拼图</div>
+          <div id="toast" class="toast" hidden>获得奖券</div>
         </div>
       </section>
     </main>
 
     <div id="scratchModal" class="modal" hidden>
       <div class="modal-bg" data-close="true"></div>
-      <section class="scratch-panel" role="dialog" aria-modal="true" aria-label="实体奖品抽取">
+      <section class="scratch-panel" role="dialog" aria-modal="true" aria-label="实物奖励兑换">
         <button class="close" id="closeScratch" aria-label="关闭">×</button>
-        <p class="mini-label">集齐 12 块地图拼图</p>
-        <h2>实体奖品抽取</h2>
+        <p class="mini-label">我的奖励</p>
+        <h2>实物奖励兑换</h2>
         <div class="scratch-ticket">
           <div class="prize">
-            <span id="prizeIcon">🧲</span>
-            <strong id="prizeName">单个冰箱贴</strong>
-            <p id="prizeDesc">获得一块地图碎片磁贴，继续收集可拼出完整世界地图。</p>
+            <span id="prizeIcon">🧢</span>
+            <strong id="prizeName">周边帽子</strong>
+            <p id="prizeDesc">需要 5 张奖券。兑换成功后可继续积累下一轮奖券。</p>
           </div>
-          <canvas id="scratchCanvas" width="320" height="176"></canvas>
+          <canvas id="scratchCanvas" width="320" height="176" hidden></canvas>
         </div>
-        <button class="wide-primary" id="drawPrize">换一个奖品示例</button>
+        <button class="wide-primary" id="drawPrize">兑换当前可领最高奖励</button>
       </section>
     </div>
 
@@ -5161,55 +5867,33 @@ button {
       <div class="modal-bg" data-close-reward-center="true"></div>
       <section class="reward-center-panel" role="dialog" aria-modal="true" aria-label="奖励中心">
         <button class="close" id="closeRewardCenter" aria-label="关闭">×</button>
-        <header>
-          <span>🧩</span>
-          <div>
-            <p>地图拼图</p>
-            <strong><b id="stickerCount">0</b>/12</strong>
-            <small id="stickerHint">完成指定行为，可获得地图拼图</small>
-            <span hidden>未领取 <b id="bankedCount">0</b></span>
+        <section class="reward-center-section reward-ticket-section">
+          <div class="reward-ticket-count"><span>已获得</span><strong>奖券 × <b id="stickerCount">0</b></strong></div>
+          <span hidden id="stickerHint">完成指定行为，有机会获得奖券兑换礼物</span>
+          <span hidden>未领取 <b id="bankedCount">0</b></span>
+          <h2>可兑换礼物</h2>
+          <div class="reward-prize-grid" id="centerPrizeGrid"></div>
+        </section>
+        <section class="reward-center-section" aria-label="任务列表">
+          <h2>去赚奖券</h2>
+          <p>完成浏览、订阅、分享、新增点位或创建合集，就有机会拿到奖券。</p>
+          <div class="reward-center-tasks"></div>
+        </section>
+        <section class="reward-center-section" aria-label="奖券记录">
+          <h2>奖券记录</h2>
+          <p>这里会记录你获得奖券的过程。</p>
+          <div id="rewardCenterActivityLog" class="activity-log reward-record-list">
+            <article class="empty-log">还没有记录。完成指定行为后，这里会记录奖券获得过程。</article>
           </div>
-          <button id="openScratch">集齐后抽奖</button>
-          <div class="puzzle-progress">
-            <div class="puzzle-progress__grid" data-puzzle-grid aria-label="12 块拼图进度"></div>
-            <small>满 12 块后解锁 1 次实体奖品抽取机会</small>
-          </div>
-        </header>
-        <section class="reward-center-tasks" aria-label="任务列表">
-          <article class="task-card">
-            <div><strong>浏览 1 个合集</strong><small>+1 块拼图</small></div>
-            <em>未完成</em>
-            <button data-task-go="browse">去完成</button>
-          </article>
-          <article class="task-card">
-            <div><strong>收藏 1 个点位</strong><small>+1 块拼图</small></div>
-            <em>未完成</em>
-            <button data-task-go="collect">去完成</button>
-          </article>
-          <article class="task-card">
-            <div><strong>添加 1 个点位</strong><small>+1 块拼图</small></div>
-            <em>未完成</em>
-            <button data-task-go="add">去完成</button>
-          </article>
-          <article class="task-card">
-            <div><strong>分享 1 个合集</strong><small>+1 块拼图</small></div>
-            <em>未完成</em>
-            <button data-task-go="share">去完成</button>
-          </article>
-          <article class="task-card">
-            <div><strong>创建 1 个合集</strong><small>+1 块拼图</small></div>
-            <em>未完成</em>
-            <button data-task-go="create">去完成</button>
-          </article>
         </section>
       </section>
     </div>
 
     <div id="collectAllModal" class="modal" hidden>
       <div class="modal-bg" data-close-collect="true"></div>
-      <section class="confirm-panel" role="dialog" aria-modal="true" aria-label="收藏点位确认">
-        <h2>收藏这个点位？</h2>
-        <p id="collectAllText">收藏点位后，可获得 1 块地图拼图。</p>
+      <section class="confirm-panel" role="dialog" aria-modal="true" aria-label="订阅合集确认">
+        <h2>订阅这张合集？</h2>
+        <p id="collectAllText">订阅整张地点合集后，有机会获得 1 张奖券。</p>
         <div class="confirm-actions">
           <button class="ghost-confirm" id="cancelCollectAll">先不订阅</button>
           <button class="primary-confirm" id="confirmCollectAll">确认订阅</button>
@@ -5218,2318 +5902,1480 @@ button {
     </div>
 
     <script>
-const screens = {
-  home: document.querySelector("#homeScreen"),
-  map: document.querySelector("#mapScreen"),
-  create: document.querySelector("#createScreen"),
-  note: document.querySelector("#noteScreen"),
-  invite: document.querySelector("#inviteScreen"),
-  rewards: document.querySelector("#rewardsScreen"),
-  allMaps: document.querySelector("#allMapsScreen"),
-  rankList: document.querySelector("#rankListScreen"),
-};
+(() => {
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-const stickerCount = document.querySelector("#stickerCount");
-const rewardCount = document.querySelector("#rewardCount");
-const homeRewardCount = document.querySelector("#homeRewardCount");
-const bankedCount = document.querySelector("#bankedCount");
-const stickerHint = document.querySelector("#stickerHint");
-const openScratchButton = document.querySelector("#openScratch");
-const progressFill = document.querySelector("#progressFill");
-const mapTitle = document.querySelector("#mapTitle");
-const mapMeta = document.querySelector("#mapMeta");
-const inviteTitle = document.querySelector("#inviteTitle");
-const toast = document.querySelector("#toast");
-const scratchModal = document.querySelector("#scratchModal");
-const collectAllModal = document.querySelector("#collectAllModal");
-const collectAllText = document.querySelector("#collectAllText");
-const scratchCanvas = document.querySelector("#scratchCanvas");
-const closeScratch = document.querySelector("#closeScratch");
-const prizeIcon = document.querySelector("#prizeIcon");
-const prizeName = document.querySelector("#prizeName");
-const prizeDesc = document.querySelector("#prizeDesc");
-const themePrompt = document.querySelector("#themePrompt");
-const generateDraft = document.querySelector("#generateDraft");
-const qstokenPanel = document.querySelector("#qstokenPanel");
-const qstokenInput = document.querySelector("#qstokenInput");
-const saveQstoken = document.querySelector("#saveQstoken");
-const boardSubtitle = document.querySelector("#boardModeSubtitle");
-const rankWaterfall = document.querySelector("#rankWaterfall");
-const dailyBoard = document.querySelector(".daily-board");
-const homeRewardSummary = document.querySelector(".home-reward-summary");
-const activityPlayRules = document.querySelector("#activityPlayRules");
-const boardTabs = [...document.querySelectorAll("[data-board-tab]")];
-const cityTabCity = document.querySelector("#cityTabCity");
-const cityPickerModal = document.querySelector("#cityPickerModal");
-const closeCityPicker = document.querySelector("#closeCityPicker");
-const pickerPanels = [...document.querySelectorAll("[data-picker-panel]")];
-const currentCityCard = document.querySelector(".current-city-card");
-const domesticHotCities = document.querySelector("#domesticHotCities");
-const rankListSubtitle = document.querySelector("#rankListSubtitle");
-const rankListEnd = document.querySelector("#rankListEnd");
-const boardRulesModal = document.querySelector("#boardRulesModal");
-const openBoardRules = document.querySelector("#openBoardRules");
-const closeBoardRules = document.querySelector("#closeBoardRules");
-const rewardCenterModal = document.querySelector("#rewardCenterModal");
-const openRewardCenter = document.querySelector("#openRewardCenter");
-const rewardBadge = openRewardCenter.querySelector("i");
-const closeRewardCenter = document.querySelector("#closeRewardCenter");
-const presetButtons = [...document.querySelectorAll("#presetGrid button")];
-const draftDrawer = document.querySelector("#draftDrawer");
-const draftTitle = document.querySelector("#draftTitle");
-const draftSubtitle = document.querySelector("#draftSubtitle");
-const draftSkeleton = document.querySelector("#draftSkeleton");
-const draftAlert = document.querySelector("#draftAlert");
-const draftList = document.querySelector("#draftList");
-const draftError = document.querySelector("#draftError");
-const draftDebug = document.querySelector("#draftDebug");
-const draftDebugText = document.querySelector("#draftDebugText");
-const closeDraft = document.querySelector("#closeDraft");
-const retryDraft = document.querySelector("#retryDraft");
-const publishDraft = document.querySelector("#publishDraft");
-const blankFromError = document.querySelector("#blankFromError");
-const visibilityOptions = [...document.querySelectorAll("[data-visibility]")];
-const mapStacks = {
-  viewed: document.querySelector("#viewedMaps"),
-  owned: document.querySelector("#ownedMaps"),
-};
-const mapGroupEls = {
-  viewed: document.querySelector('[data-map-group="viewed"]'),
-  owned: document.querySelector('[data-map-group="owned"]'),
-};
-const mapGroupButtons = {
-  viewed: document.querySelector('[data-view-all="viewed"]'),
-  owned: document.querySelector('[data-view-all="owned"]'),
-};
-const allMapsTitle = document.querySelector("#allMapsTitle");
-const allMapsList = document.querySelector("#allMapsList");
-const rankListTitle = document.querySelector("#rankListTitle");
-const rankListFull = document.querySelector("#rankListFull");
-const emptyMaps = {
-  viewed: document.querySelector("#emptyViewed"),
-  owned: document.querySelector("#emptyOwned"),
-};
-const activityLog = document.querySelector("#activityLog");
-const poiDetail = document.querySelector("#poiDetail");
-const poiTitle = document.querySelector("#poiTitle");
-const poiDesc = document.querySelector("#poiDesc");
-const collectTask = document.querySelector("#collectTask");
-const noteTask = document.querySelector("#noteTask");
-const mapTaskBubbles = document.querySelector(".map-task-bubbles");
-const mapGuidanceBubble = document.querySelector("#mapGuidanceBubble");
-const mapGuidanceTitle = document.querySelector("#mapGuidanceTitle");
-const mapGuidanceText = document.querySelector("#mapGuidanceText");
-const mapGuidanceAction = document.querySelector("#mapGuidanceAction");
-const closeMapGuidance = document.querySelector("#closeMapGuidance");
-const poiButtons = [...document.querySelectorAll(".poi-open")];
-const originalPoiData = poiButtons.map((button) => ({
-  poi: button.dataset.poi,
-  desc: button.dataset.desc,
-  html: button.innerHTML,
-}));
-const mapLabels = [...document.querySelectorAll(".map-bg .label")];
-const rewardSlots = [...document.querySelectorAll(".mystery-prizes span")];
-const iconPickerButtons = [...document.querySelectorAll(".icon-picker button")];
-const pointTypeButtons = [...document.querySelectorAll("#pointTypeGrid button")];
-const coordinatePanel = document.querySelector("#coordinatePanel");
-const notePointName = document.querySelector("#notePointName");
-const noteText = document.querySelector("#noteText");
-const latInput = document.querySelector("#latInput");
-const lngInput = document.querySelector("#lngInput");
-const latValue = document.querySelector("#latValue");
-const lngValue = document.querySelector("#lngValue");
-
-let stickers = 0;
-let redeemed = 0;
-let currentMapTitle = "周末逃跑计划";
-let currentMapPoints = "128";
-let currentMapIsDraft = false;
-let toastTimer;
-let scratchReady = false;
-const progressMaps = {
-  viewed: new Set(),
-  joined: new Set(),
-  created: new Set(),
-};
-const progressMapData = {
-  viewed: [],
-  joined: [],
-  created: [],
-};
-const groupCopy = {
-  viewed: {
-    title: "我浏览的",
-    empty: `<div class="empty-maps"><span>🗺️</span><strong>还没有浏览记录</strong><p>点进上方任意地球角落后，会出现在这里。</p></div>`,
-    status: "刚浏览 · 待完成 <b>2 项</b>，可继续完善 🌍",
-  },
-  owned: {
-    title: "我创建 / 参与的",
-    empty: `<div class="empty-maps compact">还没有创建或参与的地图。可以先创建一个主题地图。</div>`,
-    status: "和我有关 · 可继续共建 🌍",
-  },
-  joined: {
-    title: "我参与的",
-    empty: `<div class="empty-maps compact">收藏点位、添加点位或分享合集后会出现。</div>`,
-    status: "已参与 · 可继续完善 🌍",
-  },
-  created: {
-    title: "我创建的",
-    empty: `<div class="empty-maps compact">创建自己的主题地图后会出现。</div>`,
-    status: "你创建的 · 可邀请好友继续共建 🌍",
-  },
-};
-let selectedPoi = "海边晚风观景点";
-let selectedPointType = "official";
-let lastDraftMode = "theme";
-let lastDraftTopic = "上海咖啡地图";
-let lastDraftPlaces = [];
-let draftMapPlaces = [];
-let pendingDraftTopic = "";
-
-const AI_ENDPOINT = "https://ai.devops.xiaohongshu.com/api/chatbot/v1/chat/completions";
-const AI_BOT = "GPT-5.5-GPT-5.5";
-const QSTOKEN_STORAGE_KEY = "shared-map-demo-qstoken";
-
-const rankBoards = {
-  all: [
-    "上海 i 人发呆长椅地图",
-    "当我上班上疯了我就在这里...",
-    "帅哥总在这里出没",
-    "我不信你完全知道这些地方",
-    "顺德寻味不排队地图",
-    "和朋友每周更新的生活地图",
-    "夏天来这避暑就对了！",
-    "外星人第一次来地球会去哪里",
-    "剧女朋友的钱包失血地图",
-    "北京胡同夜游地图",
-    "景德镇淘瓷器地图",
-    "打工人深夜 emo 地图",
-    "全国我在 XX 很想你地图",
-    "毕业旅行不踩雷地图",
-    "情侣恋爱地点记录地图",
-    "城市里适合偷偷哭的地方",
-    "山西古建巡礼地图",
-    "看完剧去哪复盘地图",
-    "周末找个草坪躺一躺地图",
-    "那些越想越不对劲的地方",
-  ],
-  shanghai: [
-    "上海 i 人发呆长椅地图",
-    "上海打工人深夜 emo 地图",
-    "上海下班后散步回血地图",
-    "当我上班上疯了我就在这里...",
-    "巨富长酒鬼地图穷鬼版",
-    "夏天来这避暑就对了！",
-    "上海适合偷偷哭的地方",
-    "上海周末草坪躺平地图",
-    "上海看完剧去哪复盘地图",
-    "帅哥总在这里出没",
-    "上海小区附近宝藏小店地图",
-    "上海雨天适合躲起来的地方",
-    "上海情侣恋爱地点记录地图",
-    "上海生日局吃饭续摊地图",
-    "上海城市免费坐着不尴尬地图",
-    "上海适合一个人待着的咖啡店",
-    "上海夜宵还能吃到饭地图",
-    "上海剧女朋友看剧地图",
-    "上海外地朋友来玩不踩雷地图",
-    "上海那些越想越不对劲的地方",
-  ],
-};
-
-const cityLabels = {
-  all: "全国",
-  shanghai: "上海",
-  beijing: "北京",
-  hangzhou: "杭州",
-  guangzhou: "广州",
-  shenzhen: "深圳",
-  chengdu: "成都",
-  chongqing: "重庆",
-  suzhou: "苏州",
-  nanjing: "南京",
-  tianjin: "天津",
-  wuhan: "武汉",
-  xian: "西安",
-  tokyo: "东京",
-  osaka: "大阪",
-  singapore: "新加坡",
-  bangkok: "曼谷",
-  seoul: "首尔",
-  kyoto: "京都",
-  jeju: "济州岛",
-  kuala: "吉隆坡",
-  phuket: "普吉岛",
-};
-
-const cityKeyByName = Object.fromEntries(Object.entries(cityLabels).map(([key, name]) => [name, key]));
-const domesticHotCityNames = ["上海", "北京", "深圳", "广州", "杭州", "成都", "苏州", "南京", "天津", "武汉", "西安", "重庆"];
-const overseasHotCityNames = ["东京", "大阪", "新加坡", "曼谷", "首尔", "京都", "济州岛", "吉隆坡", "普吉岛"];
-const alphabetCityGroups = {
-  A: ["阿坝嘎旗", "阿坝", "阿坝县", "阿布扎比", "阿城区"],
-  B: ["北京", "保定", "北海", "巴厘岛", "包头"],
-  C: ["成都", "重庆", "长沙", "长春", "常州"],
-  D: ["大理", "大连", "东莞", "东京", "大阪"],
-  E: ["鄂尔多斯", "恩施", "峨眉山"],
-  F: ["福州", "佛山", "富阳"],
-  G: ["广州", "贵阳", "桂林", "赣州"],
-  H: ["杭州", "合肥", "哈尔滨", "海口", "呼和浩特"],
-  I: ["伊斯坦布尔"],
-  J: ["济南", "嘉兴", "济州岛", "吉隆坡", "京都"],
-  K: ["昆明", "开封", "喀什"],
-  L: ["洛阳", "兰州", "拉萨", "丽江"],
-  M: ["曼谷", "绵阳", "墨尔本"],
-  N: ["南京", "宁波", "南宁", "南昌"],
-  O: ["大阪"],
-  P: ["普吉岛", "莆田", "攀枝花"],
-  Q: ["青岛", "泉州", "秦皇岛"],
-  R: ["日照", "瑞丽"],
-  S: ["上海", "深圳", "苏州", "首尔", "三亚", "新加坡"],
-  T: ["天津", "台北", "太原", "台州"],
-  U: ["乌鲁木齐"],
-  V: ["万象"],
-  W: ["武汉", "无锡", "温州", "威海"],
-  X: ["西安", "厦门", "西宁", "香港"],
-  Y: ["扬州", "银川", "烟台", "宜昌"],
-  Z: ["郑州", "珠海", "中山", "张家界"],
-};
-
-const rankCreators = ["小鱼地图员", "地球散步组", "摸鱼观察局", "日常补点人", "夏天出逃社", "怪地点收藏家"];
-const rankCoverClasses = ["cover-bench", "cover-queue", "cover-concert", "cover-blue", "cover-pepper", "cover-pink"];
-const rankMetaTags = [
-  ["1w人看过", "100+地点"],
-  ["8k人看过", "笑死我了"],
-  ["2w人看过", "真的有用"],
-  ["6k人看过", "太抽象了"],
-  ["1w人看过", "100+地点"],
-  ["9k人看过", "真的有用"],
-];
-const curatedRankTags = [
-  { text: "笑死我了", tone: "weird" },
-  { text: "真的有用", tone: "useful" },
-  null,
-  { text: "有点离谱", tone: "weird" },
-  { text: "值得收藏", tone: "collect" },
-  null,
-  { text: "适合周末", tone: "useful" },
-  { text: "脑洞很大", tone: "weird" },
-  null,
-  { text: "很会生活", tone: "collect" },
-];
-const rankBoardNames = {
-  all: "地球角落热门榜",
-  shanghai: "上海城市榜",
-};
-let currentRankBoard = "all";
-let selectedCityName = "上海";
-let selectedVisibility = "public";
-let pendingMapTaskIntent = "";
-let activeMapTaskIntent = "";
-const taskRewardMap = {
-  browse: 1,
-  collect: 1,
-  share: 1,
-  add: 1,
-  create: 1,
-};
-const taskLogTitleMap = {
-  browse: "浏览合集",
-  collect: "收藏点位",
-  share: "分享合集",
-  add: "添加点位",
-  create: "创建合集",
-};
-
-function getRankLabel(rank) {
-  return rank <= 3 ? `TOP ${rank}` : `#${rank}`;
-}
-
-function getRankCoverImage(title, index) {
-  if (index === 0) return "top1-rank-cover.png";
-  const coverImages = {
-    "帅哥总在这里出没": "rank-cover-handsome.png",
-    "当我上班上疯了我就在这里...": "rank-cover-work-crazy.png",
-    "我不信你完全知道这些地方": "rank-cover-unknown-places.png",
-    "外星人第一次来地球会去哪里": "rank-cover-alien.png",
-    "顺德寻味不排队地图": "rank-cover-shunde-food.png",
-    "夏天来这避暑就对了！": "rank-cover-summer-cool.png",
+  const screens = {
+    home: $('#homeScreen'),
+    map: $('#mapScreen'),
+    create: $('#createScreen'),
+    note: $('#noteScreen'),
+    invite: $('#inviteScreen'),
+    rewards: $('#rewardsScreen'),
+    allMaps: $('#allMapsScreen'),
+    rankList: $('#rankListScreen'),
   };
-  return coverImages[title] || "";
-}
 
-function getRankCoverClass(index, title) {
-  if (/长椅|发呆|坐着|台阶/.test(title)) return "cover-bench";
-  if (/演唱会/.test(title)) return "cover-concert";
-  if (/不排队|排队|不踩雷|生存/.test(title)) return "cover-queue";
-  if (/钱包|失血|看剧/.test(title)) return "cover-wallet";
-  if (/玩水|水边|海边|河边|雨棚|躲雨/.test(title)) return "cover-water";
-  if (/胡同|夜游|夜晚|夏夜|夜景/.test(title)) return "cover-alley";
-  if (/古建|巡礼|非遗|碑刻/.test(title)) return "cover-ancient";
-  if (/草坪|躺|露营|树荫/.test(title)) return "cover-grass";
-  if (/咖啡|书店|便利店|小店|博物馆/.test(title)) return "cover-blob";
-  if (/蹲坑|如厕|厕所|卫生间/.test(title)) return "cover-crawl";
-  if (/bug|越想越不对劲|外星人|Online/.test(title)) return "cover-blue";
-  if (/哭|emo|失踪/.test(title)) return "cover-note";
-  if (/夜宵|生日|饭|寻味|吃/.test(title)) return "cover-pepper";
-  if (/剧|恋爱|我在|想你|朋友/.test(title)) return "cover-pink";
-  return rankCoverClasses[index % rankCoverClasses.length];
-}
+  let currentCity = '上海';
+  let currentRankType = 'hot';
+  let currentCollectionId = null;
+  let currentDraft = null;
+  let editingPoiIndex = null;
+  let draftLoading = false;
+  let selectedVisibility = 'publicCollaborative';
+  let selectedMapTheme = 'citywalk';
+  let selectedPointType = 'official';
+  let selectedIcon = '📍';
 
-function getCuratedTag(index, title) {
-  const tag = curatedRankTags[index % curatedRankTags.length];
-  if (!tag) return null;
-  if (/雨天|咖啡|夜宵|免费坐着/.test(title)) return { text: "真的有用", tone: "useful" };
-  if (/越想越不对劲|bug|外星人|蹲坑/.test(title)) return { text: "有点离谱", tone: "weird" };
-  if (/收藏|长椅|草坪|散步/.test(title)) return { text: "值得收藏", tone: "collect" };
-  return tag;
-}
+  const rewardConfig = {
+    baseProbability: {
+      browse: 0.78,
+      subscribe: 0.78,
+      share: 0.78,
+      addPoi: 0.78,
+      createCollection: 0.78,
+      passive100Views: 1,
+    },
+    timeCoefficient: {
+      first15Days: 1,
+      days15To30: 1,
+      after31Days: 0.8,
+    },
+    behaviorCoefficient: {
+      firstAction: 1,
+      yesterdayMissed: 1,
+    },
+    cooldown: {
+      normalHours: 0,
+      firstThreeMinutes: 0,
+    },
+    cap: 30,
+    userCoefficient: {
+      newUser: 1.2,
+      oldUser: 1,
+    },
+  };
 
-function getCuratedTagClass(tag) {
-  if (!tag) return "";
-  if (tag.tone === "useful") return "is-useful";
-  if (tag.tone === "weird") return "is-weird";
-  if (tag.tone === "collect") return "is-collect";
-  return "";
-}
+  const taskMeta = {
+    browse: { label: '浏览 1 个地点合集', short: '浏览地点合集' },
+    subscribe: { label: '订阅整张地点合集', short: '订阅合集' },
+    share: { label: '分享 1 张地点合集', short: '分享合集' },
+    addPoi: { label: '新增 1 个点位并填写备注', short: '新增点位' },
+    createCollection: { label: '创建 1 张地点合集', short: '创建地点合集' },
+  };
 
-function getRankMetaTags(index, title) {
-  const tags = [...rankMetaTags[index % rankMetaTags.length]];
-  const curatedTag = getCuratedTag(index, title);
-  if (curatedTag && tags.length < 2 && !tags.includes(curatedTag.text)) tags.push(curatedTag.text);
-  return tags.slice(0, 2);
-}
+  const exchangeRewards = [
+    { id: 'sticker', icon: '🧳', name: '旅行箱贴纸', cost: 5, stock: 128 },
+    { id: 'hat', icon: '🧢', name: '周边帽子', cost: 10, stock: 56 },
+    { id: 'shirt', icon: '👕', name: '周边衣服', cost: 15, stock: 32 },
+    { id: 'gold', icon: '🏅', name: '黄金奖牌', cost: 25, stock: 8 },
+  ];
 
-function createRankRow(title, index) {
-  const rank = index + 1;
-  const points = 28 + ((rank * 7) % 86);
-  const row = document.createElement("button");
-  row.className = "rank-row";
-  row.type = "button";
-  row.dataset.title = title;
-  row.dataset.points = String(points);
+  const state = {
+    tickets: 3,
+    logs: [
+      { actionType: 'passiveViews', text: '创建的「上海 i 人发呆长椅地图」被 100 人看过', dropped: true, extra: '获得 1 张奖券', time: '11:20' },
+      { actionType: 'browse', text: '浏览了「巨富长酒鬼地图」', dropped: true, extra: '获得 1 张奖券', time: '10:48' },
+      { actionType: 'addPoi', text: '参与了「上海打工人深夜emo散步地图」的点位贡献', dropped: true, extra: '获得 1 张奖券', time: '10:12' },
+    ],
+    completed: {
+      browse: { completed: true, dropped: true, time: Date.now() - 62 * 60 * 1000, reason: 'mock' },
+      addPoi: { completed: true, dropped: true, time: Date.now() - 98 * 60 * 1000, reason: 'mock' },
+    },
+    actionCounts: {},
+    yesterdayMissed: {},
+    lastTicketAt: 0,
+    totalEarned: 3,
+    hasExchanged: false,
+    exchangedRewards: new Set(),
+    rewardAddressSubmitted: {},
+    subscribed: new Set(),
+    shared: new Set(),
+    viewed: new Set(['fun-08']),
+    owned: new Set(['fun-01']),
+    participated: new Set(['fun-09']),
+    boosted: false,
+    creatorNoticePending: true,
+    creatorAddressSubmitted: false,
+    userRoleByCollection: { 'fun-01': 'creator', 'fun-09': 'participant' },
+  };
 
-  const rankLabel = document.createElement("span");
-  rankLabel.className = "row-rank";
-  rankLabel.textContent = getRankLabel(rank);
+  const cityPoiPool = {
+    上海: ['静安寺', '武康路', '复兴公园', '徐汇滨江', '愚园路', '巨鹿路', '上生新所', '陕西南路', '衡山路', '外滩源', '苏河湾', '南京西路'],
+    北京: ['亮马河', '国子监', '奥森公园', '五道营胡同', '什刹海', '三里屯', '东四胡同', '鼓楼西大街'],
+    杭州: ['西湖', '满觉陇', '良渚', '运河边', '龙井村', '九溪', '白塔公园'],
+    南京: ['夫子庙', '老门东', '颐和路', '玄武湖', '新街口', '明城墙', '秦淮河边'],
+    成都: ['玉林路', '猛追湾', '望平街', '锦江边', '东郊记忆', '宽窄巷子'],
+    广州: ['东山口', '二沙岛', '沙面', '永庆坊', '珠江边', '麓湖公园'],
+    深圳: ['深圳湾公园', '蛇口海边', '人才公园', '华侨城', '大梅沙海滨', '南头古城'],
+    重庆: ['李子坝', '鹅岭二厂', '洪崖洞', '山城步道', '两路口', '南滨路'],
+    西安: ['城墙南门', '大雁塔', '书院门', '大唐西市', '曲江池', '小南门'],
+    苏州: ['平江路', '十全街', '山塘街', '护城河边', '双塔市集', '金鸡湖'],
+    厦门: ['环岛路', '沙坡尾', '白城沙滩', '演武大桥', '中山路', '海湾公园'],
+    武汉: ['汉口江滩', '昙华林', '东湖绿道', '黎黄陂路', '武昌江边', '万松园'],
+    青岛: ['八大关', '小麦岛', '栈桥', '大学路', '燕儿岛山', '太平角'],
+    长沙: ['坡子街', '湘江边', '谢子龙影像馆', '烈士公园', '南门口', '丰盈西里'],
+  };
 
-  const copy = document.createElement("span");
-  copy.className = "row-copy";
+  const imagePalette = [
+    'linear-gradient(135deg,#dff6ff,#fff0bd)',
+    'linear-gradient(135deg,#e7fbef,#dff1ff)',
+    'linear-gradient(135deg,#fff7db,#ffe5ee)',
+    'linear-gradient(135deg,#e8fff8,#d8e9ff)',
+    'linear-gradient(135deg,#f6f0ff,#dff8ff)',
+    'linear-gradient(135deg,#fff2d6,#e5f8f4)',
+  ];
 
-  const titleText = document.createElement("strong");
-  const image = document.createElement("span");
-  image.className = "rank-title-image";
-  const coverImage = getRankCoverImage(title, index);
-  if (coverImage) {
-    const photo = document.createElement("img");
-    photo.src = coverImage;
-    photo.alt = "";
-    image.append(photo);
-  } else {
-    const cover = document.createElement("span");
-    cover.className = `rank-abstract-cover ${getRankCoverClass(index, title)}`;
-    cover.setAttribute("aria-hidden", "true");
-    ["shape", "eye", "eye", "brow", "brow", "mouth", "accent"].forEach((part) => {
-      const node = document.createElement("span");
-      node.className = `cover-${part}`;
-      cover.append(node);
+  const seedData = [
+    ['fun-01','上海 i 人发呆长椅地图','上海','静安区','🪑','阿宁','A',168,18280,4210,980,2,'publicCollaborative',['1w人看过','100+地点'],'top1-rank-cover.png'],
+    ['fun-02','当我上班上疯了我就在这里...','上海','静安区','😵‍💫','摸鱼办','摸',66,14560,3602,910,3,'publicCollaborative',['8k人看过','笑死我了'],'rank-cover-work-crazy.png'],
+    ['fun-03','帅哥总在这里出没','上海','徐汇区','💗','雷达姐','雷',52,13920,3208,860,4,'publicViewOnly',['2w人看过','真的有用'],'rank-cover-handsome.png'],
+    ['fun-04','我不信你完全知道这些地方','上海','黄浦区','🗿','冷知识局','冷',74,12800,2840,790,5,'publicCollaborative',['6k人看过','太抽象了'],'rank-cover-unknown-places.png'],
+    ['fun-05','外星人第一次来地球会去哪里','上海','浦东新区','👽','地球接待处','接',41,11880,2510,760,6,'publicCollaborative',['值得收藏','离谱合理'],'rank-cover-alien.png'],
+    ['fun-06','夏天来这避暑就对了！','深圳','南山区','🏊','水边群众','水',58,11240,2320,690,7,'publicCollaborative',['清凉路线','值得收藏'],'rank-cover-summer-cool.png'],
+    ['fun-07','顺德寻味不排队地图','佛山','顺德区','👍','饭饭','饭',88,12500,2600,760,8,'publicCollaborative',['1w人看过','100+地点'],'rank-cover-shunde-food.png'],
+    ['fun-08','巨富长酒鬼地图','上海','静安区','🍷','泡泡','泡',48,9920,2102,592,9,'publicCollaborative',['9.9k人看过','值得收藏'],'cover-alley'],
+    ['fun-09','上海打工人深夜emo散步地图','上海','徐汇区','🌙','小鱼','鱼',86,9420,1980,590,10,'publicCollaborative',['9.4k人看过','夜晚友好'],'cover-note'],
+    ['fun-10','上海宠物友好餐厅地点合集','上海','长宁区','🐶','柚子','柚',64,8700,1764,438,11,'publicCollaborative',['真的有用','宠物友好'],'cover-grass'],
+    ['fun-11','北京夜跑安全路线地图','北京','朝阳区','🏃','小河','河',76,8400,1290,410,5,'publicCollaborative',['夜晚友好','通勤可达'],'cover-blob'],
+    ['fun-12','北京胡同咖啡散步地图','北京','东城区','☕','南栀','南',52,6688,1066,332,9,'publicCollaborative',['咖啡续命','本地人懂'],'cover-pink'],
+    ['fun-13','杭州西湖边避开人群散步点','杭州','西湖区','🍃','白茶','茶',42,6310,960,296,11,'publicCollaborative',['人少舒服','本地人懂'],'cover-grass'],
+    ['fun-14','南京必吃美食地图','南京','秦淮区','🥢','阿苏','苏',88,7780,1202,360,4,'publicCollaborative',['本地人懂','周末可去'],'cover-pepper'],
+    ['fun-15','成都下班后散步路线','成都','锦江区','🌉','慢慢','慢',49,6200,940,300,10,'publicCollaborative',['夜晚友好','人少舒服'],'cover-alley'],
+    ['fun-16','深圳海边看日落地点合集','深圳','南山区','🌅','海盐','盐',57,7210,1112,350,6,'publicCollaborative',['拍照好看','周末可去'],'cover-water'],
+    ['fun-17','重庆轻轨沿线打卡地图','重庆','渝中区','🚈','阿渝','渝',69,6798,960,328,7,'publicCollaborative',['地铁直达','拍照好看'],'cover-blue'],
+    ['fun-18','苏州老城散步地图','苏州','姑苏区','🏮','阿吴','吴',44,5660,818,244,12,'publicCollaborative',['人少舒服','本地人懂'],'cover-ancient'],
+    ['sh-01','上海地铁沿线咖啡店合集','上海','黄浦区','☕','咖啡续命组','咖',72,6280,1020,286,7,'publicCollaborative',['地铁直达','咖啡续命'],'cover-blue'],
+    ['sh-02','上海周末Citywalk街区地图','上海','长宁区','🚶','街区漫游者','街',64,6040,980,272,8,'publicCollaborative',['周末可去','拍照好看'],'cover-alley'],
+    ['sh-03','上海适合一个人看展的地方','上海','徐汇区','🎧','独自出门','独',39,5760,920,251,9,'publicViewOnly',['适合独处','通勤可达'],'cover-note'],
+    ['sh-04','上海下班后散步路线','上海','虹口区','🌃','晚风观察员','晚',55,5520,884,238,10,'publicCollaborative',['夜晚友好','人少舒服'],'cover-water'],
+    ['sh-05','上海适合周末晒太阳的角落','上海','杨浦区','☀️','晒太阳办','晒',47,5200,820,226,11,'publicCollaborative',['周末可去','适合发呆'],'cover-grass'],
+    ['sh-06','上海雨天也能逛的地方','上海','静安区','🌧️','雨天小队','雨',36,4880,780,205,12,'publicCollaborative',['雨天可去','地铁直达'],'cover-blob'],
+  ];
+
+  const localRankOrder = {
+    上海: ['fun-08','fun-09','fun-10','sh-01','sh-02','sh-03','sh-04','sh-05','sh-06','fun-01','fun-02','fun-03'],
+  };
+
+  function themeIconSet(themeText = '', fallback = '📍') {
+    const rules = [
+      [/咖啡|自习|办公|续命/, ['☕','🍰','📚','🪟','🥐','💻']],
+      [/夜跑|跑|运动|骑|轻轨|地铁|沿线/, ['🏃','🌙','🚴','🚇','🛤️','💡']],
+      [/美食|寻味|必吃|餐厅|小食|吃|顺德/, ['🥢','🍜','🍚','🍢','🥟','🍵']],
+      [/长椅|发呆|晒太阳|独处|散步|Citywalk|下班/, ['🪑','🌳','☀️','🚶','🌿','🌙']],
+      [/帅哥|出没|雷达/, ['💗','✨','👀','📍','🕶️','🌃']],
+      [/外星|地球|离谱|抽象|不知道|冷知识/, ['👽','🗿','🪐','❓','📡','🧭']],
+      [/宠物|狗|猫/, ['🐶','🐾','🦴','🌳','☕','🛋️']],
+      [/电影|影院|看展|艺术|博物馆/, ['🎬','🎧','🎨','🏛️','📷','🎟️']],
+      [/雨天|避雨|窗边/, ['🌧️','☔','🪟','☕','🏬','📍']],
+      [/海|日落|水边|避暑|滨江|河|湖/, ['🌅','🌊','🏖️','🚶','📷','🍃']],
+      [/胡同|老城|古城|街区/, ['🏮','🚶','☕','📷','🧱','🌳']],
+    ];
+    const matched = rules.find(([pattern]) => pattern.test(themeText));
+    return matched ? matched[1] : [fallback, '📍','🌳','🚶','📷','✨'];
+  }
+
+  function makePois(city, count = 5, themeText = '', fallbackEmoji = '📍') {
+    const pool = cityPoiPool[city] || cityPoiPool.上海;
+    const icon = themeIconSet(themeText, fallbackEmoji)[0];
+    return pool.slice(0, count).map((name, index) => ({
+      id: name + index,
+      name,
+      type: index % 3 === 0 ? '官方 POI' : index % 3 === 1 ? '自定义地点' : '我所在位置',
+      emoji: icon,
+      note: `${name}附近很适合加入地点合集，适合边走边记录自己的城市路线。`,
+    }));
+  }
+
+  let collections = seedData.map((item, index) => {
+    const [id,title,city,district,emoji,authorName,authorAvatar,poiCount,viewsUv,subscriptions,shares,createdDaysAgo,publicMode,tags,coverClass] = item;
+    return {
+      id,
+      title,
+      city,
+      district,
+      dominantRegionRatio: city === '上海' ? 0.92 : 0.86,
+      coverUrl: coverClass && coverClass.endsWith('.png') ? coverClass : '',
+      coverStyle: imagePalette[index % imagePalette.length],
+      coverClass: coverClass && coverClass.endsWith('.png') ? '' : coverClass,
+      emoji,
+      authorName,
+      authorAvatar,
+      poiCount,
+      viewsUv,
+      subscriptions,
+      shares,
+      createdDaysAgo,
+      publicMode,
+      tags,
+      pois: makePois(city, Math.min(6, Math.max(4, Math.round(poiCount / 18))), `${title} ${tags.join(' ')}`, emoji),
+      hasTriggeredCreatorReward: index === 0,
+      owner: index === 0 ? 'me' : 'other',
+    };
+  });
+
+  function getRankDisplayName(rankType) {
+    return rankType === 'hot' ? '热门榜' : currentCity;
+  }
+
+  function score(collection) {
+    return collection.viewsUv + collection.subscriptions * 2 + collection.shares * 3 + 20 / Math.max(collection.createdDaysAgo, 1);
+  }
+
+  function publicCollections() {
+    return collections.filter((item) => item.publicMode === 'publicCollaborative' || item.publicMode === 'publicViewOnly');
+  }
+
+  function availableRankCities() {
+    const preferredOrder = ['上海','北京','杭州','南京','成都','深圳','广州','重庆','西安','苏州','厦门','武汉','青岛','长沙'];
+    const cities = [...new Set(publicCollections().map((item) => item.city).filter(Boolean))];
+    return cities.sort((a, b) => {
+      const aIndex = preferredOrder.indexOf(a);
+      const bIndex = preferredOrder.indexOf(b);
+      if (aIndex !== -1 || bIndex !== -1) {
+        return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+      }
+      return a.localeCompare(b, 'zh-Hans-CN');
     });
-    image.append(cover);
   }
-  titleText.textContent = title;
-  copy.append(titleText);
 
-  const tags = document.createElement("span");
-  const curatedTag = getCuratedTag(index, title);
-  tags.className = "rank-tags";
-  getRankMetaTags(index, title).forEach((tagText) => {
-    const tag = document.createElement("em");
-    tag.textContent = tagText;
-    if (curatedTag && tagText === curatedTag.text) tag.className = getCuratedTagClass(curatedTag);
-    tags.append(tag);
-  });
-  copy.append(tags);
-
-  row.append(rankLabel, image, copy);
-  return row;
-}
-
-function getCreatorForTitle(title) {
-  const source = currentRankBoard === "city" ? makeCityBoard(selectedCityName) : rankBoards.all;
-  const index = Math.max(source.indexOf(title), 0);
-  return rankCreators[index % rankCreators.length];
-}
-
-function makeCityBoard(cityName) {
-  if (cityName === "上海") return rankBoards.shanghai;
-  return [
-    `${cityName} i 人发呆长椅地图`,
-    `${cityName}打工人深夜 emo 地图`,
-    `${cityName}下班后散步回血地图`,
-    `${cityName}周边带薪摸鱼地图`,
-    `${cityName}穷鬼快乐路线地图`,
-    `夏天来这避暑就对了！`,
-    `${cityName}适合偷偷哭的地方`,
-    `${cityName}周末草坪躺平地图`,
-    `${cityName}看完剧去哪复盘地图`,
-    "帅哥总在这里出没",
-    `${cityName}附近宝藏小店地图`,
-    `${cityName}雨天适合躲起来的地方`,
-    `${cityName}情侣恋爱地点记录地图`,
-    `${cityName}生日局吃饭续摊地图`,
-    `${cityName}免费坐着不尴尬地图`,
-    `${cityName}适合一个人待着的咖啡店`,
-    `${cityName}夜宵还能吃到饭地图`,
-    `${cityName}剧女朋友看剧地图`,
-    `${cityName}外地朋友来玩不踩雷地图`,
-    `${cityName}那些越想越不对劲的地方`,
-  ];
-}
-
-function cityScopedTitles(cityName, titles) {
-  if (cityName !== "上海") {
-    return titles.map((title) => title.replace(/^上海/, cityName));
-  }
-  return titles;
-}
-
-function getCategoryTitles(boardKey, category) {
-  const nationalSummerTitles = [
-    "全国夏天不用开空调地图",
-    "城市避暑长椅合集地图",
-    "全国树荫很厚的散步地图",
-    "江浙沪周末玩水地图",
-    "西南山里避暑小城地图",
-    "全国夜晚有风的河边地图",
-    "华南雨后纳凉地图",
-    "北方夏夜广场地图",
-    "全国冷气很足的公共空间地图",
-    "海边傍晚不晒地图",
-    "夏天适合躲进博物馆地图",
-    "全国露营看星星地图",
-    "高铁两小时避暑地图",
-    "全国适合带冰饮散步的路",
-    "夏天可以坐很久的书店地图",
-    "全国水边发呆地图",
-    "不用门票的避暑角落地图",
-    "全国雨棚下躲雨地图",
-    "夏夜骑车兜风地图",
-    "全国空调续命补给点地图",
-  ];
-  const citySummerTitles = [
-    "夏天来这避暑就对了！",
-    "上海周末草坪躺平地图",
-    "上海雨天适合躲起来的地方",
-    "帅哥总在这里出没",
-    "上海夜宵还能吃到饭地图",
-    "上海下班后散步回血地图",
-    "上海生日局吃饭续摊地图",
-    "上海外地朋友来玩不踩雷地图",
-    "上海适合一个人待着的咖啡店",
-    "上海小区附近宝藏小店地图",
-    "上海城市免费坐着不尴尬地图",
-    "上海看完剧去哪复盘地图",
-    "上海适合偷偷哭的地方",
-    "上海情侣恋爱地点记录地图",
-    "上海那些越想越不对劲的地方",
-    "上海打工人深夜 emo 地图",
-    "上海 i 人发呆长椅地图",
-    "当我上班上疯了我就在这里...",
-    "巨富长酒鬼地图穷鬼版",
-    "上海附近宝藏小店地图",
-  ];
-  const nationalNewPlayTitles = [
-    "全国地图蹲坑地图",
-    "我不信你完全知道这些地方",
-    "外星人第一次来地球会去哪里",
-    "全国我在 XX 很想你地图",
-    "全国适合假装在赶路的地方",
-    "城市里看起来像入口的门地图",
-    "全国莫名其妙很治愈的角落",
-    "打工人下班后失踪路线地图",
-    "全国适合偷偷哭的地方",
-    "那些越想越不对劲的地方",
-    "全国路过三次才敢进去地图",
-    "不算景点但会记住的地方地图",
-    "全国适合原地重启的长椅",
-    "城市 NPC 经常出现地图",
-    "全国无意义但很快乐地图",
-    "不是 POI 但想标记的瞬间地图",
-    "全国奇怪雕塑观察地图",
-    "一看就适合发呆的台阶地图",
-    "全国便利店门口宇宙地图",
-    "朋友说这也能做地图地图",
-  ];
-  const cityNewPlayTitles = [
-    "上海地图蹲坑地图",
-    "我不信你完全知道这些地方",
-    "外星人第一次来地球会去哪里",
-    "和朋友每周更新的生活地图",
-    "上海我在 XX 很想你地图",
-    "那些越想越不对劲的地方",
-    "上海看完剧去哪复盘地图",
-    "上海适合偷偷哭的地方",
-    "上海打工人深夜 emo 地图",
-    "当我上班上疯了我就在这里...",
-    "上海生日局吃饭续摊地图",
-    "上海夜宵还能吃到饭地图",
-    "上海雨天适合躲起来的地方",
-    "上海周末草坪躺平地图",
-    "上海小区附近宝藏小店地图",
-    "上海情侣恋爱地点记录地图",
-    "帅哥总在这里出没",
-    "夏天来这避暑就对了！",
-    "上海适合一个人待着的咖啡店",
-    "上海外地朋友来玩不踩雷地图",
-    "上海城市免费坐着不尴尬地图",
-  ];
-  if (category === "summer") return boardKey === "city" ? cityScopedTitles(selectedCityName, citySummerTitles) : nationalSummerTitles;
-  if (category === "newplay") return boardKey === "city" ? cityScopedTitles(selectedCityName, cityNewPlayTitles) : nationalNewPlayTitles;
-  return null;
-}
-
-function getBoardTitles(boardKey) {
-  if (boardKey === "city") return makeCityBoard(selectedCityName);
-  return rankBoards[boardKey] || rankBoards.all;
-}
-
-function updateSelectedCity(name) {
-  selectedCityName = name;
-  cityTabCity.textContent = `${name}⌄`;
-  currentCityCard.textContent = `📍 ${name}`;
-  currentCityCard.dataset.cityPick = name;
-  boardSubtitle.textContent = "看看这个城市有哪些宝藏角落吧";
-  renderRankBoard("city");
-}
-
-function renderCityButtons(container, names) {
-  container.replaceChildren();
-  names.forEach((name) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.cityPick = name;
-    button.textContent = name;
-    container.append(button);
-  });
-}
-
-function resetMapPins() {
-  poiButtons.forEach((button, index) => {
-    const source = originalPoiData[index];
-    button.hidden = false;
-    button.dataset.poi = source.poi;
-    button.dataset.desc = source.desc;
-    button.innerHTML = source.html;
-  });
-}
-
-function renderDraftMapPins(places) {
-  draftMapPlaces = places;
-  poiButtons.forEach((button, index) => {
-    const place = places[index];
-    button.hidden = !place;
-    if (!place) return;
-    button.dataset.poi = place.name;
-    button.dataset.desc = place.reason || "可以继续修改图标和备注。";
-    button.innerHTML = button.classList.contains("mini") ? "" : `<span>${place.icon || "📍"}</span>`;
-  });
-}
-
-function setMapEditingMode(isDraft) {
-  currentMapIsDraft = isDraft;
-  collectTask.hidden = isDraft;
-  poiDetail.hidden = true;
-  mapTaskBubbles.classList.toggle("is-editing", isDraft);
-  if (!isDraft) resetMapPins();
-  noteTask.querySelector("span").textContent = isDraft ? "编辑/添加点位" : "添加点位";
-  noteTask.classList.remove("is-done");
-  collectTask.classList.remove("is-done");
-  collectTask.disabled = false;
-}
-
-function renderRankBoard(boardKey = "all") {
-  currentRankBoard = boardKey;
-  const titles = getBoardTitles(boardKey);
-  const previewLimit = 10;
-  rankWaterfall.replaceChildren();
-  const grid = document.createElement("section");
-  grid.className = "rank-card-grid";
-  titles.slice(0, previewLimit).forEach((title, index) => {
-    grid.append(createRankRow(title, index));
-  });
-  rankWaterfall.append(grid);
-  const fullBlock = document.createElement("section");
-  fullBlock.className = "city-rank-more";
-  fullBlock.innerHTML = `
-    <button class="rank-more-link" type="button" id="openFullRank">查看完整榜单</button>
-  `;
-  rankWaterfall.append(fullBlock);
-}
-
-function renderRankList(boardKey = currentRankBoard) {
-  const isCity = boardKey === "city";
-  const titles = getBoardTitles(boardKey);
-  rankListTitle.textContent = isCity ? `${selectedCityName}城市榜` : "地球角落排行榜";
-  rankListSubtitle.textContent = isCity ? `每日更新，发现${selectedCityName}热门地点合集` : "每日更新，发现热门地点合集";
-  rankListEnd.textContent = isCity ? `今天的${selectedCityName}城市榜先到这里啦` : "今天的地球角落排行榜先到这里啦";
-  rankListFull.replaceChildren();
-  titles.forEach((title, index) => {
-    rankListFull.append(createRankRow(title, index));
-  });
-}
-
-function getStoredQstoken() {
-  return localStorage.getItem(QSTOKEN_STORAGE_KEY)?.trim() || "";
-}
-
-function showQstokenPanel() {
-  qstokenPanel.hidden = false;
-  qstokenInput.focus();
-  showToast("请先配置 Qstoken");
-}
-
-function hideQstokenPanel() {
-  qstokenPanel.hidden = true;
-  qstokenInput.value = "";
-}
-
-function buildAiPrompt(userInput) {
-  const cleanInput = String(userInput || "").trim();
-  if (!cleanInput) {
-    throw new Error("用户输入为空");
-  }
-  return `请根据用户输入生成地球角落候选点位。
-
-用户输入：${cleanInput}
-
-要求：
-1. 只返回 JSON，不要返回任何解释文字；
-2. 不要生成路线，不要生成行程，不要出现 Day1/Day2；
-3. 返回 10-20 个适合作为地点合集点位的地点；
-4. 每个地点包含 name、city、category、reason；
-5. 如果用户输入较抽象，请尽量根据主题联想到相关地点类型。
-
-返回格式：
-{
-  "mapTitle": "根据用户输入生成的地图标题",
-  "places": [
-    {
-      "name": "地点名",
-      "city": "城市",
-      "category": "地点类型",
-      "reason": "推荐理由"
+  function getRankCollections(rankType = currentRankType, limit = 20) {
+    let pool = publicCollections();
+    if (rankType === 'local') {
+      pool = pool.filter((item) => item.city === currentCity || (item.dominantRegionRatio >= 0.8 && item.city === currentCity));
+      const order = localRankOrder[currentCity] || [];
+      if (order.length) {
+        pool = pool.sort((a, b) => {
+          const aIndex = order.indexOf(a.id);
+          const bIndex = order.indexOf(b.id);
+          if (aIndex !== -1 || bIndex !== -1) {
+            return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+          }
+          return score(b) - score(a);
+        });
+        return pool.slice(0, limit);
+      }
     }
-  ]
-}`;
-}
-
-function stripJsonFence(text) {
-  return text
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/```$/i, "")
-    .trim();
-}
-
-function extractAiContent(data) {
-  if (typeof data === "string") return data;
-  return (
-    data?.choices?.[0]?.message?.content ||
-    data?.choices?.[0]?.delta?.content ||
-    data?.choices?.[0]?.text ||
-    data?.data?.choices?.[0]?.message?.content ||
-    data?.data?.choices?.[0]?.delta?.content ||
-    data?.data?.text ||
-    data?.text ||
-    data?.message?.content ||
-    data?.message ||
-    data?.data?.answer ||
-    data?.answer ||
-    data?.result ||
-    data?.content ||
-    ""
-  );
-}
-
-function formatHeaders(headers) {
-  const result = {};
-  headers.forEach((value, key) => {
-    result[key] = value;
-  });
-  return result;
-}
-
-function showDraftDebug(debug = {}) {
-  draftDebug.hidden = false;
-  draftDebugText.textContent = JSON.stringify(debug, null, 2);
-}
-
-function hideDraftDebug() {
-  draftDebug.hidden = true;
-  draftDebugText.textContent = "";
-}
-
-function escapeHtml(text = "") {
-  return text.replace(/[&<>"']/g, (char) => (
-    {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    }[char]
-  ));
-}
-
-function readStreamPayload(payload) {
-  if (!payload || payload === "[DONE]") return "";
-  try {
-    const parsed = JSON.parse(payload);
-    if (parsed?.places || parsed?.mapTitle) return JSON.stringify(parsed);
-    if (typeof parsed?.data === "string") return parsed.data;
-    return (
-      parsed?.choices?.[0]?.delta?.content ||
-      parsed?.choices?.[0]?.message?.content ||
-      parsed?.choices?.[0]?.text ||
-      parsed?.delta?.content ||
-      parsed?.message?.content ||
-      parsed?.content ||
-      parsed?.answer ||
-      parsed?.text ||
-      parsed?.message ||
-      parsed?.data?.content ||
-      parsed?.data?.text ||
-      parsed?.data?.message ||
-      ""
-    );
-  } catch {
-    return payload;
+    return pool.sort((a, b) => score(b) - score(a)).slice(0, limit);
   }
-}
 
-function parseJsonFromAiText(text) {
-  const cleaned = stripJsonFence(String(text || ""))
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
-  return JSON.parse(cleaned);
-}
+  function showScreen(name) {
+    Object.values(screens).forEach((screen) => screen && screen.classList.remove('is-active'));
+    if (screens[name]) {
+      screens[name].classList.add('is-active');
+      screens[name].scrollTop = 0;
+    }
+    renderAll();
+  }
 
-function parseAiResponseText(text) {
-  const trimmed = text.trim();
-  if (!trimmed) return "";
-  if (!trimmed.startsWith("event:") && !trimmed.includes("\ndata:")) {
-    try {
-      return JSON.parse(trimmed);
-    } catch {
-      return trimmed;
+  function openRewardsExchange() {
+    showScreen('rewards');
+    requestAnimationFrame(() => {
+      const target = $('.reward-exchange-section', screens.rewards);
+      if (!target || !screens.rewards) return;
+      screens.rewards.scrollTo({ top: Math.max(target.offsetTop - 18, 0), behavior: 'auto' });
+    });
+  }
+
+  function showToast(message) {
+    const toast = $('#toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.hidden = false;
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => { toast.hidden = true; }, 2300);
+  }
+
+  function formatNumber(value) {
+    if (value >= 10000) return (value / 10000).toFixed(1).replace('.0', '') + 'w';
+    if (value >= 1000) return (value / 1000).toFixed(1).replace('.0', '') + 'k';
+    return String(value);
+  }
+
+  function coverHtml(collection, size = 'card') {
+    if (collection.coverUrl) {
+      return `<div class="collection-cover collection-cover-${size}"><img src="${collection.coverUrl}" alt="${collection.title}" /></div>`;
+    }
+    if (collection.coverClass) {
+      return `<div class="collection-cover collection-cover-${size}"><div class="rank-abstract-cover ${collection.coverClass}"><span class="cover-shape"></span><span class="cover-eye"></span><span class="cover-eye"></span><span class="cover-brow"></span><span class="cover-brow"></span><span class="cover-mouth"></span><span class="cover-accent"></span></div></div>`;
+    }
+    return `<div class="collection-cover collection-cover-${size}" style="background:${collection.coverStyle || imagePalette[0]}"><span>${collection.emoji || '📍'}</span></div>`;
+  }
+
+  function rankCard(collection, index) {
+    const rank = index + 1;
+    const rankText = rank <= 3 ? `TOP ${rank}` : `#${rank}`;
+    const displayTags = (collection.tags && collection.tags.length ? collection.tags : [`${formatNumber(collection.viewsUv)}人看过`, `${collection.poiCount >= 100 ? '100+' : collection.poiCount}地点`]).slice(0, 2);
+    const tags = displayTags.map((tag) => `<span>${tag}</span>`).join('');
+    return `
+      <article class="rank-map-card city-collection-card" data-collection-id="${collection.id}">
+        <div class="rank-list-number">${rankText}</div>
+        <div class="rank-cover-wrap">${coverHtml(collection)}</div>
+        <div class="rank-copy">
+          <button class="rank-title-button" type="button" data-open-collection="${collection.id}" onclick="window.__openCollection && window.__openCollection('${collection.id}')">${collection.title}</button>
+          <div class="rank-tags">${tags}</div>
+        </div>
+      </article>`;
+  }
+
+  function emptyRankHtml() {
+    return `
+      <section class="rank-empty-state">
+        <strong>${currentCity}还没有足够多地点合集，先看看热门榜吧</strong>
+        <button type="button" data-switch-hot="true">去看热门榜</button>
+      </section>`;
+  }
+
+  function renderHomeRank() {
+    const tabs = $$('[data-board-tab]');
+    tabs.forEach((tab) => {
+      const type = tab.dataset.boardTab === 'hot' ? 'hot' : 'local';
+      tab.classList.toggle('active', type === currentRankType);
+      if (tab.dataset.boardTab === 'city') tab.dataset.boardTab = 'local';
+    });
+    const cityTab = $('#cityTabCity');
+    if (cityTab) cityTab.textContent = currentCity;
+    const subtitle = $('#boardModeSubtitle');
+    if (subtitle) subtitle.textContent = currentRankType === 'hot' ? '热门地点合集' : `${currentCity}正在流行的地点合集`;
+    const list = getRankCollections(currentRankType, 10);
+    const container = $('#rankWaterfall');
+    if (!container) return;
+    container.innerHTML = list.length
+      ? list.map((item, index) => rankCard(item, index)).join('') + `<button class="rank-more-link" type="button" data-open-rank-list="${currentRankType}">查看更多</button>`
+      : emptyRankHtml();
+  }
+
+  function renderCityPicker() {
+    const currentCard = $('.current-city-card');
+    if (currentCard) {
+      currentCard.dataset.cityPick = currentCity;
+      currentCard.textContent = `📍 ${currentCity}`;
+    }
+    const grid = $('#domesticHotCities');
+    if (!grid) return;
+    grid.innerHTML = availableRankCities().map((city) => (
+      `<button class="${city === currentCity ? 'active' : ''}" type="button" data-city-pick="${city}">${city}</button>`
+    )).join('');
+  }
+
+  function openCityPicker() {
+    renderCityPicker();
+    $('#cityPickerModal').hidden = false;
+  }
+
+  function closeCityPicker() {
+    $('#cityPickerModal').hidden = true;
+  }
+
+  function pickCity(city) {
+    if (!city) return;
+    currentCity = city;
+    currentRankType = 'local';
+    renderHomeRank();
+    renderCityPicker();
+    closeCityPicker();
+    if (screens.rankList?.classList.contains('is-active')) {
+      renderRankList('local');
     }
   }
-  const lines = trimmed.split(/\n/).map((line) => line.trim());
-  for (let index = 0; index < lines.length; index += 1) {
-    if (!lines[index].startsWith("event:pipeline_output")) continue;
-    const dataLine = lines.slice(index + 1).find((line) => line.startsWith("data:"));
-    if (!dataLine) continue;
-    const dataJson = dataLine.replace(/^data:\s*/, "").trim();
-    const pipeline = JSON.parse(dataJson);
-    const finalText =
-      pipeline?.replies?.[0]?.content?.[0]?.text ||
-      pipeline?.replies?.[0]?.content?.find?.((item) => item?.text)?.text ||
-      pipeline?.reply ||
-      pipeline?.text ||
-      pipeline?.content;
-    if (finalText) return parseJsonFromAiText(finalText);
+
+  function renderRankList(rankType = currentRankType) {
+    currentRankType = rankType;
+    const title = getRankDisplayName(rankType);
+    $('#rankListTitle').textContent = title;
+    $('#rankListSubtitle').textContent = rankType === 'hot' ? '全站公开地点合集 Top20' : `看看${currentCity}用户最近在整理什么地点`;
+    const list = getRankCollections(rankType, 20);
+    $('#rankListFull').innerHTML = list.length ? list.map((item, index) => rankCard(item, index)).join('') : emptyRankHtml();
+    $('#rankListEnd').textContent = `今天的${title}先到这里啦`;
+    showScreen('rankList');
   }
-  let content = "";
-  lines.forEach((current) => {
-    if (!current.startsWith("data:")) return;
-    const payload = current.replace(/^data:\s*/, "").trim();
-    try {
-      const obj = JSON.parse(payload);
-      const delta =
-        obj?.dynamic_generator?.content ||
-        obj?.choices?.[0]?.delta?.content ||
-        obj?.delta?.content ||
-        "";
-      if (typeof delta === "string") {
-        content += delta;
+
+  function renderHero() {
+    const subtitle = $('.hero-subtitle');
+    if (subtitle) subtitle.textContent = '一起整理城市里的好去处，发现大家正在创建的地点合集';
+    $('.hero-status-row')?.remove();
+  }
+
+  function renderMyCollections() {
+    const viewed = [...state.viewed].map((id) => collections.find((item) => item.id === id)).filter(Boolean).slice(0, 3);
+    const ownedIds = new Set([...state.owned, ...state.participated, ...state.subscribed, ...state.shared]);
+    const owned = [...ownedIds].map((id) => collections.find((item) => item.id === id)).filter(Boolean).slice(0, 3);
+    const renderStack = (items, emptyText, emptyStrong = '') => items.length
+      ? items.map((item) => `<button class="mini-map-card" type="button" data-open-collection="${item.id}">${coverHtml(item, 'mini')}<span><strong>${item.title}</strong><small>${item.city} · ${item.poiCount} 点位</small></span></button>`).join('')
+      : `<div class="empty-maps compact"><strong>${emptyStrong}</strong><p>${emptyText}</p></div>`;
+    $('#viewedMaps').innerHTML = renderStack(viewed, '点进上方任意地点合集后，会出现在这里。', '还没有浏览记录');
+    $('#ownedMaps').innerHTML = renderStack(owned, '创建的地点合集、订阅合集、新增点位或分享合集后会出现。');
+  }
+
+  function renderAllMaps(group = 'viewed') {
+    const ids = group === 'viewed' ? [...state.viewed] : [...new Set([...state.owned, ...state.participated, ...state.subscribed, ...state.shared])];
+    $('#allMapsTitle').textContent = group === 'viewed' ? '我浏览的' : '我创建 / 参与的';
+    $('#allMapsList').innerHTML = ids.map((id, index) => {
+      const item = collections.find((collection) => collection.id === id);
+      return item ? rankCard(item, index) : '';
+    }).join('') || `<article class="empty-log">暂时没有地点合集记录。</article>`;
+    showScreen('allMaps');
+  }
+
+  function calculateDrop(actionType) {
+    const now = Date.now();
+    const base = rewardConfig.baseProbability[actionType] || 0;
+    if (state.tickets >= rewardConfig.cap) return { probability: 0, reason: '奖券已达到本轮上限' };
+    const cooldownMinutes = state.totalEarned < 3 ? rewardConfig.cooldown.firstThreeMinutes : rewardConfig.cooldown.normalHours * 60;
+    if (state.lastTicketAt && now - state.lastTicketAt < cooldownMinutes * 60 * 1000) return { probability: 0, reason: '冷静期中' };
+    let probability = base * rewardConfig.timeCoefficient.first15Days * rewardConfig.userCoefficient.oldUser;
+    if (!state.actionCounts[actionType]) probability *= rewardConfig.behaviorCoefficient.firstAction;
+    if (state.yesterdayMissed[actionType]) probability *= rewardConfig.behaviorCoefficient.yesterdayMissed;
+    if (state.boosted) probability *= 3;
+    return { probability: Math.min(probability, 0.95), reason: '' };
+  }
+
+  function addLog(actionType, text, dropped, extra = '') {
+    state.logs.unshift({
+      actionType,
+      text,
+      dropped,
+      extra,
+      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+    });
+  }
+
+  function completeTask(actionType) {
+    const meta = taskMeta[actionType] || { short: '完成任务' };
+    const { probability, reason } = calculateDrop(actionType);
+    const dropped = probability > 0 && Math.random() < probability;
+    state.actionCounts[actionType] = (state.actionCounts[actionType] || 0) + 1;
+    state.completed[actionType] = { completed: true, dropped, time: Date.now(), reason };
+    if (dropped) {
+      state.tickets += 1;
+      state.totalEarned += 1;
+      state.lastTicketAt = Date.now();
+      addLog(actionType, meta.short, true, '获得 1 张奖券');
+      showToast(`${meta.short}完成，获得 1 张奖券`);
+    }
+    renderAll();
+    return dropped;
+  }
+
+  function subscribeCollection(id = currentCollectionId) {
+    const item = collections.find((collection) => collection.id === id);
+    if (!item) return;
+    if (!state.subscribed.has(id)) {
+      state.subscribed.add(id);
+      item.subscriptions += 1;
+      completeTask('subscribe');
+    } else {
+      showToast('已经订阅过这张地点合集');
+    }
+    renderMapDetail(item);
+  }
+
+  function openShareModal(id = currentCollectionId) {
+    const item = collections.find((collection) => collection.id === id);
+    if (!item) return;
+    currentCollectionId = id;
+    const modal = ensureShareModal();
+    modal.querySelector('[data-share-title]').textContent = item.title;
+    modal.querySelector('[data-share-meta]').textContent = `${item.city} · ${item.poiCount} 个点位`;
+    modal.querySelector('[data-share-cover]').innerHTML = coverHtml(item, 'share');
+    modal.hidden = false;
+  }
+
+  function finishShare() {
+    if (!currentCollectionId) return;
+    const item = collections.find((collection) => collection.id === currentCollectionId);
+    if (!item) return;
+    item.shares += 1;
+    state.shared.add(item.id);
+    ensureShareModal().hidden = true;
+    completeTask('share');
+  }
+
+  function renderGuidance(item) {
+    const bubble = $('#mapGuidanceBubble');
+    if (!bubble) return;
+    const role = state.userRoleByCollection[item.id] || (item.owner === 'me' ? 'creator' : state.participated.has(item.id) ? 'participant' : 'viewer');
+    const collaborative = item.publicMode === 'publicCollaborative';
+    const options = {
+      viewer: ['subscribe', 'share', 'addPoi'],
+      participant: ['addPoi', 'share', 'subscribe'],
+      creator: ['share', 'addPoi'],
+    }[role].filter((type) => type !== 'addPoi' || collaborative);
+    const next = options.find((type) => {
+      if (type === 'subscribe') return !state.subscribed.has(item.id);
+      if (type === 'share') return !state.shared.has(item.id);
+      if (type === 'addPoi') return !state.participated.has(item.id);
+      return true;
+    });
+    if (!next) {
+      bubble.hidden = true;
+      return;
+    }
+    const copy = {
+      subscribe: ['订阅合集', '订阅这张地点合集，之后可以在我的地点合集里继续查看。', '订阅合集'],
+      share: ['分享合集', '把这张地点合集分享出去，完成后有机会获得奖券。', '分享合集'],
+      addPoi: [role === 'participant' ? '继续新增点位' : '新增点位', '补充一个地点和备注，让这张地点合集更完整。', role === 'participant' ? '继续新增' : '去新增'],
+    }[next];
+    $('#mapGuidanceTitle').textContent = copy[0];
+    $('#mapGuidanceText').textContent = copy[1];
+    $('#mapGuidanceAction').textContent = copy[2];
+    $('#mapGuidanceAction').dataset.guidanceAction = next;
+    bubble.hidden = false;
+  }
+
+  function renderMapDetail(item) {
+    currentCollectionId = item.id;
+    $('#mapTitle').textContent = item.title;
+    $('#mapMeta').textContent = `${item.poiCount} 个点位 · ${formatNumber(item.viewsUv)} 人浏览 · ${formatNumber(item.subscriptions)} 订阅 · ${formatNumber(item.shares)} 分享`;
+    $('#inviteTitle').textContent = item.title;
+    const canCollaborate = item.publicMode === 'publicCollaborative';
+    const inviteTop = $('.invite-top');
+    if (inviteTop) inviteTop.hidden = !canCollaborate;
+    const mapIcon = themeIconSet(`${item.title} ${(item.tags || []).join(' ')}`, item.emoji)[0];
+    $$('.poi-open').forEach((button, index) => {
+      const poi = item.pois[index % Math.max(item.pois.length, 1)] || {
+        name: '新地点',
+        note: '这里还没有补充备注，可以继续新增点位完善地点合集。',
+        emoji: mapIcon,
+      };
+      button.dataset.poi = poi.name;
+      button.dataset.desc = poi.note;
+      const span = $('span', button);
+      if (span) span.textContent = mapIcon;
+    });
+    $('#collectTask span').textContent = state.subscribed.has(item.id) ? '已订阅' : '订阅合集';
+    let shareButton = $('#shareTask');
+    if (!shareButton) {
+      shareButton = document.createElement('button');
+      shareButton.className = 'task-bubble share-new';
+      shareButton.id = 'shareTask';
+      shareButton.innerHTML = '<span>分享合集</span>';
+      $('.map-task-bubbles')?.insertBefore(shareButton, $('#noteTask'));
+    }
+    shareButton.querySelector('span').textContent = state.shared.has(item.id) ? '已分享' : '分享合集';
+    const noteTask = $('#noteTask');
+    if (noteTask) {
+      noteTask.hidden = !canCollaborate;
+      noteTask.querySelector('span').textContent = state.participated.has(item.id) ? '继续新增点位' : '新增点位';
+    }
+    renderGuidance(item);
+  }
+
+  function openCollection(id, shouldReward = true) {
+    const item = collections.find((collection) => collection.id === id);
+    if (!item) return;
+    currentCollectionId = id;
+    state.viewed.add(id);
+    item.viewsUv += 1;
+    renderMapDetail(item);
+    showScreen('map');
+    if (shouldReward && !state.completed[`browse:${id}`]) {
+      state.completed[`browse:${id}`] = { completed: true };
+      completeTask('browse');
+    }
+  }
+
+  window.__openCollection = openCollection;
+
+  function openPointDetail(target) {
+    $('#poiTitle').textContent = target.dataset.poi || '城市角落';
+    $('#poiDesc').textContent = target.dataset.desc || '这是一个适合加入地点合集的城市地点。';
+    $('#poiDetail').hidden = false;
+  }
+
+  function inferThemeKey(item) {
+    const text = `${item?.title || ''} ${(item?.tags || []).join(' ')}`;
+    if (/咖啡|自习|办公|续命/.test(text)) return 'coffee';
+    if (/美食|寻味|必吃|餐厅|小食|吃|顺德/.test(text)) return 'food';
+    if (/夜跑|夜晚|下班|酒|emo/.test(text)) return 'night';
+    if (/宠物|狗|猫/.test(text)) return 'pet';
+    if (/电影|影院|看展|艺术|博物馆/.test(text)) return 'movie';
+    return 'citywalk';
+  }
+
+  function syncCollectionSettings(item) {
+    selectedVisibility = item?.publicMode || selectedVisibility || 'publicCollaborative';
+    selectedMapTheme = item?.themeKey || inferThemeKey(item);
+    $$('[data-collection-status]').forEach((button) => button.classList.toggle('active', button.dataset.collectionStatus === selectedVisibility));
+    const titleInput = $('#collectionTitleInput');
+    if (titleInput && item?.title) titleInput.value = item.title;
+  }
+
+  function prepareNewPoiScreen() {
+    const item = collections.find((collection) => collection.id === currentCollectionId);
+    editingPoiIndex = null;
+    syncCollectionSettings(item);
+    $('#noteScreen h1').textContent = '新增点位备注';
+    $('#notePointName').value = '海边晚风观景点';
+    $('#noteText').value = '';
+    $('#submitNote').textContent = '保存并进入地图';
+  }
+
+  function submitPoi() {
+    const item = collections.find((collection) => collection.id === currentCollectionId);
+    if (!item) return;
+    item.publicMode = selectedVisibility;
+    item.title = ($('#collectionTitleInput')?.value || item.title || `${currentCity}我的地点合集`).trim();
+    selectedMapTheme = inferThemeKey(item);
+    item.themeKey = selectedMapTheme;
+    const name = ($('#notePointName').value || '新地点').trim();
+    const note = ($('#noteText').value || '这里适合加入地点合集，之后可以继续补充备注。').trim();
+    if (editingPoiIndex !== null && item.pois[editingPoiIndex]) {
+      item.pois[editingPoiIndex] = { ...item.pois[editingPoiIndex], name, note, type: selectedPointType, emoji: selectedIcon };
+      editingPoiIndex = null;
+    } else {
+      item.pois.unshift({ id: `poi-${Date.now()}`, name, note, type: selectedPointType, emoji: selectedIcon });
+      item.poiCount += 1;
+      completeTask('addPoi');
+    }
+    state.participated.add(item.id);
+    showScreen('map');
+    renderMapDetail(item);
+  }
+
+  const candidateNames = ['静安寺', '武康路', '复兴公园', '徐汇滨江', '愚园路', '巨鹿路', '上生新所', '陕西南路', '衡山路', '外滩源', '亮马河', '国子监', '奥森公园', '五道营胡同', '什刹海', '三里屯', '东四胡同', '西湖', '满觉陇', '良渚', '运河边', '龙井村', '九溪', '夫子庙', '老门东', '颐和路', '玄武湖', '新街口', '明城墙'];
+
+  function inferCityFromTheme(theme) {
+    return ['上海','北京','杭州','南京','成都','深圳','广州','重庆','西安','苏州','厦门','武汉','青岛','长沙'].find((city) => theme.includes(city)) || currentCity;
+  }
+
+  const maasConfig = {
+    consoleUrl: 'https://qs2.devops.xiaohongshu.com/model/service/online?tab=myApplied&dateRange=2026-03-02&dateRange=2026-03-31&current=1',
+    baseUrl: 'https://maas.devops.xiaohongshu.com/v1',
+    model: 'qwen3.5-397b-a17b',
+    defaultApiKey: 'MAAS28fe1258e2a04e0681107f8b19af040b',
+    getApiKey() {
+      return window.MAAS_API_KEY || window.__MAAS_API_KEY__ || localStorage.getItem('maasApiKey') || maasConfig.defaultApiKey;
+    },
+  };
+
+  const themedPoiPools = {
+    电影: {
+      emoji: '🎬',
+      names: {
+        北京: ['中国电影博物馆', '百老汇电影中心', '资料馆艺术影院', '郎园 Vintage', '798 艺术区', '东四胡同', '三里屯太古里', '今日美术馆'],
+        上海: ['上海电影博物馆', '衡山电影院', '天山电影院', '上影影城', '武康路', '安福路', '1933老场坊', 'M50 创意园'],
+        杭州: ['百老汇影城滨江店', '西湖文化广场', '天目里', '运河边', '湖滨银泰', '良渚文化艺术中心'],
+      },
+    },
+    咖啡: {
+      emoji: '☕',
+      names: {
+        上海: ['武康路咖啡街区', '安福路咖啡店', '永康路街角咖啡', '愚园路咖啡小店', '衡山路花园咖啡', '陕西南路', '上生新所', '苏河湾'],
+        北京: ['五道营胡同咖啡', '亮马河咖啡街区', '国子监街角咖啡', '三里屯露台咖啡', '东四胡同', '鼓楼西大街'],
+        杭州: ['满觉陇咖啡', '龙井村咖啡', '西湖边咖啡', '天目里咖啡', '白塔公园咖啡', '运河边咖啡'],
+      },
+    },
+    夜跑: {
+      emoji: '🏃',
+      names: {
+        北京: ['亮马河夜跑路段', '奥森公园南园', '朝阳公园外圈', '什刹海夜跑线', '东四胡同慢跑线'],
+        上海: ['徐汇滨江夜跑线', '苏河湾夜跑线', '世纪公园外圈', '外滩源夜跑线', '衡山路慢跑线'],
+      },
+    },
+    美食: {
+      emoji: '🥢',
+      names: {
+        南京: ['老门东', '夫子庙', '明瓦廊', '科巷', '三七八巷', '秦淮河边'],
+        成都: ['玉林路', '望平街', '猛追湾', '建设路', '宽窄巷子', '锦江边'],
+        上海: ['巨富长街区', '云南南路', '昌里路', '陕西南路', '愚园路', '外滩源'],
+      },
+    },
+  };
+
+  function themeKeyword(theme) {
+    return Object.keys(themedPoiPools).find((keyword) => theme.includes(keyword)) || '';
+  }
+
+  function renderDraftCandidates(candidates) {
+    $('#draftList').innerHTML = candidates.map((poi, index) => `
+      <label class="draft-item">
+        <input type="checkbox" data-draft-index="${index}" ${poi.checked ? 'checked' : ''} />
+        <span>${poi.emoji}</span>
+        <strong>${poi.name}</strong>
+        <small>${poi.note}</small>
+      </label>`).join('');
+  }
+
+  function localRecommendCandidates(theme, blank = false) {
+    const city = inferCityFromTheme(theme || currentCity);
+    const keyword = themeKeyword(theme || '');
+    const themed = keyword ? themedPoiPools[keyword] : null;
+    const themedNames = themed?.names?.[city] || themed?.names?.上海 || [];
+    const pool = [...new Set([...themedNames, ...(cityPoiPool[city] || []), ...candidateNames])];
+    return {
+      city,
+      source: 'local',
+      candidates: pool.slice(0, 30).map((name, index) => ({
+        name,
+        checked: index < (blank ? 0 : 8),
+        note: `${name}适合放进「${theme || '我的地球角落'}」，可以补充路线、时间或个人备注。`,
+        emoji: themed?.emoji || ['📍','☕','🌳','🌙','📷','🚶'][index % 6],
+      })),
+    };
+  }
+
+  function extractJson(text) {
+    const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    const raw = fenced ? fenced[1] : text;
+    const start = raw.indexOf('{');
+    const end = raw.lastIndexOf('}');
+    if (start === -1 || end === -1 || end <= start) throw new Error('模型未返回 JSON');
+    return JSON.parse(raw.slice(start, end + 1));
+  }
+
+  async function requestMaasCandidates(theme) {
+    const apiKey = maasConfig.getApiKey();
+    if (!apiKey) throw new Error('未检测到 MAAS API Key，已使用本地推荐');
+    const city = inferCityFromTheme(theme || currentCity);
+    const response = await fetch(`${maasConfig.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      },
+      body: JSON.stringify({
+        model: maasConfig.model,
+        stream: false,
+        max_tokens: 2048,
+        temperature: 0.7,
+        messages: [
+          {
+            role: 'system',
+            content: '你是地点合集 POI 推荐助手。只返回 JSON，不要返回解释。JSON 格式：{"city":"城市名","pois":[{"name":"地点名","note":"一句推荐理由","emoji":"一个emoji"}]}。地点要真实、适合用户主题，优先匹配城市和关键词。',
+          },
+          {
+            role: 'user',
+            content: `用户想创建地点合集：${theme || city + '我的地点合集'}。请推荐 20-30 个 POI。当前城市：${city}。`,
+          },
+        ],
+      }),
+    });
+    if (!response.ok) throw new Error(`MAAS 请求失败：${response.status}`);
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || '';
+    const parsed = extractJson(content);
+    const pois = Array.isArray(parsed.pois) ? parsed.pois : [];
+    if (!pois.length) throw new Error('模型没有返回候选 POI');
+    return {
+      city: parsed.city || city,
+      source: 'maas',
+      candidates: pois.slice(0, 30).map((poi, index) => ({
+        name: poi.name || `推荐地点 ${index + 1}`,
+        checked: index < 8,
+        note: poi.note || `${poi.name || '这个地点'}适合放进「${theme || '我的地球角落'}」。`,
+        emoji: poi.emoji || '📍',
+      })),
+    };
+  }
+
+  async function buildDraft(theme, blank = false) {
+    const safeTheme = theme || `${currentCity}我的地点合集`;
+    draftLoading = true;
+    $('#draftDrawer').hidden = false;
+    $('#draftError').hidden = true;
+    $('#draftAlert').hidden = true;
+    $('#draftDebug').hidden = true;
+    $('#draftList').innerHTML = '';
+    $('#draftSkeleton').hidden = blank;
+    $('#draftTitle').textContent = blank ? '从空白地点合集开始' : 'AI 正在推荐候选点位';
+    $('#draftSubtitle').textContent = blank ? '进入地图后可以继续添加点位、换图标和补备注。' : '会根据城市和主题自动匹配适合加入地图的 POI。';
+    const fallback = localRecommendCandidates(safeTheme, blank);
+    let result = fallback;
+    if (!blank) {
+      try {
+        result = await requestMaasCandidates(safeTheme);
+      } catch (error) {
+        $('#draftAlert').textContent = `${error.message || '模型暂时不可用'}，已使用本地推荐。可在 QS 平台检查服务申请和 token 状态。`;
+        $('#draftAlert').hidden = false;
+        $('#draftDebugText').textContent = `${maasConfig.consoleUrl}\n\n${String(error?.stack || error?.message || error)}`;
+        $('#draftDebug').hidden = false;
+      }
+    }
+    const candidates = blank ? fallback.candidates.map((poi) => ({ ...poi, checked: false })) : result.candidates;
+    currentDraft = { theme: safeTheme, city: result.city || fallback.city, candidates };
+    draftLoading = false;
+    $('#draftSkeleton').hidden = true;
+    $('#draftTitle').textContent = blank ? '从空白地点合集开始' : `AI 已为你找到 ${candidates.length} 个候选点位`;
+    $('#draftSubtitle').textContent = blank ? '进入地图后可以继续添加点位、换图标和补备注。' : '先勾选你想加入地图的地点，下一步进入地图继续创建。';
+    renderDraftCandidates(candidates);
+  }
+
+  function startBlankCollection() {
+    const city = currentCity;
+    const id = `my-${Date.now()}`;
+    const item = {
+      id,
+      title: `${city}我的地点合集`,
+      city,
+      district: city === '上海' ? '多区' : '城市中心',
+      dominantRegionRatio: 0.92,
+      coverUrl: '',
+      coverStyle: imagePalette[collections.length % imagePalette.length],
+      emoji: '🗺️',
+      authorName: '我',
+      authorAvatar: '我',
+      poiCount: 0,
+      viewsUv: 0,
+      subscriptions: 0,
+      shares: 0,
+      createdDaysAgo: 1,
+      publicMode: selectedVisibility,
+      themeKey: selectedMapTheme,
+      tags: ['新建合集'],
+      pois: [],
+      hasTriggeredCreatorReward: false,
+      owner: 'me',
+    };
+    collections.unshift(item);
+    state.owned.add(id);
+    state.userRoleByCollection[id] = 'creator';
+    currentCollectionId = id;
+    prepareNewPoiScreen();
+    $('#collectionTitleInput').value = item.title;
+    $('#noteScreen h1').textContent = '添加第一个点位';
+    $('#submitNote').textContent = '保存并进入地图';
+    showScreen('note');
+  }
+
+  function publishDraft() {
+    if (draftLoading) {
+      showToast('候选点位还在生成中，稍等一下');
+      return;
+    }
+    if (!currentDraft) {
+      showToast('先生成候选点位，再进入地图创建');
+      return;
+    }
+    const checked = $$('[data-draft-index]').filter((input) => input.checked).map((input) => currentDraft.candidates[Number(input.dataset.draftIndex)]);
+    const pois = (checked.length ? checked : currentDraft.candidates.slice(0, 1)).map((poi, index) => ({
+      id: `new-poi-${Date.now()}-${index}`,
+      name: poi.name,
+      note: poi.note,
+      type: '自定义地点',
+      emoji: poi.emoji,
+    }));
+    const id = `my-${Date.now()}`;
+    const item = {
+      id,
+      title: currentDraft.theme,
+      city: currentDraft.city,
+      district: currentDraft.city === '上海' ? '多区' : '城市中心',
+      dominantRegionRatio: 0.92,
+      coverUrl: '',
+      coverStyle: imagePalette[collections.length % imagePalette.length],
+      emoji: '🗺️',
+      authorName: '我',
+      authorAvatar: '我',
+      poiCount: pois.length,
+      viewsUv: 260,
+      subscriptions: 28,
+      shares: 10,
+      createdDaysAgo: 1,
+      publicMode: selectedVisibility,
+      themeKey: selectedMapTheme,
+      tags: ['本地人懂', '周末可去'],
+      pois,
+      hasTriggeredCreatorReward: false,
+      owner: 'me',
+    };
+    collections.unshift(item);
+    state.owned.add(id);
+    state.userRoleByCollection[id] = 'creator';
+    $('#draftDrawer').hidden = true;
+    completeTask('createCollection');
+    currentCollectionId = id;
+    syncCollectionSettings(item);
+    renderMapDetail(item);
+    const firstPoi = pois[0];
+    if (firstPoi) {
+      editingPoiIndex = 0;
+      $('#notePointName').value = firstPoi.name;
+      $('#noteText').value = firstPoi.note;
+      selectedIcon = firstPoi.emoji || selectedIcon;
+      $$('.icon-picker button').forEach((button) => button.classList.toggle('active', button.textContent.trim() === selectedIcon));
+    }
+    $('#noteScreen h1').textContent = '完善点位备注';
+    $('#submitNote').textContent = '保存并进入地图';
+    showScreen('note');
+    showToast('已进入地图创建，可继续补充点位备注');
+  }
+
+  function renderRewards() {
+    $('#rewardCount').textContent = state.tickets;
+    $('#homeRewardCount').textContent = state.tickets;
+    $('#stickerCount').textContent = state.tickets;
+    const minRewardCost = exchangeRewards[0]?.cost || 5;
+    const canRedeem = state.tickets >= minRewardCost;
+    ['#openScratchFromHome', '#openScratch', '#openScratchFromRewards'].forEach((selector) => {
+      const button = $(selector);
+      if (button) {
+        button.disabled = !canRedeem;
+        button.setAttribute('aria-disabled', String(!canRedeem));
+      }
+    });
+    const badge = $('#openRewardCenter i');
+    if (badge) {
+      badge.textContent = state.tickets;
+      badge.hidden = state.tickets <= 0;
+    }
+    if ($('#heroTicketCount')) $('#heroTicketCount').textContent = state.tickets;
+    const next = exchangeRewards.find((reward) => state.tickets < reward.cost) || exchangeRewards[exchangeRewards.length - 1];
+    const hint = state.tickets >= 25 ? '已可兑换黄金奖牌，也可以继续积累下一轮奖券' : `还差 ${Math.max(next.cost - state.tickets, 0)} 张奖券可兑换${next.name}`;
+    const stickerHint = $('#stickerHint');
+    if (stickerHint) stickerHint.textContent = hint;
+    ensureRewardsSections();
+    renderRewardTaskList();
+    renderExchangeList();
+    renderLog();
+    renderCreatorReward();
+  }
+
+  function renderRewardTaskList() {
+    const box = $('#rewardTaskList');
+    if (!box) return;
+    const visibleTasks = ['browse', 'subscribe', 'share', 'addPoi'];
+    box.innerHTML = visibleTasks.map((type) => {
+      const meta = taskMeta[type];
+      return `
+      <article class="task-card reward-task-card">
+        <div><strong>${meta.short}</strong></div>
+        <button type="button" data-task-go="${type}">去完成</button>
+      </article>`;
+    }).join('');
+    const center = $('.reward-center-tasks');
+    if (center) center.innerHTML = box.innerHTML;
+  }
+
+  function rewardPrizeCard(reward) {
+    const diff = reward.cost - state.tickets;
+    const exchanged = state.exchangedRewards.has(reward.id);
+    const addressSubmitted = state.rewardAddressSubmitted[reward.id];
+    const buttonText = exchanged ? (addressSubmitted ? '已填写地址' : '填写收货地址') : (diff > 0 ? `还差 ${diff} 张` : '立即兑换');
+    const buttonAttr = exchanged
+      ? (addressSubmitted ? 'disabled' : `data-open-reward-address="${reward.id}"`)
+      : `${diff > 0 ? 'disabled' : ''} data-exchange-reward="${reward.id}"`;
+    return `
+      <article class="reward-prize-card">
+        <div class="reward-prize-visual" role="img" aria-label="${reward.name}">${reward.icon}</div>
+        <strong>${reward.name}</strong>
+        <small>${exchanged ? '每个奖品仅限兑换一次' : `${reward.cost} 张奖券可兑换`}</small>
+        <button type="button" ${buttonAttr}>${buttonText}</button>
+      </article>`;
+  }
+
+  function renderExchangeList() {
+    const box = $('#rewardExchangeList');
+    const center = $('#centerPrizeGrid');
+    const html = exchangeRewards.map(rewardPrizeCard).join('');
+    if (box) box.innerHTML = html;
+    if (center) center.innerHTML = html;
+  }
+
+  function renderLog() {
+    const html = state.logs.length ? state.logs.map((log) => `
+      <article class="log-row ${log.dropped ? 'is-drop' : ''}">
+        <span>${log.dropped ? '🎟️' : '✓'}</span>
+        <div><strong>${log.text}，${log.extra}</strong><small>${log.time}</small></div>
+      </article>`).join('') : '<article class="empty-log">还没有记录。完成指定行为后，这里会记录奖券获得过程。</article>';
+    ['#activityLog', '#rewardCenterActivityLog'].forEach((selector) => {
+      const box = $(selector);
+      if (box) box.innerHTML = html;
+    });
+  }
+
+  function renderCreatorReward() {
+    const box = $('#creatorRewardBlock');
+    if (!box) return;
+    const topCollection = collections.find((item) => item.owner === 'me') || collections[0];
+    box.innerHTML = `
+      <header><h2>创作者上榜奖励</h2>${state.creatorNoticePending ? '<button type="button" data-open-creator-reward>你的合集上榜啦，点击领取奖励</button>' : ''}</header>
+      <ul>
+        <li>日榜奖励：Top 10 创作者可获得周边帽子。</li>
+        <li>日榜奖励：Top 11-20 创作者可获得周边衣服。</li>
+        <li>单个地点合集可持续上榜，但同一地点合集仅可触发一次上榜奖励。</li>
+        <li>月度 Top 作者可获得黄金奖牌。</li>
+      </ul>
+      <p>当前模拟上榜合集：${topCollection.title} · 排名 Top 6 · 可领取周边帽子</p>`;
+  }
+
+  function ensureRewardsSections() {
+    const rewards = $('#rewardsScreen');
+    if (!rewards || $('#rewardTaskList')) return;
+    $('.reward-summary', rewards)?.insertAdjacentHTML('afterend', `
+      <section class="reward-log reward-exchange-section">
+        <h2>实物奖励兑换</h2>
+        <div id="rewardExchangeList" class="reward-exchange-list"></div>
+      </section>
+      <section class="reward-log reward-task-section">
+        <header class="section-inline-head"><h2>任务列表</h2></header>
+        <div id="rewardTaskList" class="reward-task-list"></div>
+      </section>
+      <section class="reward-log creator-reward-block" id="creatorRewardBlock"></section>`);
+  }
+
+  function openExchangeModal(rewardId) {
+    const reward = exchangeRewards.find((item) => item.id === rewardId);
+    if (!reward || state.tickets < reward.cost || state.exchangedRewards.has(rewardId)) return;
+    const modal = ensureExchangeModal();
+    modal.querySelector('[data-exchange-name]').textContent = reward.name;
+    modal.querySelector('[data-exchange-desc]').textContent = `确认使用 ${reward.cost} 张奖券兑换${reward.name}？`;
+    modal.querySelector('[data-confirm-exchange]').dataset.confirmExchange = reward.id;
+    modal.hidden = false;
+  }
+
+  function confirmExchange(rewardId) {
+    const reward = exchangeRewards.find((item) => item.id === rewardId);
+    if (!reward || state.tickets < reward.cost || state.exchangedRewards.has(rewardId)) return;
+    state.tickets -= reward.cost;
+    state.hasExchanged = true;
+    state.exchangedRewards.add(reward.id);
+    state.rewardAddressSubmitted[reward.id] = false;
+    reward.stock = Math.max(0, reward.stock - 1);
+    addLog('exchange', `兑换${reward.name}`, false, `消耗 ${reward.cost} 张奖券`);
+    ensureExchangeModal().hidden = true;
+    showToast(`已兑换${reward.name}`);
+    renderAll();
+  }
+
+  function ensureShareModal() {
+    let modal = $('#shareModal');
+    if (modal) return modal;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div id="shareModal" class="modal share-modal" hidden>
+        <div class="modal-bg" data-close-share="true"></div>
+        <section class="share-panel" role="dialog" aria-modal="true" aria-label="分享合集">
+          <button class="close" data-close-share="true" aria-label="关闭">×</button>
+          <p class="mini-label">分享合集</p>
+          <h2 data-share-title></h2>
+          <small data-share-meta></small>
+          <div class="share-card-preview"><div data-share-cover></div></div>
+          <div class="share-actions">
+            <button type="button" data-finish-share="copy">复制链接</button>
+            <button type="button" data-finish-share="wechat">微信好友</button>
+            <button type="button" data-finish-share="moments">朋友圈</button>
+            <button type="button" data-finish-share="poster">分享图分享</button>
+            <button type="button" data-finish-share="rednote">小红书分享</button>
+          </div>
+        </section>
+      </div>`);
+    return $('#shareModal');
+  }
+
+  function ensureExchangeModal() {
+    let modal = $('#exchangeModal');
+    if (modal) return modal;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div id="exchangeModal" class="modal" hidden>
+        <div class="modal-bg" data-close-exchange="true"></div>
+        <section class="confirm-panel" role="dialog" aria-modal="true" aria-label="兑换确认">
+          <h2 data-exchange-name></h2>
+          <p data-exchange-desc></p>
+          <div class="confirm-actions">
+            <button class="ghost-confirm" data-close-exchange="true">先不兑换</button>
+            <button class="primary-confirm" data-confirm-exchange="">确认兑换</button>
+          </div>
+        </section>
+      </div>`);
+    return $('#exchangeModal');
+  }
+
+  function ensureRewardAddressModal() {
+    let modal = $('#rewardAddressModal');
+    if (modal) return modal;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div id="rewardAddressModal" class="modal" hidden>
+        <div class="modal-bg" data-close-reward-address="true"></div>
+        <section class="creator-panel" role="dialog" aria-modal="true" aria-label="填写收货地址">
+          <button class="close" data-close-reward-address="true" aria-label="关闭">×</button>
+          <p class="mini-label">实物奖励</p>
+          <h2 data-reward-address-title>填写收货地址</h2>
+          <p data-reward-address-copy></p>
+          <form id="rewardAddressForm" class="address-form">
+            <label>姓名<input name="name" required placeholder="收件人姓名" /></label>
+            <label>手机号<input name="phone" required placeholder="手机号" /></label>
+            <label>地址<textarea name="address" required rows="3" placeholder="收货地址"></textarea></label>
+            <button class="wide-primary" type="submit">提交收货地址</button>
+          </form>
+          <p class="address-success" hidden>已提交，等待发货</p>
+        </section>
+      </div>`);
+    return $('#rewardAddressModal');
+  }
+
+  function openRewardAddress(rewardId) {
+    const reward = exchangeRewards.find((item) => item.id === rewardId);
+    if (!reward || !state.exchangedRewards.has(rewardId)) return;
+    const modal = ensureRewardAddressModal();
+    modal.dataset.rewardId = rewardId;
+    modal.querySelector('[data-reward-address-title]').textContent = `填写${reward.name}收货地址`;
+    modal.querySelector('[data-reward-address-copy]').textContent = `${reward.name}已兑换成功，每个奖品仅限兑换一次。`;
+    modal.querySelector('#rewardAddressForm').hidden = !!state.rewardAddressSubmitted[rewardId];
+    modal.querySelector('.address-success').hidden = !state.rewardAddressSubmitted[rewardId];
+    modal.hidden = false;
+  }
+
+  function ensureCreatorModal() {
+    let modal = $('#creatorRewardModal');
+    if (modal) return modal;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div id="creatorRewardModal" class="modal" hidden>
+        <div class="modal-bg" data-close-creator="true"></div>
+        <section class="creator-panel" role="dialog" aria-modal="true" aria-label="创作者奖励">
+          <button class="close" data-close-creator="true" aria-label="关闭">×</button>
+          <p class="mini-label">创作者上榜奖励</p>
+          <h2>你的合集上榜啦</h2>
+          <p data-creator-reward-copy></p>
+          <form id="creatorAddressForm" class="address-form">
+            <label>姓名<input name="name" required placeholder="收件人姓名" /></label>
+            <label>手机号<input name="phone" required placeholder="手机号" /></label>
+            <label>地址<textarea name="address" required rows="3" placeholder="收货地址"></textarea></label>
+            <button class="wide-primary" type="submit">填写收货地址</button>
+          </form>
+          <p class="address-success" hidden>已提交，等待发货</p>
+        </section>
+      </div>`);
+    return $('#creatorRewardModal');
+  }
+
+  function openCreatorReward() {
+    const topCollection = collections.find((item) => item.owner === 'me') || collections[0];
+    const modal = ensureCreatorModal();
+    modal.querySelector('[data-creator-reward-copy]').textContent = `${topCollection.title} 当前模拟排名 Top 6，获得周边帽子。`;
+    modal.hidden = false;
+  }
+
+  function renderBoardRules() {
+    const panel = $('#boardRulesModal .rules-panel ul');
+    if (!panel) return;
+    panel.innerHTML = `
+      <li>「热门榜」会展示全站热度较高的公开地点合集。</li>
+      <li>进入活动页后，系统会根据你所在城市展示对应城市的地点合集，例如「上海」「北京」「杭州」。当当前城市暂时没有足够内容时，会优先展示同区域内内容更丰富的城市。</li>
+      <li>榜单每日更新，系统会根据前一日 0:00-24:00 的浏览、订阅、分享等数据生成初始排序，并于每日 5:00 生成草稿，10:00 自动上线。</li>
+      <li>运营可为地点合集配置推荐标签。</li>`;
+  }
+
+  function renderCreatePage() {
+    const titleInput = $('#collectionTitleInput');
+    if (titleInput && !titleInput.value) titleInput.value = `${currentCity}我的地点合集`;
+  }
+
+  function renderHomeText() {
+    $('.floating-create-tab').textContent = '创建我的地点合集';
+    $('#activityPlayRules .activity-play-rules__card:nth-child(1) p').textContent = '浏览合集、订阅合集、新增点位、分享合集和创建合集';
+    $('#activityPlayRules .activity-play-rules__card:nth-child(3) p').textContent = '累计奖券后，可兑换旅行箱贴纸、周边帽子、周边衣服和黄金奖牌';
+    if ($('#emptyOwned')) $('#emptyOwned').textContent = '创建的地点合集、订阅合集、新增点位或分享合集后会出现。';
+    $('.section-title h2').textContent = '我的地点合集';
+  }
+
+  function arrangeActivityRules() {
+    const rules = $('#activityPlayRules');
+    const home = $('#homeScreen');
+    const rewardSummary = $('.home-reward-summary');
+    const mapGroups = $('.map-groups');
+    if (!rules || !home || !rewardSummary || !mapGroups) return;
+    const shouldSink = state.tickets > 0 || state.hasExchanged || state.logs.some((log) => log.actionType === 'exchange');
+    if (shouldSink) {
+      mapGroups.insertAdjacentElement('afterend', rules);
+    } else {
+      home.insertBefore(rules, rewardSummary);
+    }
+  }
+
+  function renderAll() {
+    renderHero();
+    renderHomeText();
+    arrangeActivityRules();
+    renderHomeRank();
+    renderCityPicker();
+    renderMyCollections();
+    renderRewards();
+    renderBoardRules();
+    renderCreatePage();
+  }
+
+  document.addEventListener('click', (event) => {
+    const go = event.target.closest('[data-go]');
+    if (go) {
+      if (go.dataset.go === 'create') {
+        startBlankCollection();
         return;
       }
-    } catch {
-      // Fall through to legacy payload reader.
-    }
-    content += readStreamPayload(payload);
-  });
-  if (content.trim()) return parseJsonFromAiText(content);
-  return trimmed;
-}
-
-function extractFirstJsonObject(text) {
-  const cleanText = stripJsonFence(text || "");
-  const firstBrace = cleanText.indexOf("{");
-  const lastBrace = cleanText.lastIndexOf("}");
-  if (firstBrace < 0 || lastBrace < firstBrace) return null;
-  return cleanText.slice(firstBrace, lastBrace + 1);
-}
-
-function parseAiPlaces(data) {
-  const directPlaces = data?.places || data?.data?.places;
-  if (data && typeof data === "object" && Array.isArray(directPlaces)) {
-    if (!directPlaces.length) throw new Error("AI 返回里 places 为空");
-    return {
-      mapTitle: data.mapTitle || data?.data?.mapTitle || lastDraftTopic,
-      places: directPlaces,
-      aiContent: JSON.stringify(data),
-    };
-  }
-  const raw = stripJsonFence(extractAiContent(data) || (typeof data === "object" ? JSON.stringify(data) : ""));
-  const jsonText = extractFirstJsonObject(raw);
-  if (!jsonText) {
-    throw new Error("AI 返回格式不是 JSON");
-  }
-  const parsed = JSON.parse(jsonText);
-  if (!Array.isArray(parsed.places) || !parsed.places.length) {
-    throw new Error("AI 返回里没有 places");
-  }
-  return {
-    mapTitle: parsed.mapTitle || lastDraftTopic,
-    places: parsed.places,
-    aiContent: raw,
-  };
-}
-
-function categoryIcon(category = "") {
-  if (/咖啡|饮品|茶/.test(category)) return "☕";
-  if (/吃|餐|酒|夜宵|美食/.test(category)) return "🍜";
-  if (/博物馆|展|美术馆/.test(category)) return "🏛";
-  if (/公园|宠物|狗|绿地/.test(category)) return "🌳";
-  if (/散步|拍照|景点|建筑/.test(category)) return "🌃";
-  return "📍";
-}
-
-function normalizeAiPlaces(aiResult) {
-  return aiResult.places.slice(0, 30).map((place, index) => {
-    const city = place.city || "待确认城市";
-    const category = place.category || "地点";
-    return {
-      id: `ai-${index}-${Date.now()}`,
-      name: place.name || `候选点位 ${index + 1}`,
-      meta: `${city} · ${category}`,
-      icon: categoryIcon(category),
-      reason: place.reason || "AI 推荐的候选点位",
-      checked: index < 6,
-    };
-  });
-}
-
-async function requestAiPlaces(topic) {
-  const token = getStoredQstoken();
-  if (!token) throw new Error("请先配置 Qstoken");
-  const userInput = String(topic || "").trim();
-  if (!userInput) throw new Error("用户输入为空");
-  const prompt = buildAiPrompt(userInput);
-  const requestBody = {
-    query: prompt,
-    bot: AI_BOT,
-    history: [
-      {
-        role: "user",
-        content: [
-          { text: prompt },
-        ],
-      },
-    ],
-    generation_kwargs: {
-      stream: true,
-    },
-    thinking: true,
-    websearch: [],
-    workspace_id: 0,
-  };
-  const historyText = requestBody.history?.[0]?.content?.[0]?.text || "";
-  if (
-    !requestBody.query ||
-    !requestBody.query.includes(userInput) ||
-    !historyText.includes(userInput) ||
-    requestBody.query.includes("{用户输入}") ||
-    historyText.includes("{用户输入}")
-  ) {
-    const error = new Error("请求体 query 没有正确包含用户输入");
-    error.debug = {
-      requestSuccess: false,
-      endpoint: AI_ENDPOINT,
-      httpStatus: "REQUEST_BODY_ERROR",
-      responseHeaders: {},
-      requestBody,
-      rawResponseText: "",
-      parsedAiContent: "",
-      placesLength: 0,
-    };
-    throw error;
-  }
-  let responseText = "";
-  let responseHeaders = {};
-  let response;
-  try {
-    response = await fetch(AI_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Qstoken": token,
-      },
-      body: JSON.stringify(requestBody),
-    });
-  } catch (fetchError) {
-    const error = new Error(`AI 接口请求失败：${fetchError.message}`);
-    error.debug = {
-      requestSuccess: false,
-      endpoint: AI_ENDPOINT,
-      httpStatus: "FETCH_ERROR",
-      responseHeaders: {},
-      requestBody,
-      rawResponseText: "",
-      parsedAiContent: "",
-      placesLength: 0,
-    };
-    throw error;
-  }
-  responseHeaders = formatHeaders(response.headers);
-  responseText = await response.text();
-  const baseDebug = {
-    requestSuccess: response.ok,
-    endpoint: AI_ENDPOINT,
-    httpStatus: response.status,
-    responseHeaders,
-    requestBody,
-    rawResponseText: responseText,
-    parsedAiContent: "",
-    placesLength: 0,
-  };
-  if (!response.ok) {
-    if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem(QSTOKEN_STORAGE_KEY);
-      const error = new Error("Qstoken 可能已过期，请重新配置 Qstoken");
-      error.debug = baseDebug;
-      throw error;
-    }
-    const error = new Error(`AI 接口请求失败（${response.status}）`);
-    error.debug = baseDebug;
-    throw error;
-  }
-  try {
-    const parsedResponse = parseAiResponseText(responseText);
-    const aiResult = parseAiPlaces(parsedResponse);
-    aiResult.debug = {
-      ...baseDebug,
-      parsedAiContent: aiResult.aiContent || extractAiContent(parsedResponse) || "",
-      placesLength: aiResult.places.length,
-    };
-    return aiResult;
-  } catch (parseError) {
-    const parsedResponse = parseAiResponseText(responseText);
-    const parsedAiContent =
-      typeof parsedResponse === "string" ? parsedResponse : extractAiContent(parsedResponse) || JSON.stringify(parsedResponse);
-    const error = new Error(responseText.trim() ? parseError.message : "AI 返回为空");
-    error.debug = {
-      ...baseDebug,
-      parsedAiContent,
-      placesLength: 0,
-    };
-    throw error;
-  }
-}
-
-function startDraftGeneration(topic) {
-  pendingDraftTopic = topic;
-  if (!getStoredQstoken()) {
-    showQstokenPanel();
-    return;
-  }
-  hideQstokenPanel();
-  openDraftDrawer({ mode: "theme", topic });
-}
-
-if (!getStoredQstoken()) {
-  qstokenPanel.hidden = false;
-}
-
-const cloudBatches = [
-  [
-    ["周末逃跑计划", "128", "2.4k 人浏览", "🏕️"],
-    ["深夜便利店地图", "63", "728 人共建", ""],
-    ["雨天咖啡馆地图", "86", "1.2k 人共建", ""],
-    ["城市夜景地图", "94", "1.5k 人共建", ""],
-    ["老城区漫步指南", "76", "1.3k 人共建", ""],
-    ["一个人的治愈角落", "42", "1.1k 人共建", ""],
-    ["夏日晚风地图", "38", "642 人共建", ""],
-  ],
-  [
-    ["上海 i 人长椅地图", "77", "1.8k 人浏览", "🪑"],
-    ["带薪摸鱼地点", "45", "566 人共建", ""],
-    ["巨富长酒鬼地图", "52", "892 人共建", ""],
-    ["山西古建地图", "118", "2.1k 人共建", ""],
-    ["我不信你完全知道这些地方", "39", "711 人共建", ""],
-    ["如厕指引地图", "68", "1.4k 人共建", ""],
-    ["白月光 kiss 圣地", "23", "520 人共建", ""],
-  ],
-  [
-    ["顺德寻味不排队地图", "91", "1.6k 人浏览", "🥢"],
-    ["景德镇淘货地图", "64", "936 人共建", ""],
-    ["胡同秋天骑行线", "57", "804 人共建", ""],
-    ["泉州非遗巡游地图", "82", "1.1k 人共建", ""],
-    ["外星人首次着陆点", "29", "689 人共建", ""],
-    ["全国审丑地点大赏", "73", "1.3k 人共建", ""],
-    ["留学生爆改热门地点", "46", "903 人共建", ""],
-  ],
-];
-let batchIndex = 0;
-
-const prizes = [
-  {
-    icon: "🧲",
-    name: "单个冰箱贴",
-    desc: "获得一块地图碎片冰箱贴。",
-  },
-  {
-    icon: "🗺️",
-    name: "完整地图冰箱贴套装",
-    desc: "获得完整地图碎片冰箱贴套装。",
-  },
-  {
-    icon: "🏅",
-    name: "黄金奖牌",
-    desc: "获得本期活动黄金奖牌。",
-  },
-];
-
-const themeConfigs = [
-  {
-    match: /白月光|kiss|圣地/,
-    icon: "👄",
-    theme: "theme-kiss",
-    labels: ["暧昧路口", "电影散场处", "旧相册墙", "夜风天台", "表白长椅", "心动拐角"],
-    pois: [
-      ["天台晚风吻点", "晚上 8 点后灯光很软，适合把电影里的浪漫搬到现实。"],
-      ["便利店门口", "这里有一盏很亮的灯，很多人会在门口停很久。"],
-      ["旧影院后巷", "散场后人群会慢慢消失，只剩一点霓虹反光。"],
-      ["河边白栏杆", "水面会把路灯晕开，适合标记成约会路线的终点。"],
-    ],
-  },
-  {
-    match: /外星人|着陆|地球Online|bug/,
-    icon: "👽",
-    theme: "theme-alien",
-    labels: ["异常坐标", "首次着陆点", "信号塔", "悬浮草坪", "地球漏洞", "观察站"],
-    pois: [
-      ["疑似首次着陆点", "这片空地看起来过分平整，很适合写进外星人访问地球路线。"],
-      ["信号最强路口", "手机信号突然满格，适合被标记为神秘通信点。"],
-      ["地球Online卡顿处", "地图上看很普通，现场却总觉得空间有点不连续。"],
-      ["夜间观察平台", "适合带外星朋友第一次认识城市灯光。"],
-    ],
-  },
-  {
-    match: /如厕|蹲坑|厕所|卫生间/,
-    icon: "🚽",
-    theme: "theme-restroom",
-    labels: ["救命公厕", "商场卫生间", "安静隔间", "排队预警", "补纸点", "干净指数"],
-    pois: [
-      ["最稳救急卫生间", "位置好找，通常不用排队，适合放进应急收藏。"],
-      ["商场三楼洗手间", "干净度不错，但周末下午需要绕开。"],
-      ["公园北门公厕", "离主路近，晚上灯光也够亮。"],
-      ["地铁口隐藏隔间", "入口不明显，但高峰期很好用。"],
-    ],
-  },
-  {
-    match: /长椅|发呆/,
-    icon: "🪑",
-    theme: "theme-city",
-    labels: ["树荫长椅", "安静角落", "午后晒太阳", "风口", "口袋公园", "独处路线"],
-    pois: [
-      ["树荫下的长椅", "下午三点有完整树影，适合 i 人恢复电量。"],
-      ["不被打扰的角落", "旁边人流少，可以坐很久。"],
-      ["路口短暂停靠点", "适合等朋友，也适合假装等朋友。"],
-      ["河边低矮长椅", "风吹过来很轻，不太晒。"],
-    ],
-  },
-  {
-    match: /酒鬼|酒|微醺|喝/,
-    icon: "🍷",
-    theme: "theme-city",
-    labels: ["微醺街角", "小酒馆", "夜宵路", "醒酒长椅", "碰杯点", "回家路"],
-    pois: [
-      ["下班第一杯", "适合和朋友碰杯，周中晚上也不会太吵。"],
-      ["微醺小巷", "巷口灯光很好看，适合标记成酒后散步路线。"],
-      ["醒酒便利店", "这里的冰水和饭团很救命。"],
-      ["深夜长椅", "喝完出来可以坐十分钟，风刚刚好。"],
-    ],
-  },
-  {
-    match: /摸鱼|带薪|公司周边/,
-    icon: "🐟",
-    theme: "theme-city",
-    labels: ["摸鱼据点", "老板盲区", "咖啡缓冲", "假装开会", "散步回血", "带薪角落"],
-    pois: [
-      ["老板看不见的长椅", "离公司不远，但刚好不在同事常走路线上。"],
-      ["假装买咖啡点", "排队时间稳定，适合作为合理消失 10 分钟的理由。"],
-      ["带薪散步路口", "一圈回来刚好像认真思考过工作。"],
-      ["午后回血角落", "有树荫，也有信号，可以慢慢回消息。"],
-    ],
-  },
-  {
-    match: /便利店/,
-    icon: "🏬",
-    theme: "theme-city",
-    labels: ["24h 门店", "夜间补给", "雨棚入口", "饭团货架", "热饮柜", "安全灯牌"],
-    pois: [
-      ["深夜补给便利店", "凌晨也亮着灯，适合标记成夜归路线里的安全点。"],
-      ["饭团最全货架", "晚上 10 点后还有选择，适合写进加班地图。"],
-      ["雨棚停靠点", "下雨时能临时躲一下，也适合等车。"],
-      ["热饮柜旁边", "冬天很救命，路过可以顺手收藏。"],
-    ],
-  },
-  {
-    match: /夜景/,
-    icon: "🌛",
-    theme: "theme-city",
-    labels: ["夜景天桥", "灯光路口", "月亮角落", "观景台", "散步线", "晚风点"],
-    pois: [
-      ["月亮天桥", "晚上 8 点后灯光很柔，桥上能看到一整段街景。"],
-      ["路灯反光口", "雨后路面会反光，适合夜景照片。"],
-      ["安静观景台", "人不多，适合停下来发呆。"],
-      ["晚风散步线", "从这里开始走十分钟，城市声音会慢慢变轻。"],
-    ],
-  },
-  {
-    match: /治愈角落|治愈/,
-    icon: "👧",
-    theme: "theme-city",
-    labels: ["独处角落", "回血路线", "收藏点", "安静长椅", "心情停靠", "共建坐标"],
-    pois: [
-      ["一个人的小角落", "适合不说话地待一会儿，把今天的心情写成备注。"],
-      ["蓝色窗台", "下午光会落在窗边，适合短暂停靠。"],
-      ["安静长椅", "旁边树影很好，人也不多。"],
-      ["慢慢走路口", "从这里开始散步，会比直接回家更轻松一点。"],
-    ],
-  },
-  {
-    match: /老城区|漫步指南|漫步/,
-    icon: "🚶",
-    icons: ["🚶", "🩵", "🚶", "🩵", "🚶", "🩵"],
-    theme: "theme-city",
-    labels: ["老街入口", "蓝色转角", "石库门", "慢行街", "旧书店", "梧桐路"],
-    pois: [
-      ["老街慢行入口", "适合从这里开始走，路边有很多旧门牌。"],
-      ["蓝色窗边转角", "颜色很温柔，适合被标成散步路线里的记忆点。"],
-      ["石库门门洞", "早上光线从门洞斜进来，很适合拍照。"],
-      ["梧桐树影", "夏天很凉，适合写一句路线备注。"],
-    ],
-  },
-  {
-    match: /晚风/,
-    icon: "🩵",
-    theme: "theme-city",
-    labels: ["晚风桥", "蓝色水岸", "日落口", "风很轻", "河边路", "停靠点"],
-    pois: [
-      ["海边晚风观景点", "傍晚 6 点之后风最舒服，桥边能看到很完整的日落。"],
-      ["蓝色栏杆转角", "海和路牌会刚好在同一条线上。"],
-      ["日落停靠点", "光线会慢慢变蓝，适合留下心情。"],
-      ["风很轻的路口", "适合把一天结束得慢一点。"],
-    ],
-  },
-  {
-    match: /逃跑/,
-    icon: "🏕️",
-    theme: "theme-city",
-    labels: ["出发点", "逃跑路线", "营地感", "补给处", "周末终点", "轻旅行"],
-    pois: [
-      ["周末出发点", "从这里开始走，像把普通周末折成一次小旅行。"],
-      ["城市露营感草地", "不用真的远行，也有一点出发感。"],
-      ["补给小店", "买完饮料继续走，路线不会中断。"],
-      ["逃跑终点长椅", "适合坐一会儿，把这张地图分享给朋友。"],
-    ],
-  },
-  {
-    match: /咖啡|雨天/,
-    icon: "☕",
-    theme: "theme-city",
-    labels: ["静安寺", "愚园路", "南京西路", "苏河湾", "巨鹿路", "陕西北路"],
-    pois: [
-      ["海边晚风观景点", "傍晚 6 点之后风最舒服，桥边能看到很完整的日落。"],
-      ["不排队小食铺", "工作日午后比较空，适合顺路补给。"],
-      ["雨天窗边咖啡", "靠窗座位能看到街角积水反光，适合发呆。"],
-      ["蓝色栏杆转角", "不是热门景点，但拍照时海和路牌会刚好在同一条线上。"],
-    ],
-  },
-  {
-    match: /顺德|寻味|不排队|美食|小食|吃/,
-    icon: "🥢",
-    theme: "theme-city",
-    labels: ["不排队店", "顺路小吃", "早茶点", "糖水铺", "夜宵街", "避峰路线"],
-    pois: [
-      ["不用排队的早茶", "工作日上午更稳，点心出品也不会慢。"],
-      ["巷子糖水铺", "饭后散步过去刚好，甜度比较温柔。"],
-      ["本地人夜宵点", "晚上 9 点后热闹，但翻台很快。"],
-      ["避峰小食店", "离热门店不远，但人少很多。"],
-    ],
-  },
-  {
-    match: /骑行/,
-    icon: "🚴",
-    theme: "theme-city",
-    labels: ["骑行起点", "树荫车道", "胡同弯道", "补水点", "慢行线", "终点长椅"],
-    pois: [
-      ["秋天骑行起点", "路面平整，早上人少，适合作为整条路线的开始。"],
-      ["树荫慢骑段", "两侧树影很好看，骑慢一点更舒服。"],
-      ["胡同弯道", "转弯处很有生活感，适合补一条路线备注。"],
-      ["补水小店", "骑到这里刚好可以停下来买水。"],
-    ],
-  },
-  {
-    match: /景德镇|瓷器|淘货/,
-    icon: "🏺",
-    theme: "theme-city",
-    labels: ["淘货巷", "瓷器摊", "手作窑口", "避坑店", "打包点", "老厂区"],
-    pois: [
-      ["老厂区淘货点", "适合慢慢翻，价格差异大，记得先问清瑕疵。"],
-      ["手作小窑口", "器型很有个性，适合标成地图里的重点点位。"],
-      ["打包最稳小店", "老板很会包，买完瓷器可以顺路过来。"],
-      ["避坑对比点", "款式多但价格浮动大，适合留下提醒备注。"],
-    ],
-  },
-  {
-    match: /非遗|泉州/,
-    icon: "🎏",
-    theme: "theme-city",
-    labels: ["巡游起点", "木偶戏台", "南音角落", "花灯街", "古早店", "非遗工坊"],
-    pois: [
-      ["木偶戏台旁", "表演前后很热闹，适合记录当天的巡游时间。"],
-      ["南音小角落", "声音会从巷子里飘出来，适合做非遗路线的停靠点。"],
-      ["花灯老街", "晚上灯亮之后更好看，适合收藏到个人行程。"],
-      ["手作工坊", "可以看到制作过程，建议补一句参观提醒。"],
-    ],
-  },
-  {
-    match: /审丑|奇怪|不对劲|见过最奇怪/,
-    icon: "🌀",
-    theme: "theme-alien",
-    labels: ["怪东西", "审丑坐标", "不对劲路口", "迷惑招牌", "离谱门头", "冷知识"],
-    pois: [
-      ["越看越怪的门头", "第一眼普通，第二眼开始不确定它到底想表达什么。"],
-      ["迷惑雕塑", "很难解释，但很适合发给朋友讨论。"],
-      ["审丑打卡墙", "丑得很有记忆点，适合收进整活地图。"],
-      ["奇怪路牌", "路牌文字和现场气质完全不搭。"],
-    ],
-  },
-  {
-    match: /留学生|爆改|热门地点/,
-    icon: "🧋",
-    theme: "theme-city",
-    labels: ["留学生据点", "本地替代", "奶茶点", "超市路线", "学习角", "夜归路"],
-    pois: [
-      ["被爆改的本地咖啡", "菜单已经开始很懂亚洲胃了。"],
-      ["深夜补给超市", "赶 deadline 的时候很有用。"],
-      ["奶茶替代点", "不一定正宗，但能救心情。"],
-      ["学习后散步路", "图书馆出来走一圈刚好回血。"],
-    ],
-  },
-  {
-    match: /山西|古建|胡同|古镇/,
-    icon: "🏯",
-    theme: "theme-city",
-    labels: ["古建群", "旧巷入口", "木构屋檐", "碑刻墙", "慢行线", "非遗点"],
-    pois: [
-      ["木构屋檐观察点", "抬头能看到很漂亮的斗拱细节，适合补一条建筑备注。"],
-      ["旧巷入口", "上午光线最好，游客也相对少。"],
-      ["碑刻墙角", "信息密度很高，适合做文化地图里的重点点位。"],
-      ["慢行休息点", "走累了可以停一下，旁边有树荫。"],
-    ],
-  },
-];
-
-const fallbackTheme = {
-  icon: "📍",
-  theme: "theme-city",
-  labels: ["中心街区", "共享路线", "隐藏角落", "收藏点", "共建坐标", "探索中"],
-  pois: [
-    ["被大家标记的角落", "这里暂时没有官方名字，但已经被很多人收藏。"],
-    ["顺路补给点", "适合在路线中途停一下。"],
-    ["情绪停靠点", "可以留下今天的心情备注。"],
-    ["地图封面点", "视野开阔，适合当作这张地图的第一印象。"],
-  ],
-};
-
-function getThemeConfig(title) {
-  return themeConfigs.find((config) => config.match.test(title)) || fallbackTheme;
-}
-
-function applyMapTheme(title) {
-  const config = getThemeConfig(title);
-  screens.map.classList.remove("theme-kiss", "theme-alien", "theme-restroom", "theme-city");
-  screens.map.classList.add(config.theme);
-  iconPickerButtons.forEach((button) => {
-    button.classList.toggle("active", button.textContent.trim() === config.icon);
-  });
-  mapLabels.forEach((label, index) => {
-    label.textContent = config.labels[index] || "";
-  });
-  poiButtons.forEach((button, index) => {
-    const poi = config.pois[index % config.pois.length];
-    const icon = config.icons?.[index % config.icons.length] || config.icon;
-    button.classList.remove("mini", "pink", "yellow", "scenic", "food", "cafe", "shop", "hotel");
-    button.classList.add("is-themed");
-    button.dataset.poi = poi[0];
-    button.dataset.desc = poi[1];
-    button.innerHTML = `<span>${icon}</span>`;
-  });
-}
-
-function go(screenName) {
-  Object.values(screens).forEach((screen) => screen.classList.remove("is-active"));
-  screens[screenName].classList.add("is-active");
-}
-
-function updateStickers() {
-  const puzzleCount = Math.min(stickers, 12);
-  stickerCount.textContent = String(puzzleCount);
-  rewardCount.textContent = String(puzzleCount);
-  if (homeRewardCount) homeRewardCount.textContent = String(puzzleCount);
-  if (bankedCount) bankedCount.textContent = String(puzzleCount);
-  rewardBadge.textContent = String(puzzleCount);
-  rewardBadge.hidden = puzzleCount <= 0;
-  const canDraw = puzzleCount >= 12 && redeemed < 1;
-  const drawText = redeemed >= 1 ? "已抽取" : (canDraw ? "抽实体奖品" : "集齐后抽奖");
-  openScratchButton.textContent = drawText;
-  openScratchButton.disabled = !canDraw;
-  stickerHint.textContent = canDraw
-    ? "已集齐 12 块拼图，可抽取实体奖品"
-    : `还差 ${12 - puzzleCount} 块拼图，可解锁实体奖品抽取`;
-  document.querySelector("#openScratchFromHome").textContent = drawText;
-  document.querySelector("#openScratchFromHome").disabled = !canDraw;
-  document.querySelector("#openScratchFromRewards").textContent = drawText;
-  document.querySelector("#openScratchFromRewards").disabled = !canDraw;
-  document.querySelectorAll("[data-puzzle-grid]").forEach((grid) => {
-    if (!grid.children.length) {
-      for (let index = 0; index < 12; index += 1) grid.append(document.createElement("span"));
-    }
-    [...grid.children].forEach((piece, index) => {
-      piece.classList.toggle("is-filled", index < puzzleCount);
-    });
-  });
-  const homePuzzleHint = document.querySelector("#homePuzzleHint");
-  if (homePuzzleHint) {
-    homePuzzleHint.textContent = canDraw
-      ? "12 块拼图已集齐，去抽实体奖品"
-      : `完成指定行为即可点亮拼图，当前 ${puzzleCount}/12`;
-  }
-  updatePrizeRulesPlacement();
-}
-
-function updatePrizeRulesPlacement() {
-  if (!activityPlayRules || !dailyBoard) return;
-  dailyBoard.insertAdjacentElement("afterend", activityPlayRules);
-}
-
-function showToast(text) {
-  clearTimeout(toastTimer);
-  toast.textContent = text;
-  toast.hidden = false;
-  toastTimer = setTimeout(() => {
-    toast.hidden = true;
-  }, 1300);
-}
-
-function addStickers(amount, reason) {
-  stickers = Math.min(12, stickers + amount);
-  updateStickers();
-  addLog("🧩", reason, `获得 ${amount} 块拼图`);
-  showToast(`${reason} · 获得 ${amount} 块拼图`);
-}
-
-function addTaskRewardLog(intent, amount) {
-  addLog("🧩", taskLogTitleMap[intent] || "完成指定行为", `获得 ${amount} 块拼图`);
-}
-
-function getDailyTaskRewardKey(intent) {
-  return `puzzle-task-reward-${intent}-${getTodayKey()}`;
-}
-
-function hasDailyTaskReward(intent) {
-  return localStorage.getItem(getDailyTaskRewardKey(intent)) === "1";
-}
-
-function setDailyTaskRewarded(intent) {
-  localStorage.setItem(getDailyTaskRewardKey(intent), "1");
-}
-
-function updateTaskCards() {
-  document.querySelectorAll("[data-task-go]").forEach((button) => {
-    const intent = button.dataset.taskGo;
-    if (!intent || !hasDailyTaskReward(intent)) return;
-    const card = button.closest(".task-card");
-    card?.classList.add("is-claimed");
-    const status = card?.querySelector("em");
-    if (status) status.textContent = "已完成";
-    button.textContent = "可继续";
-    button.disabled = true;
-  });
-}
-
-function completeTaskReward(intent, reason = "任务完成") {
-  if (!intent || !taskRewardMap[intent]) {
-    showToast(reason);
-    return;
-  }
-  markTaskDoneToday(intent);
-  setDailyTaskRewarded(intent);
-  stickers = Math.min(12, stickers + taskRewardMap[intent]);
-  updateStickers();
-  addTaskRewardLog(intent, taskRewardMap[intent]);
-  showToast(`${reason} · 获得 ${taskRewardMap[intent]} 块拼图`);
-  updateTaskCards();
-}
-
-function addLog(icon, title, detail) {
-  const empty = activityLog.querySelector(".empty-log");
-  if (empty) empty.remove();
-  const article = document.createElement("article");
-  article.innerHTML = `<span>${icon}</span><div><strong>${title}</strong><small>${detail}</small></div>`;
-  activityLog.prepend(article);
-}
-
-function ensureProgressMap(title, points, group = "viewed") {
-  if (progressMaps[group].has(title)) return;
-  progressMaps[group].add(title);
-  progressMapData[group].unshift({ title, points });
-  renderHomeMapGroups();
-  updatePrizeRulesPlacement();
-}
-
-function createProgressMapCard(item, group) {
-  const config = getThemeConfig(item.title);
-  const card = document.createElement("button");
-  card.className = "progress-map open-map";
-  card.dataset.title = item.title;
-  card.dataset.points = item.points;
-  const statusText = item.status || groupCopy[group].status;
-  card.innerHTML = `
-    <span class="map-cover dynamic-cover">${config.icon}</span>
-    <strong>${item.title}</strong>
-    <small>${statusText}</small>
-    <i>继续完成</i>
-  `;
-  card.addEventListener("click", () => openMap(item.title, item.points, false));
-  return card;
-}
-
-function renderMapGroup(group) {
-  const stack = mapStacks[group] || mapStacks.viewed;
-  const items = getMapGroupItems(group);
-  stack.replaceChildren();
-  if (!items.length) {
-    stack.innerHTML = groupCopy[group].empty;
-    return;
-  }
-  items.slice(0, 2).forEach((item) => stack.append(createProgressMapCard(item, group)));
-}
-
-function getMapGroupItems(group) {
-  return (
-    group === "owned"
-      ? [
-          ...progressMapData.created.map((item) => ({ ...item, status: groupCopy.created.status })),
-          ...progressMapData.joined.map((item) => ({ ...item, status: groupCopy.joined.status })),
-        ]
-      : progressMapData[group]
-  );
-}
-
-function renderHomeMapGroups() {
-  const viewedItems = getMapGroupItems("viewed");
-  const ownedItems = getMapGroupItems("owned");
-  const hasViewed = viewedItems.length > 0;
-  const hasOwned = ownedItems.length > 0;
-  renderMapGroup("viewed");
-  renderMapGroup("owned");
-  mapGroupButtons.viewed.textContent = hasViewed ? "查看全部" : "去浏览";
-  mapGroupButtons.owned.textContent = hasOwned ? "查看全部" : "去创建/去参与";
-  mapGroupButtons.viewed.classList.toggle("is-empty", !hasViewed);
-  mapGroupButtons.owned.classList.toggle("is-empty", !hasOwned);
-  mapGroupEls.viewed.hidden = false;
-  mapGroupEls.owned.hidden = false;
-  if (!hasViewed && !hasOwned) {
-    mapGroupEls.owned.hidden = true;
-    mapGroupEls.viewed.parentElement.append(mapGroupEls.viewed);
-    return;
-  }
-  if (hasOwned) {
-    mapGroupEls.owned.parentElement.prepend(mapGroupEls.owned);
-    mapGroupEls.viewed.hidden = !hasViewed;
-    return;
-  }
-  mapGroupEls.viewed.parentElement.append(mapGroupEls.viewed, mapGroupEls.owned);
-}
-
-function renderAllMaps(group) {
-  const items = getMapGroupItems(group);
-  allMapsTitle.textContent = groupCopy[group].title;
-  allMapsList.replaceChildren();
-  if (!items.length) {
-    allMapsList.innerHTML = groupCopy[group].empty;
-    return;
-  }
-  items.forEach((item) => allMapsList.append(createProgressMapCard(item, group)));
-}
-
-function markTaskReady(message = "任务完成，拼图已到账", intent = activeMapTaskIntent) {
-  const resolvedIntent = intent || activeMapTaskIntent || pendingMapTaskIntent || "browse";
-  completeTaskReward(resolvedIntent, message);
-}
-
-function getTodayKey() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function getMapTaskKey(prefix, intent) {
-  return `${prefix}-${intent}-${currentMapTitle}-${getTodayKey()}`;
-}
-
-function markTaskDoneToday(intent) {
-  if (!intent) return;
-  localStorage.setItem(getMapTaskKey("map-task-done", intent), "1");
-}
-
-function isTaskDoneToday(intent) {
-  if (!intent) return true;
-  return localStorage.getItem(getMapTaskKey("map-task-done", intent)) === "1";
-}
-
-function isBubbleClosedToday(intent) {
-  const today = new Date().toISOString().slice(0, 10);
-  return localStorage.getItem(`map-bubble-${intent}-${currentMapTitle}`) === today;
-}
-
-function closeBubbleForToday(intent) {
-  const today = new Date().toISOString().slice(0, 10);
-  localStorage.setItem(`map-bubble-${intent}-${currentMapTitle}`, today);
-}
-
-function getMapTaskProfile(title = currentMapTitle) {
-  if (progressMaps.created.has(title)) {
-    return { role: "creator", collaborative: true, canCollect: true };
-  }
-  if (progressMaps.joined.has(title)) {
-    return { role: "participant", collaborative: true, canCollect: true };
-  }
-  return { role: "viewer", collaborative: true, canCollect: true };
-}
-
-function canShowMapTask(intent, profile = getMapTaskProfile()) {
-  if (!intent || intent === "browse" || isBubbleClosedToday(intent) || isTaskDoneToday(intent)) return false;
-  if (intent === "collect" && !profile.canCollect) return false;
-  if (intent === "add" && !profile.collaborative) return false;
-  return true;
-}
-
-function recommendMapTask() {
-  const profile = getMapTaskProfile();
-  const priorityMap = {
-    viewer: ["collect", "share", "add"],
-    participant: ["add", "share", "collect"],
-    creator: ["add", "share", "collect"],
-  };
-  return (priorityMap[profile.role] || priorityMap.viewer).find((intent) => canShowMapTask(intent, profile)) || "";
-}
-
-function showMapGuidance(intent = recommendMapTask()) {
-  const profile = getMapTaskProfile();
-  const nextIntent = canShowMapTask(intent, profile) ? intent : recommendMapTask();
-  if (!nextIntent) {
-    mapGuidanceBubble.hidden = true;
-    return;
-  }
-  const copy = {
-    collect: ["收藏点位", "收藏 1 个你感兴趣的点位，完成后拼图会自动到账。", "去收藏"],
-    share: ["分享合集", "把这张地球角落分享出去，完成后拼图会自动到账。", "去分享"],
-    add: [profile.role === "viewer" ? "添加点位" : "继续添加点位", "这个合集开放协作，补充 1 个点位并填写备注后拼图会自动到账。", "去添加"],
-    invite: ["邀请好友进入", "邀请好友进入合集，一起共建这张地图。", "去邀请"],
-    views: ["推动 10 人浏览", "把地图分享出去，达到浏览目标后可以获得拼图。", "去分享"],
-  }[nextIntent];
-  if (!copy) return;
-  activeMapTaskIntent = nextIntent;
-  mapGuidanceTitle.textContent = copy[0];
-  mapGuidanceText.textContent = copy[1];
-  mapGuidanceAction.textContent = copy[2];
-  mapGuidanceBubble.hidden = false;
-}
-
-function openMap(title, points, shouldReward = true) {
-  setMapEditingMode(false);
-  currentMapTitle = title;
-  currentMapPoints = points;
-  mapTitle.textContent = title;
-  mapMeta.textContent = `${points} 个地点 · ${getCreatorForTitle(title)} 创建`;
-  inviteTitle.textContent = title;
-  applyMapTheme(title);
-  go("map");
-  ensureProgressMap(title, points, "viewed");
-  if (shouldReward) markTaskReady("浏览合集完成，拼图已到账", "browse");
-  showMapGuidance(pendingMapTaskIntent || recommendMapTask());
-  pendingMapTaskIntent = "";
-}
-
-function renderDraftPlaces() {
-  draftList.replaceChildren();
-  if (!lastDraftPlaces.length) {
-    draftList.innerHTML = `<p class="draft-empty">候选点位已清空，可以重新生成。</p>`;
-    return;
-  }
-  lastDraftPlaces.forEach((place) => {
-    const item = document.createElement("article");
-    item.className = "draft-place";
-    item.innerHTML = `
-      <label>
-        <input type="checkbox" ${place.checked ? "checked" : ""} />
-        <span>${place.icon}</span>
-        <div>
-          <strong>${place.name}</strong>
-          <small>${place.meta}</small>
-          <p>${place.reason}</p>
-        </div>
-      </label>
-      <button aria-label="删除 ${place.name}">×</button>
-    `;
-    item.querySelector("input").addEventListener("change", (event) => {
-      place.checked = event.target.checked;
-    });
-    item.querySelector("button").addEventListener("click", () => {
-      lastDraftPlaces = lastDraftPlaces.filter((entry) => entry.id !== place.id);
-      renderDraftPlaces();
-    });
-    draftList.append(item);
-  });
-}
-
-async function openDraftDrawer({ mode = "theme", topic = "" } = {}) {
-  lastDraftMode = mode;
-  lastDraftTopic = topic.trim() || (mode === "paste" ? "粘贴内容" : "上海咖啡地图");
-  draftDrawer.hidden = false;
-  draftDrawer.classList.add("is-loading");
-  draftSkeleton.hidden = false;
-  draftList.replaceChildren();
-  draftError.hidden = true;
-  draftAlert.hidden = true;
-  hideDraftDebug();
-  draftTitle.textContent = "正在生成候选点位...";
-  draftSubtitle.textContent = "AI 正在整理地点名称、区域和推荐理由。";
-  const activeButton = generateDraft;
-  activeButton.disabled = true;
-  activeButton.textContent = "正在生成...";
-  try {
-    const aiResult = await requestAiPlaces(lastDraftTopic);
-    activeButton.disabled = false;
-    activeButton.textContent = "确认";
-    draftDrawer.classList.remove("is-loading");
-    draftSkeleton.hidden = true;
-    lastDraftTopic = aiResult.mapTitle || lastDraftTopic;
-    lastDraftPlaces = normalizeAiPlaces(aiResult);
-    draftTitle.textContent = `AI 已为你找到 ${lastDraftPlaces.length} 个候选点位`;
-    draftSubtitle.textContent = "先勾选你想加入地图的地点，生成后还可以继续修改点位、图标和备注。";
-    if (/狗|宠物|遛|拉屎/.test(lastDraftTopic)) {
-      draftAlert.hidden = false;
-      draftAlert.textContent = "这个主题比较特别，AI 已根据“宠物友好 / 遛狗 / 公园”等方向生成候选点位，请确认后再加入地图。";
-    }
-    renderDraftPlaces();
-  } catch (error) {
-    activeButton.disabled = false;
-    activeButton.textContent = "确认";
-    draftDrawer.classList.remove("is-loading");
-    draftSkeleton.hidden = true;
-    draftTitle.textContent = "生成失败";
-    draftSubtitle.textContent = error.message || "AI 接口请求失败，可以重新生成。";
-    draftError.querySelector("strong").textContent = error.message === "请先配置 Qstoken" ? "请先配置 Qstoken" : "暂时没有找到合适地点";
-    draftError.querySelector("p").textContent = error.debug?.rawResponseText
-      ? "接口已有返回，但没有解析到可用 places。请展开调试信息查看原始 response。"
-      : error.message || "可以重新生成，或直接从空白地图开始。";
-    if (error.debug?.parsedAiContent) {
-      draftList.innerHTML = `<pre class="raw-ai-reply">${escapeHtml(error.debug.parsedAiContent)}</pre>`;
-    }
-    draftError.hidden = false;
-    showDraftDebug(
-      error.debug || {
-        requestSuccess: false,
-        endpoint: AI_ENDPOINT,
-        httpStatus: "NO_DEBUG",
-        responseHeaders: {},
-        requestBody: {
-          query: buildAiPrompt(String(lastDraftTopic || "").trim()),
-          bot: AI_BOT,
-          history: [
-            {
-              role: "user",
-              content: [
-                { text: buildAiPrompt(String(lastDraftTopic || "").trim()) },
-              ],
-            },
-          ],
-          generation_kwargs: {
-            stream: true,
-          },
-          thinking: true,
-          websearch: [],
-          workspace_id: 0,
-        },
-        rawResponseText: "",
-        parsedAiContent: "",
-        placesLength: 0,
-      }
-    );
-    if (/Qstoken/.test(error.message)) showQstokenPanel();
-  }
-}
-
-function createMapFromDraft() {
-  const picked = lastDraftPlaces.filter((place) => place.checked);
-  const count = Math.max(picked.length, 1);
-  currentMapTitle = lastDraftMode === "paste" ? "导入地点地图" : lastDraftTopic;
-  currentMapPoints = String(count);
-  mapTitle.textContent = currentMapTitle;
-  const visibilityText = selectedVisibility === "public" ? "公开参与活动" : "仅链接可见";
-  mapMeta.textContent = `${count} 个候选点位 · ${visibilityText}`;
-  inviteTitle.textContent = currentMapTitle;
-  applyMapTheme(currentMapTitle);
-  draftDrawer.hidden = true;
-  setMapEditingMode(true);
-  renderDraftMapPins(picked);
-  go("map");
-  ensureProgressMap(currentMapTitle, currentMapPoints, "created");
-  completeTaskReward("create", "创建地点合集");
-  showToast(selectedVisibility === "public" ? "已公开参加活动，有机会上榜" : "已设为仅链接可见");
-}
-
-document.querySelectorAll("[data-go]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const target = button.dataset.go;
-    if (target === "map") {
-      setMapEditingMode(currentMapIsDraft);
-      mapTitle.textContent = currentMapTitle;
-      mapMeta.textContent = currentMapIsDraft
-        ? `${currentMapPoints} 个点位 · 草稿可编辑`
-        : `${currentMapPoints} 个地点 · 地球角落活动中`;
-      inviteTitle.textContent = currentMapTitle;
-      applyMapTheme(currentMapTitle);
-    }
-    go(target);
-  });
-});
-
-document.querySelectorAll("[data-view-all]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const group = button.dataset.viewAll;
-    const items = getMapGroupItems(group);
-    if (items.length) {
-      renderAllMaps(group);
-      go("allMaps");
+      showScreen(go.dataset.go);
       return;
     }
-    if (group === "owned") {
-      go("create");
+    const tab = event.target.closest('[data-board-tab]');
+    if (tab) {
+      currentRankType = tab.dataset.boardTab === 'hot' ? 'hot' : 'local';
+      renderHomeRank();
+      if (currentRankType === 'local') openCityPicker();
       return;
     }
-    go("home");
-    showToast("从上方选择一个地球角落");
-  });
-});
-
-document.querySelectorAll(".open-map").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".open-map").forEach((item) => item.classList.remove("is-picked"));
-    button.classList.add("is-picked");
-    openMap(button.dataset.title, button.dataset.points);
-  });
-});
-
-boardTabs.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    const mode = button.dataset.boardTab;
-    const alreadyCity = mode === "city" && currentRankBoard === "city";
-    const wantsCityPicker = Boolean(event.target.closest("#cityTabCity"));
-    boardTabs.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    if (mode === "city") {
-      boardSubtitle.textContent = "看看这个城市有哪些宝藏角落吧";
-      if (!alreadyCity) renderRankBoard("city");
-      if (wantsCityPicker || alreadyCity) cityPickerModal.hidden = false;
+    const cityPick = event.target.closest('[data-city-pick]');
+    if (cityPick) {
+      pickCity(cityPick.dataset.cityPick);
       return;
     }
-    boardSubtitle.textContent = "每日更新，发现热门地点合集";
-    renderRankBoard("all");
-  });
-});
-
-visibilityOptions.forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedVisibility = button.dataset.visibility;
-    visibilityOptions.forEach((item) => item.classList.toggle("active", item === button));
-  });
-});
-
-closeCityPicker.addEventListener("click", () => {
-  cityPickerModal.hidden = true;
-});
-
-cityPickerModal.addEventListener("click", (event) => {
-  if (event.target.dataset.closeCityPicker) {
-    cityPickerModal.hidden = true;
-    return;
-  }
-  const cityButton = event.target.closest("[data-city-pick]");
-  if (!cityButton) return;
-  updateSelectedCity(cityButton.dataset.cityPick);
-  cityPickerModal.hidden = true;
-});
-
-rankWaterfall.addEventListener("click", (event) => {
-  if (event.target.closest("#openFullRank")) {
-    renderRankList(currentRankBoard);
-    go("rankList");
-    return;
-  }
-  const target = event.target.closest(".rank-map-open, .rank-row");
-  if (!target) return;
-  openMap(target.dataset.title, target.dataset.points);
-});
-
-rankListFull.addEventListener("click", (event) => {
-  const target = event.target.closest(".rank-map-open, .rank-row");
-  if (!target) return;
-  openMap(target.dataset.title, target.dataset.points);
-});
-
-openBoardRules.addEventListener("click", () => {
-  boardRulesModal.hidden = false;
-});
-
-closeBoardRules.addEventListener("click", () => {
-  boardRulesModal.hidden = true;
-});
-
-boardRulesModal.addEventListener("click", (event) => {
-  if (event.target === boardRulesModal) {
-    boardRulesModal.hidden = true;
-  }
-});
-
-openRewardCenter.addEventListener("click", () => {
-  rewardCenterModal.hidden = false;
-});
-
-closeRewardCenter.addEventListener("click", () => {
-  rewardCenterModal.hidden = true;
-});
-
-rewardCenterModal.addEventListener("click", (event) => {
-  if (event.target.dataset.closeRewardCenter) rewardCenterModal.hidden = true;
-});
-
-renderRankBoard("all");
-
-generateDraft.addEventListener("click", () => {
-  const topic = themePrompt.value.trim();
-  if (!topic) {
-    showToast("先输入想做的地图主题");
-    themePrompt.focus();
-    return;
-  }
-  startDraftGeneration(topic);
-});
-
-presetButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    presetButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    themePrompt.value = button.dataset.theme;
-    startDraftGeneration(button.dataset.theme);
-  });
-});
-
-closeDraft.addEventListener("click", () => {
-  draftDrawer.hidden = true;
-});
-
-retryDraft.addEventListener("click", () => startDraftGeneration(lastDraftTopic));
-publishDraft.addEventListener("click", createMapFromDraft);
-blankFromError.addEventListener("click", () => document.querySelector("#finishCreate").click());
-
-saveQstoken.addEventListener("click", () => {
-  const token = qstokenInput.value.trim();
-  if (!token) {
-    showToast("请先配置 Qstoken");
-    qstokenInput.focus();
-    return;
-  }
-  localStorage.setItem(QSTOKEN_STORAGE_KEY, token);
-  hideQstokenPanel();
-  showToast("Qstoken 已保存");
-  if (pendingDraftTopic) startDraftGeneration(pendingDraftTopic);
-});
-
-document.querySelectorAll(".poi-open").forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedPoi = button.dataset.poi;
-    poiTitle.textContent = button.dataset.poi;
-    poiDesc.textContent = button.dataset.desc;
-    if (currentMapIsDraft) {
-      selectedPointType = "official";
-      pointTypeButtons.forEach((item) => item.classList.toggle("active", item.dataset.pointType === "official"));
-      coordinatePanel.hidden = true;
-      prepareNoteForm();
-      go("note");
+    if (event.target.closest('#closeCityPicker') || event.target.closest('[data-close-city-picker]')) {
+      closeCityPicker();
       return;
     }
-    poiDetail.hidden = false;
-  });
-});
-
-document.querySelector("#closePoi").addEventListener("click", () => {
-  poiDetail.hidden = true;
-});
-
-document.querySelector("#collectPoi").addEventListener("click", () => {
-  poiDetail.hidden = true;
-  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
-  completeTaskReward("collect", `收藏点位「${selectedPoi}」`);
-});
-
-collectTask.addEventListener("click", () => {
-  selectedPoi = selectedPoi || "海边晚风观景点";
-  poiTitle.textContent = selectedPoi;
-  poiDesc.textContent = poiDesc.textContent || "收藏一个点位后，可获得 1 块地图拼图。";
-  poiDetail.hidden = false;
-});
-
-document.querySelector("#cancelCollectAll").addEventListener("click", () => {
-  collectAllModal.hidden = true;
-});
-
-document.querySelector("#confirmCollectAll").addEventListener("click", () => {
-  collectAllModal.hidden = true;
-  collectTask.classList.add("is-done");
-  collectTask.disabled = true;
-  poiDetail.hidden = true;
-  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
-  mapGuidanceBubble.hidden = true;
-  markTaskReady("收藏点位完成，拼图已到账", "collect");
-});
-
-function prepareNoteForm() {
-  const isOfficial = selectedPointType === "official";
-  const shouldLockPoi = isOfficial && !currentMapIsDraft;
-  notePointName.readOnly = shouldLockPoi;
-  notePointName.value = isOfficial && selectedPoi ? selectedPoi : "";
-  notePointName.placeholder = isOfficial ? "搜索或输入官方 POI 名称" : "给这个点位起个名字";
-  noteText.value = "";
-}
-
-noteTask.addEventListener("click", () => {
-  prepareNoteForm();
-  go("note");
-});
-
-closeMapGuidance.addEventListener("click", () => {
-  closeBubbleForToday(activeMapTaskIntent);
-  mapGuidanceBubble.hidden = true;
-});
-
-mapGuidanceAction.addEventListener("click", () => {
-  const intent = activeMapTaskIntent;
-  if (intent === "collect") {
-    collectTask.click();
-    return;
-  }
-  if (intent === "add") {
-    prepareNoteForm();
-    go("note");
-    return;
-  }
-  if (intent === "invite") {
-    go("invite");
-    return;
-  }
-  mapGuidanceBubble.hidden = true;
-  markTaskReady("任务完成，拼图已到账");
-});
-
-iconPickerButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    iconPickerButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    showToast(`已选择 ${button.textContent} 作为点位图标`);
-  });
-});
-
-function updateCoordinateOutput() {
-  latValue.textContent = Number(latInput.value).toFixed(6);
-  lngValue.textContent = Number(lngInput.value).toFixed(6);
-}
-
-pointTypeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    pointTypeButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    const type = button.dataset.pointType;
-    selectedPointType = type;
-    coordinatePanel.hidden = type !== "custom";
-    if (type === "custom") {
-      notePointName.readOnly = false;
-      notePointName.value = "";
-      notePointName.placeholder = "给自定义点位起个名字";
-      updateCoordinateOutput();
-      showToast("已切换为自定义坐标点");
-    } else if (type === "current") {
-      notePointName.readOnly = false;
-      notePointName.value = "";
-      notePointName.placeholder = "给当前位置起个名字";
-      showToast("已切换为我所在位置");
-    } else {
-      notePointName.readOnly = !currentMapIsDraft;
-      notePointName.value = selectedPoi;
-      notePointName.placeholder = "搜索或输入官方 POI 名称";
-      showToast("已切换为官方 POI");
+    const openFull = event.target.closest('[data-open-rank-list]');
+    if (openFull) {
+      renderRankList(openFull.dataset.openRankList);
+      return;
+    }
+    const open = event.target.closest('[data-open-collection]');
+    if (open) {
+      openCollection(open.dataset.openCollection);
+      return;
+    }
+    const subscribe = event.target.closest('[data-subscribe-collection]');
+    if (subscribe) {
+      subscribeCollection(subscribe.dataset.subscribeCollection);
+      return;
+    }
+    const share = event.target.closest('[data-share-collection]');
+    if (share) {
+      openShareModal(share.dataset.shareCollection);
+      return;
+    }
+    if (event.target.closest('[data-switch-hot]')) {
+      currentRankType = 'hot';
+      renderHomeRank();
+      return;
+    }
+    const viewAll = event.target.closest('[data-view-all]');
+    if (viewAll) {
+      renderAllMaps(viewAll.dataset.viewAll);
+      return;
+    }
+    const poi = event.target.closest('.poi-open');
+    if (poi) {
+      openPointDetail(poi);
+      return;
+    }
+    if (event.target.closest('#collectTask')) {
+      subscribeCollection();
+      return;
+    }
+    if (event.target.closest('#shareTask')) {
+      openShareModal(currentCollectionId);
+      return;
+    }
+    if (event.target.closest('#noteTask')) {
+      prepareNewPoiScreen();
+      showScreen('note');
+      return;
+    }
+    if (event.target.closest('#submitNote')) {
+      submitPoi();
+      return;
+    }
+    if (event.target.closest('#closePoi')) {
+      $('#poiDetail').hidden = true;
+      return;
+    }
+    const guidance = event.target.closest('#mapGuidanceAction');
+    if (guidance) {
+      const action = guidance.dataset.guidanceAction;
+      if (action === 'subscribe') subscribeCollection();
+      if (action === 'share') openShareModal(currentCollectionId);
+      if (action === 'addPoi') { prepareNewPoiScreen(); showScreen('note'); }
+      return;
+    }
+    if (event.target.closest('#closeMapGuidance')) {
+      $('#mapGuidanceBubble').hidden = true;
+      return;
+    }
+    const preset = event.target.closest('#presetGrid [data-theme]');
+    if (preset) {
+      $('#themePrompt').value = preset.dataset.theme;
+      buildDraft(preset.dataset.theme);
+      return;
+    }
+    if (event.target.closest('#generateDraft')) {
+      buildDraft($('#themePrompt').value.trim() || '上海100个适合i人发呆的长椅');
+      return;
+    }
+    if (event.target.closest('#finishCreate')) {
+      startBlankCollection();
+      return;
+    }
+    if (event.target.closest('#closeDraft')) {
+      $('#draftDrawer').hidden = true;
+      return;
+    }
+    if (event.target.closest('#publishDraft')) {
+      publishDraft();
+      return;
+    }
+    const visibility = event.target.closest('[data-visibility]');
+    if (visibility) {
+      selectedVisibility = visibility.dataset.visibility;
+      $$('[data-visibility]').forEach((button) => button.classList.toggle('active', button === visibility));
+      return;
+    }
+    const collectionStatus = event.target.closest('[data-collection-status]');
+    if (collectionStatus) {
+      selectedVisibility = collectionStatus.dataset.collectionStatus;
+      $$('[data-collection-status]').forEach((button) => button.classList.toggle('active', button === collectionStatus));
+      return;
+    }
+    const mapTheme = event.target.closest('[data-map-theme]');
+    if (mapTheme) {
+      selectedMapTheme = mapTheme.dataset.mapTheme;
+      $$('[data-map-theme]').forEach((button) => button.classList.toggle('active', button === mapTheme));
+      return;
+    }
+    const pointType = event.target.closest('[data-point-type]');
+    if (pointType) {
+      selectedPointType = pointType.dataset.pointType;
+      $$('[data-point-type]').forEach((button) => button.classList.toggle('active', button === pointType));
+      $('#coordinatePanel').hidden = selectedPointType !== 'current';
+      return;
+    }
+    const iconButton = event.target.closest('.icon-picker button');
+    if (iconButton) {
+      selectedIcon = iconButton.textContent.trim();
+      $$('.icon-picker button').forEach((button) => button.classList.toggle('active', button === iconButton));
+      return;
+    }
+    const finishShareButton = event.target.closest('[data-finish-share]');
+    if (finishShareButton) {
+      finishShare();
+      return;
+    }
+    if (event.target.closest('[data-close-share]')) {
+      ensureShareModal().hidden = true;
+      return;
+    }
+    const taskGo = event.target.closest('[data-task-go]');
+    if (taskGo) {
+      const type = taskGo.dataset.taskGo;
+      if (type === 'browse') openCollection(getRankCollections('hot', 1)[0]?.id);
+      if (type === 'subscribe') { openCollection(getRankCollections('hot', 1)[0]?.id, false); subscribeCollection(currentCollectionId); }
+      if (type === 'share') openShareModal(getRankCollections('hot', 1)[0]?.id);
+      if (type === 'addPoi') { openCollection((getRankCollections('local', 1)[0] || getRankCollections('hot', 1)[0])?.id, false); prepareNewPoiScreen(); showScreen('note'); }
+      if (type === 'createCollection') startBlankCollection();
+      return;
+    }
+    const exchange = event.target.closest('[data-exchange-reward]');
+    if (exchange) {
+      openExchangeModal(exchange.dataset.exchangeReward);
+      return;
+    }
+    const rewardAddress = event.target.closest('[data-open-reward-address]');
+    if (rewardAddress) {
+      openRewardAddress(rewardAddress.dataset.openRewardAddress);
+      return;
+    }
+    const confirmExchangeButton = event.target.closest('[data-confirm-exchange]');
+    if (confirmExchangeButton) {
+      confirmExchange(confirmExchangeButton.dataset.confirmExchange);
+      return;
+    }
+    if (event.target.closest('[data-close-exchange]')) {
+      ensureExchangeModal().hidden = true;
+      return;
+    }
+    if (event.target.closest('[data-close-reward-address]')) {
+      ensureRewardAddressModal().hidden = true;
+      return;
+    }
+    if (event.target.closest('[data-open-creator-reward]')) {
+      openCreatorReward();
+      return;
+    }
+    if (event.target.closest('[data-close-creator]')) {
+      ensureCreatorModal().hidden = true;
+      return;
+    }
+    if (event.target.closest('#openRewardCenter')) {
+      showScreen('rewards');
+      return;
+    }
+    if (event.target.closest('#openScratchFromHome')) {
+      openRewardsExchange();
+      return;
+    }
+    if (event.target.closest('#closeRewardCenter') || event.target.closest('[data-close-reward-center]')) {
+      $('#rewardCenterModal').hidden = true;
+      return;
+    }
+    if (event.target.closest('#openScratchFromRewards')) {
+      openRewardsExchange();
+      $('#rewardCenterModal').hidden = true;
+      return;
+    }
+    if (event.target.closest('#openScratch')) {
+      showScreen('rewards');
+      $('#rewardCenterModal').hidden = true;
+      return;
+    }
+    if (event.target.closest('#openBoardRules')) {
+      $('#boardRulesModal').hidden = false;
+      return;
+    }
+    if (event.target.id === 'boardRulesModal' || event.target.id === 'closeBoardRules') {
+      $('#boardRulesModal').hidden = true;
     }
   });
-});
 
-[latInput, lngInput].forEach((input) => {
-  input.addEventListener("input", updateCoordinateOutput);
-});
-
-document.querySelector("#submitNote").addEventListener("click", () => {
-  const pointName = notePointName.value.trim();
-  const note = noteText.value.trim();
-  if (!pointName) {
-    showToast("请先填写点位名称");
-    notePointName.focus();
-    return;
-  }
-  if (!note) {
-    showToast("请先填写备注内容");
-    noteText.focus();
-    return;
-  }
-  if (currentMapIsDraft) {
-    currentMapPoints = String(Number(currentMapPoints || 0) + 1);
-    mapMeta.textContent = `${currentMapPoints} 个点位 · 草稿可编辑`;
-    ensureProgressMap(currentMapTitle, currentMapPoints, "created");
-    const activeIcon = document.querySelector(".icon-picker .active")?.textContent.trim() || "📍";
-    draftMapPlaces = [
-      ...draftMapPlaces,
-      {
-        name: pointName,
-        meta: selectedPointType === "custom" ? "自定义坐标点" : "自定义点位",
-        icon: activeIcon,
-        reason: note,
-      },
-    ];
-    renderDraftMapPins(draftMapPlaces);
-  } else {
-    ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
-  }
-  go("map");
-  noteTask.classList.add("is-done");
-  mapGuidanceBubble.hidden = true;
-  markTaskReady("添加点位完成，拼图已到账", "add");
-});
-
-document.querySelector("#finishCreate").addEventListener("click", () => {
-  currentMapTitle = "我的空白地球角落";
-  currentMapPoints = "0";
-  mapTitle.textContent = currentMapTitle;
-  mapMeta.textContent = "0 个点位 · 可继续添加";
-  inviteTitle.textContent = currentMapTitle;
-  applyMapTheme(currentMapTitle);
-  setMapEditingMode(true);
-  renderDraftMapPins([]);
-  selectedPointType = "official";
-  pointTypeButtons.forEach((item) => item.classList.toggle("active", item.dataset.pointType === "official"));
-  coordinatePanel.hidden = true;
-  prepareNoteForm();
-  go("note");
-  ensureProgressMap(currentMapTitle, currentMapPoints, "created");
-  completeTaskReward("create", "创建地点合集");
-});
-
-document.querySelector("#friendEntered").addEventListener("click", () => {
-  ensureProgressMap(currentMapTitle, currentMapPoints, "joined");
-  addLog("👀", "好友成功进入", "邀请好友不计入本期拼图任务");
-  showToast("好友已进入合集");
-});
-
-function choosePrize() {
-  const prize = prizes[Math.floor(Math.random() * prizes.length)];
-  prizeIcon.textContent = prize.icon;
-  prizeName.textContent = prize.name;
-  prizeDesc.textContent = prize.desc;
-  unlockPrize(prize);
-  addLog(prize.icon, "抽奖奖励", `获得「${prize.name}」`);
-}
-
-function unlockPrize(prize) {
-  const slot = rewardSlots.find((item) => item.dataset.prize === prize.name);
-  if (!slot) return;
-  slot.classList.add("is-unlocked");
-  slot.title = prize.name;
-}
-
-function openScratch() {
-  if (stickers < 12) {
-    showToast(`还差 ${12 - stickers} 块拼图`);
-    return;
-  }
-  if (redeemed >= 1) {
-    showToast("本次实体奖品机会已使用");
-    return;
-  }
-  redeemed += 1;
-  updateStickers();
-  addLog("🎁", "实体奖品抽取", "消耗 1 次集齐奖励机会");
-  scratchModal.hidden = false;
-  scratchReady = true;
-  choosePrize();
-  drawScratchLayer();
-}
-
-openScratchButton.addEventListener("click", openScratch);
-document.querySelector("#openScratchFromRewards").addEventListener("click", openScratch);
-document.querySelector("#openScratchFromHome")?.addEventListener("click", openScratch);
-document.querySelector("#drawPrize").addEventListener("click", () => {
-  choosePrize();
-  drawScratchLayer();
-});
-
-document.querySelectorAll("[data-claim-task]").forEach((button) => {
-  button.addEventListener("click", () => {
-    if (button.disabled) return;
-    const reward = Number(button.dataset.reward || 1);
-    addStickers(reward, "领取拼图任务");
-    button.textContent = "今日已领取";
-    button.disabled = true;
-    button.closest(".task-card")?.classList.add("is-claimed");
-  });
-});
-
-document.querySelectorAll("[data-task-go]").forEach((button) => {
-  button.addEventListener("click", () => {
-    rewardCenterModal.hidden = true;
-    const action = button.dataset.taskGo;
-    const guide = {
-      browse: "浏览 1 个合集，拼图自动到账",
-      collect: "收藏 1 个点位，拼图自动到账",
-      share: "分享这张地球角落，拼图自动到账",
-      add: "添加点位并填写备注，拼图自动到账",
-      create: "创建 1 个合集，即可获得 1 块拼图",
-    };
-    pendingMapTaskIntent = action;
-    if (action === "create") {
-      go("create");
-    } else if (action === "invite") {
-      openMap(currentMapTitle, currentMapPoints, false);
-    } else if (action === "add") {
-      openMap(currentMapTitle, currentMapPoints, false);
-    } else if (action === "browse") {
-      openMap(currentMapTitle, currentMapPoints, false);
-      markTaskReady("浏览合集完成，拼图已到账", "browse");
-    } else if (action === "share") {
-      openMap(currentMapTitle, currentMapPoints, false);
-      markTaskReady("分享合集完成，拼图已到账", "share");
-    } else {
-      openMap(currentMapTitle, currentMapPoints, false);
+  document.addEventListener('change', (event) => {
+    if (event.target.matches('[data-draft-index]') && currentDraft) {
+      currentDraft.candidates[Number(event.target.dataset.draftIndex)].checked = event.target.checked;
     }
-    showToast(guide[action] || "完成行为后拼图自动到账");
+    if (event.target.matches('#boostDropRate')) {
+      state.boosted = event.target.checked;
+      showToast(state.boosted ? '已开启演示加速' : '已关闭演示加速');
+    }
   });
-});
 
-closeScratch.addEventListener("click", () => {
-  scratchModal.hidden = true;
-});
+  document.addEventListener('submit', (event) => {
+    if (event.target.id === 'creatorAddressForm') {
+      event.preventDefault();
+      state.creatorNoticePending = false;
+      state.creatorAddressSubmitted = true;
+      event.target.hidden = true;
+      $('.address-success', ensureCreatorModal()).hidden = false;
+      showToast('已提交，等待发货');
+      renderCreatorReward();
+    }
+    if (event.target.id === 'rewardAddressForm') {
+      event.preventDefault();
+      const modal = ensureRewardAddressModal();
+      const rewardId = modal.dataset.rewardId;
+      if (rewardId) state.rewardAddressSubmitted[rewardId] = true;
+      event.target.hidden = true;
+      $('.address-success', modal).hidden = false;
+      showToast('已提交收货地址');
+      renderAll();
+    }
+  });
 
-scratchModal.addEventListener("click", (event) => {
-  if (event.target.dataset.close) scratchModal.hidden = true;
-});
+  $('#openRewardCenter')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    showScreen('rewards');
+  });
 
-collectAllModal.addEventListener("click", (event) => {
-  if (event.target.dataset.closeCollect) collectAllModal.hidden = true;
-});
+  $('#openScratchFromHome')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    openRewardsExchange();
+  });
 
-function drawScratchLayer() {
-  const ctx = scratchCanvas.getContext("2d");
-  const width = scratchCanvas.width;
-  const height = scratchCanvas.height;
-  ctx.globalCompositeOperation = "source-over";
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#f8f9fc");
-  gradient.addColorStop(0.5, "#d2d9e7");
-  gradient.addColorStop(1, "#fbfcff");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
-  ctx.lineWidth = 18;
-  for (let i = -120; i < width + 120; i += 42) {
-    ctx.beginPath();
-    ctx.moveTo(i, height + 20);
-    ctx.lineTo(i + 120, -20);
-    ctx.stroke();
-  }
-  ctx.fillStyle = "#8b95a8";
-  ctx.font = "700 50px -apple-system, BlinkMacSystemFont, sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("?", width / 2, height / 2);
-}
+  $('#openScratch')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    $('#rewardCenterModal').hidden = true;
+    showScreen('rewards');
+  });
 
-let scratching = false;
-
-function getCanvasPoint(event) {
-  const rect = scratchCanvas.getBoundingClientRect();
-  const pointer = event.touches ? event.touches[0] : event;
-  return {
-    x: ((pointer.clientX - rect.left) / rect.width) * scratchCanvas.width,
-    y: ((pointer.clientY - rect.top) / rect.height) * scratchCanvas.height,
-  };
-}
-
-function scratch(event) {
-  if (!scratching || !scratchReady) return;
-  event.preventDefault();
-  const point = getCanvasPoint(event);
-  const ctx = scratchCanvas.getContext("2d");
-  ctx.globalCompositeOperation = "destination-out";
-  ctx.beginPath();
-  ctx.arc(point.x, point.y, 24, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-scratchCanvas.addEventListener("mousedown", (event) => {
-  scratching = true;
-  scratch(event);
-});
-scratchCanvas.addEventListener("mousemove", scratch);
-window.addEventListener("mouseup", () => {
-  scratching = false;
-});
-scratchCanvas.addEventListener("touchstart", (event) => {
-  scratching = true;
-  scratch(event);
-});
-scratchCanvas.addEventListener("touchmove", scratch, { passive: false });
-window.addEventListener("touchend", () => {
-  scratching = false;
-});
-
-renderCityButtons(domesticHotCities, ["上海", "北京", "杭州", "广州", "深圳", "成都"]);
-updateStickers();
-updateTaskCards();
-renderHomeMapGroups();
-updateCoordinateOutput();
-
+  renderAll();
+})();
 </script>
   </body>
 </html>
