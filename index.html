@@ -3,16 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PiTravel 活动 Demo</title>
+    <title>二逼们的浪漫旅行｜圆周旅迹</title>
     <style>
       :root {
-        color-scheme: light;
-        --ink: #111827;
-        --muted: #6f7b8f;
-        --line: #e8eef7;
-        --blue: #1677ff;
-        --soft-blue: #edf6ff;
-        --bg: #f7fbff;
+        --brand: #1bb8f0;
+        --ink: #202124;
+        --muted: #6d747d;
+        --paper: #fffdf4;
+        --mint: #ddf8ce;
+        --lemon: #fff2a6;
+        --pink: #ffdce9;
+        --sky: #d9f2ff;
+        --orange: #ffd6a5;
+        --line: #2d2d2d;
+        --soft-line: #e5dcc7;
+        --shadow-line: 5px 6px 0 var(--line);
       }
 
       * {
@@ -22,174 +27,1640 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: linear-gradient(180deg, #f2f8ff 0%, #ffffff 42%, #f8fbff 100%);
+        display: grid;
+        place-items: center;
         color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 8%, #fff6b8 0 11%, transparent 12%),
+          radial-gradient(circle at 92% 20%, #d5f4ff 0 13%, transparent 14%),
+          linear-gradient(135deg, #f5fbff 0%, #fff8dd 48%, #effde7 100%);
         font-family:
-          -apple-system,
-          BlinkMacSystemFont,
-          "PingFang SC",
-          "Hiragino Sans GB",
-          "Microsoft YaHei",
-          sans-serif;
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", sans-serif;
       }
 
-      main {
-        width: min(720px, calc(100% - 36px));
-        margin: 0 auto;
-        padding: 56px 0;
+      button,
+      input {
+        font: inherit;
       }
 
-      header {
-        margin-bottom: 30px;
+      button {
+        cursor: pointer;
       }
 
-      h1 {
-        margin: 0;
-        font-size: 34px;
-        line-height: 1.15;
+      .phone {
+        width: min(100vw, 430px);
+        height: min(100vh, 932px);
+        overflow: hidden;
+        background: var(--paper);
+        position: relative;
+        box-shadow: 0 18px 45px rgba(49, 68, 89, 0.16);
+      }
+
+      .screen {
+        height: 100%;
+        overflow-y: auto;
+        padding: 18px 20px 34px;
+        scroll-behavior: smooth;
+      }
+
+      .status {
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .brand-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        color: var(--brand);
+        background: #fff;
+        box-shadow: 0 8px 22px rgba(56, 157, 199, 0.12);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .brand-mark {
+        width: 22px;
+        height: 13px;
+        border-radius: 1px 1px 9px 9px;
+        background: var(--brand);
+        display: inline-block;
+      }
+
+      .topbar {
+        margin: 12px 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        font-weight: 900;
+        box-shadow: 3px 4px 0 var(--line);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+        animation: pop 0.18s ease-out;
+      }
+
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero {
+        position: relative;
+        min-height: 420px;
+        padding: 22px 18px 18px;
+        border: 2.5px solid var(--line);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at 13% 20%, rgba(255, 242, 166, 0.95), transparent 36%),
+          radial-gradient(circle at 92% 21%, rgba(255, 220, 233, 0.78), transparent 31%),
+          linear-gradient(180deg, #fffefa 0%, #f9ffe8 100%);
+        box-shadow: 6px 8px 0 var(--line);
+        overflow: hidden;
+      }
+
+      .hero h1 {
+        margin: 10px 0 12px;
+        max-width: 330px;
+        font-size: 43px;
+        line-height: 1.02;
         letter-spacing: 0;
       }
 
-      header p {
-        margin: 12px 0 0;
+      .hero p {
+        margin: 0;
+        max-width: 318px;
+        color: #525b65;
+        font-size: 17px;
+        line-height: 1.5;
+        font-weight: 800;
+      }
+
+      .hero-art {
+        position: absolute;
+        right: 9px;
+        bottom: 0;
+        width: 205px;
+        height: 178px;
+      }
+
+      .actions {
+        margin-top: 18px;
+      }
+
+      .primary,
+      .secondary,
+      .wide-action {
+        width: 100%;
+        border: 2.5px solid var(--line);
+        border-radius: 18px;
+        padding: 15px 14px;
+        min-height: 62px;
+        background: #fff;
+        box-shadow: 4px 5px 0 var(--line);
+        text-align: center;
+        font-weight: 950;
+      }
+
+      .primary {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .section-title {
+        margin: 28px 0 14px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 25px;
+        letter-spacing: 0;
+      }
+
+      .section-title span {
         color: var(--muted);
-        font-size: 15px;
-        line-height: 1.6;
+        font-size: 13px;
+        font-weight: 800;
       }
 
-      .demo-list {
+      .timeline {
         display: grid;
-        gap: 14px;
+        gap: 10px;
       }
 
-      .demo-card {
+      .room-panel {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 22px;
+        border: 2px solid var(--line);
+        background: #fff;
+        box-shadow: 4px 5px 0 var(--line);
+      }
+
+      .room-panel h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .field-grid {
         display: grid;
-        grid-template-columns: 56px minmax(0, 1fr) auto;
-        gap: 14px;
+        grid-template-columns: 1fr 108px;
+        gap: 9px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .field input {
+        width: 100%;
+        height: 48px;
+        border: 2px solid var(--line);
+        border-radius: 15px;
+        padding: 0 12px;
+        background: #fffefa;
+        color: var(--ink);
+        font-weight: 900;
+        outline: none;
+      }
+
+      .field input:focus {
+        box-shadow: 0 0 0 4px rgba(27, 184, 240, 0.18);
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 10px;
         align-items: center;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.9);
-        text-decoration: none;
-        color: inherit;
-        box-shadow: 0 14px 34px rgba(37, 72, 126, 0.08);
+        padding: 12px;
+        border-radius: 18px;
+        background: #fff;
+        border: 2px solid var(--soft-line);
       }
 
-      .demo-card:hover {
-        transform: translateY(-1px);
-        border-color: rgba(22, 119, 255, 0.26);
-      }
-
-      .icon {
-        width: 56px;
-        height: 56px;
+      .step-num {
+        width: 36px;
+        height: 36px;
+        border: 2px solid var(--line);
+        border-radius: 50%;
         display: grid;
         place-items: center;
+        background: var(--mint);
+        font-weight: 950;
+      }
+
+      .question-card,
+      .card,
+      .result-card {
+        padding: 16px;
+        border-radius: 24px;
+        background: #fff;
+        border: 2px solid var(--line);
+        box-shadow: var(--shadow-line);
+      }
+
+      .question-card {
+        background: var(--sky);
+      }
+
+      .question-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: #52636d;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .question-card h2 {
+        margin: 14px 0;
+        font-size: 24px;
+        line-height: 1.28;
+      }
+
+      .options {
+        display: grid;
+        gap: 9px;
+      }
+
+      .option {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: 54px;
+        padding: 12px 13px;
+        border: 2px solid var(--line);
         border-radius: 16px;
-        background: var(--soft-blue);
-        font-size: 28px;
+        background: #fff;
+        font-size: 15px;
+        font-weight: 850;
+        text-align: left;
       }
 
-      h2 {
-        margin: 0;
-        font-size: 20px;
-        line-height: 1.2;
+      .letter {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        background: var(--mint);
+        font-size: 14px;
+        font-weight: 950;
       }
 
-      .demo-card p {
-        margin: 6px 0 0;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.5;
+      .option-text {
+        flex: 1;
+        line-height: 1.45;
       }
 
-      .action {
-        padding: 9px 13px;
+      .progress-row {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .progress {
+        flex: 1;
+        height: 12px;
+        padding: 2px;
         border-radius: 999px;
-        color: var(--blue);
-        background: var(--soft-blue);
-        font-size: 13px;
+        background: #fff;
+        border: 2px solid var(--line);
+      }
+
+      .progress span {
+        display: block;
+        width: 16%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--brand);
+        transition: width 0.2s ease;
+      }
+
+      .tabs {
+        position: sticky;
+        top: -18px;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px 0 12px;
+        background: var(--paper);
+      }
+
+      .tab {
+        min-height: 44px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-weight: 950;
+      }
+
+      .tab.active {
+        background: var(--lemon);
+        box-shadow: 3px 4px 0 var(--line);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .person-hero {
+        display: grid;
+        grid-template-columns: 154px 1fr;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .person-img {
+        width: 154px;
+        height: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 0 rgba(45, 45, 45, 0.1));
+      }
+
+      .person-title h2 {
+        margin: 0 0 6px;
+        font-size: 27px;
+        line-height: 1.05;
+      }
+
+      .percent {
+        display: inline-flex;
+        margin-top: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 2px solid var(--line);
+        background: var(--mint);
+        font-weight: 950;
+      }
+
+      .quote {
+        margin: 14px 0 0;
+        padding: 12px;
+        border-radius: 18px;
+        background: var(--lemon);
+        border: 2px solid var(--line);
+        font-size: 16px;
+        line-height: 1.45;
         font-weight: 900;
+      }
+
+      .content-block {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 18px;
+        background: #fffefa;
+        border: 2px solid var(--soft-line);
+      }
+
+      .content-block h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+
+      .content-block p {
+        margin: 0;
+        color: #4f555e;
+        font-size: 14px;
+        line-height: 1.6;
+        font-weight: 700;
+      }
+
+      .axis {
+        position: relative;
+        height: 260px;
+        margin-top: 12px;
+        border: 2px solid var(--line);
+        border-radius: 22px;
+        background:
+          linear-gradient(90deg, transparent calc(50% - 1px), rgba(45,45,45,0.45) calc(50% - 1px), rgba(45,45,45,0.45) calc(50% + 1px), transparent calc(50% + 1px)),
+          linear-gradient(0deg, transparent calc(50% - 1px), rgba(45,45,45,0.45) calc(50% - 1px), rgba(45,45,45,0.45) calc(50% + 1px), transparent calc(50% + 1px)),
+          linear-gradient(135deg, #fffefa, #effbea);
+        overflow: hidden;
+      }
+
+      .axis-label {
+        position: absolute;
+        z-index: 1;
+        color: #737a83;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .axis-left { left: 9px; top: 50%; transform: translateY(-50%); }
+      .axis-right { right: 9px; top: 50%; transform: translateY(-50%); }
+      .axis-top { left: 50%; top: 8px; transform: translateX(-50%); }
+      .axis-bottom { left: 50%; bottom: 8px; transform: translateX(-50%); }
+
+      .point {
+        position: absolute;
+        min-width: 14px;
+        min-height: 14px;
+        padding: 3px 6px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 11px;
+        font-weight: 900;
+        transform: translate(-50%, -50%);
+        opacity: 0.58;
         white-space: nowrap;
       }
 
-      footer {
-        margin-top: 28px;
-        color: var(--muted);
-        font-size: 12px;
+      .point.mine,
+      .point.group {
+        opacity: 1;
+        background: var(--pink);
+        box-shadow: 2px 3px 0 var(--line);
       }
 
-      @media (max-width: 520px) {
-        main {
-          width: min(100% - 28px, 420px);
-          padding-top: 38px;
+      .group-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .mini-card {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 9px;
+        align-items: center;
+        padding: 10px;
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+      }
+
+      .mini-card img {
+        width: 52px;
+        height: 62px;
+        object-fit: contain;
+        filter: drop-shadow(0 5px 0 rgba(45, 45, 45, 0.08));
+      }
+
+      .mini-card strong,
+      .pair-card strong {
+        display: block;
+        font-size: 15px;
+      }
+
+      .mini-card span,
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .notice {
+        padding: 14px;
+        border-radius: 20px;
+        border: 2px solid var(--line);
+        background: var(--sky);
+        box-shadow: 4px 5px 0 var(--line);
+      }
+
+      .notice h3 {
+        margin: 0 0 6px;
+        font-size: 20px;
+      }
+
+      .notice p,
+      .story p,
+      .empty-room p {
+        margin: 0;
+        color: #4f555e;
+        font-size: 14px;
+        line-height: 1.65;
+        font-weight: 720;
+        white-space: pre-line;
+      }
+
+      .empty-room {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        border: 2px dashed var(--line);
+        background: #fffefa;
+        text-align: center;
+      }
+
+      .pair-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .pair-card {
+        padding: 14px;
+        border-radius: 18px;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .pair-card.match {
+        background:
+          radial-gradient(circle at 18% 22%, rgba(221, 248, 206, 0.95), transparent 42%),
+          #fff;
+      }
+
+      .pair-card.tension {
+        background:
+          radial-gradient(circle at 82% 18%, rgba(255, 220, 233, 0.95), transparent 40%),
+          #fff;
+      }
+
+      .pair-visual {
+        position: relative;
+        height: 138px;
+        margin-bottom: 12px;
+        border-radius: 18px;
+        border: 2px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 253, 244, 0.9), rgba(255, 242, 166, 0.36)),
+          #fff;
+        overflow: hidden;
+      }
+
+      .pair-visual img {
+        position: absolute;
+        bottom: 6px;
+        width: 104px;
+        height: 118px;
+        object-fit: contain;
+        filter: drop-shadow(0 7px 0 rgba(45, 45, 45, 0.11));
+        z-index: 2;
+      }
+
+      .pair-visual .left {
+        left: 49%;
+        transform: translateX(-105%) scaleX(-1) rotate(-3deg);
+      }
+
+      .pair-visual .right {
+        right: 49%;
+        transform: translateX(105%) rotate(3deg);
+      }
+
+      .pair-visual.tension .left {
+        left: 12px;
+        transform: rotate(-9deg);
+      }
+
+      .pair-visual.tension .right {
+        right: 12px;
+        transform: scaleX(-1) rotate(9deg);
+      }
+
+      .pair-badge {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 68px;
+        padding: 7px 11px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: var(--mint);
+        text-align: center;
+        font-size: 20px;
+        font-weight: 950;
+        box-shadow: 3px 4px 0 var(--line);
+        z-index: 5;
+      }
+
+      .pair-visual.tension .pair-badge {
+        background: var(--pink);
+      }
+
+      .pair-score {
+        display: inline-flex;
+        margin: 8px 0;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 2px solid var(--line);
+        background: var(--lemon);
+        font-weight: 950;
+      }
+
+      .travel-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .travel-list p {
+        margin: 0;
+        padding: 12px;
+        border-radius: 16px;
+        border: 2px solid var(--soft-line);
+        background: #fff;
+        font-size: 14px;
+        line-height: 1.6;
+        font-weight: 720;
+      }
+
+      .collection {
+        padding: 16px;
+        border-radius: 24px;
+        border: 2px solid var(--line);
+        background:
+          radial-gradient(circle at 88% 18%, rgba(255, 220, 233, 0.9), transparent 26%),
+          linear-gradient(145deg, #fffefa, #eaf9ff);
+        box-shadow: var(--shadow-line);
+      }
+
+      .ratio-bars {
+        display: grid;
+        gap: 8px;
+        margin: 12px 0;
+      }
+
+      .ratio {
+        display: grid;
+        grid-template-columns: 78px 1fr 42px;
+        gap: 8px;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .ratio-line {
+        height: 12px;
+        padding: 2px;
+        border-radius: 999px;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .ratio-line span {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 8px 10px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .toast {
+        position: absolute;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%) translateY(20px);
+        opacity: 0;
+        pointer-events: none;
+        width: max-content;
+        max-width: 330px;
+        padding: 10px 14px;
+        border: 2px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
+        box-shadow: 4px 5px 0 var(--line);
+        transition: 0.2s ease;
+        z-index: 8;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 430px) {
+        body {
+          display: block;
+          background: var(--paper);
         }
 
-        h1 {
-          font-size: 28px;
-        }
-
-        .demo-card {
-          grid-template-columns: 48px minmax(0, 1fr);
-        }
-
-        .icon {
-          width: 48px;
-          height: 48px;
-          font-size: 24px;
-        }
-
-        .action {
-          grid-column: 2;
-          width: fit-content;
+        .phone {
+          width: 100vw;
+          height: 100vh;
+          box-shadow: none;
         }
       }
     </style>
   </head>
   <body>
-    <main>
-      <header>
-        <h1>PiTravel 活动 Demo</h1>
-        <p>这里会统一收纳活动原型和可交互页面，方便发给团队查看。</p>
-      </header>
+    <main class="phone" aria-label="二逼们的浪漫旅行">
+      <div class="screen" id="screen">
+        <header class="status">
+          <span>11:55</span>
+          <span class="brand-pill"><i class="brand-mark"></i>圆周旅迹</span>
+          <span>87</span>
+        </header>
 
-      <section class="demo-list" aria-label="Demo 列表">
-        <a class="demo-card" href="./shared-map-public-single-file%204.html">
-          <span class="icon">🗺️</span>
-          <span>
-            <h2>共享地图活动</h2>
-            <p>地图共建、点位收藏、贴纸奖励和刮刮卡流程。</p>
-          </span>
-          <span class="action">打开</span>
-        </a>
-        <a class="demo-card" href="./travel-partner-test.html">
-          <span class="icon">🧭</span>
-          <span>
-            <h2>旅行搭子默契测试</h2>
-            <p>用问答小游戏测试两个人适不适合一起出门。</p>
-          </span>
-          <span class="action">打开</span>
-        </a>
-        <a class="demo-card" href="./memory-suitcase.html">
-          <span class="icon">🧳</span>
-          <span>
-            <h2>记忆行李箱</h2>
-            <p>给好友打包旅行回忆，生成一份可分享的回忆报告。</p>
-          </span>
-          <span class="action">打开</span>
-        </a>
-        <a class="demo-card" href="./travel-answer-book.html">
-          <span class="icon">📖</span>
-          <span>
-            <h2>旅行答案之书</h2>
-            <p>选择一个旅行问题，抽取今天的出行答案。</p>
-          </span>
-          <span class="action">打开</span>
-        </a>
-      </section>
+        <div class="topbar">
+          <button class="icon-btn" type="button" data-back aria-label="返回">‹</button>
+          <span class="tag" id="topTag">旅行人格测试</span>
+          <button class="icon-btn" type="button" data-toast="活动已分享，等朋友一起发疯">↗</button>
+        </div>
 
-      <footer>之后新的活动页面也可以继续放在这里。</footer>
+        <section class="view active" data-view="home">
+          <div class="hero">
+            <span class="tag">多人旅行人格测试</span>
+            <h1>二逼们的<br />浪漫旅行</h1>
+            <p>测测你在旅行搭子里到底是什么物种。6 道题之后，看看你是懂事长、急急国王，还是大馋丫头。</p>
+            <svg class="hero-art" viewBox="0 0 188 162" aria-hidden="true">
+              <path d="M24 106C43 81 65 70 95 75c39 7 57 33 54 55-4 26-40 35-74 22-31-11-61-20-51-46Z" fill="#fff" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M44 82c-4-23 4-42 22-47 16-5 31 5 38 23 16-12 34-14 47 0 14 15 11 38-8 52" fill="#fff" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="72" cy="67" r="4" fill="#2c2c2c"/>
+              <circle cx="116" cy="70" r="4" fill="#2c2c2c"/>
+              <path d="M88 85c8 6 17 6 25 0" fill="none" stroke="#2c2c2c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M18 40c13-18 36-18 49-1-2 18-16 31-34 31C20 66 12 54 18 40Z" fill="#baf0c5" stroke="#2c2c2c" stroke-width="3"/>
+              <path d="M142 24l12 18 21 5-15 14 2 22-20-10-19 9 3-21-15-15 21-4 10-18Z" fill="#ffdce9" stroke="#2c2c2c" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <section class="room-panel">
+            <h3>先加入一个旅行房间</h3>
+            <div class="field-grid">
+              <div class="field">
+                <label for="playerName">你的用户名</label>
+                <input id="playerName" maxlength="12" placeholder="例如：小圆" autocomplete="nickname" />
+              </div>
+              <div class="field">
+                <label for="roomCode">房间码</label>
+                <input id="roomCode" maxlength="8" placeholder="PU5UYF" autocomplete="off" />
+              </div>
+            </div>
+          </section>
+
+          <div class="actions">
+            <button class="primary" type="button" data-go="quiz">开始测试</button>
+          </div>
+
+          <section class="section-title">
+            <h2>会测出什么</h2>
+            <span>可截图分享</span>
+          </section>
+          <div class="timeline">
+            <div class="step"><span class="step-num">1</span><strong>完成 6 道旅行人格题</strong></div>
+            <div class="step"><span class="step-num">2</span><strong>把你的真实结果加入这个房间</strong></div>
+            <div class="step"><span class="step-num">3</span><strong>等朋友答完后生成多人友情报告</strong></div>
+          </div>
+        </section>
+
+        <section class="view" data-view="quiz">
+          <section class="section-title">
+            <h2 id="questionTitle">Q1/6</h2>
+            <span id="questionCount">1 / 6</span>
+          </section>
+
+          <section class="question-card">
+            <div class="question-meta">
+              <span id="questionMode">时间观念｜冲突表达｜隐性记仇</span>
+              <span>点选后自动下一题</span>
+            </div>
+            <h2 id="questionText">搭子迟到了两个小时，仍然慢悠悠的，一点都不着急赶路，你会：</h2>
+            <div class="options" id="options"></div>
+            <div class="progress-row">
+              <small class="muted" id="progressText">答题进度 1 / 6</small>
+              <div class="progress"><span id="progressBar"></span></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" data-view="result">
+          <div class="tabs" role="tablist" aria-label="结果切换">
+            <button class="tab active" type="button" data-tab="mine">我的结果</button>
+            <button class="tab" type="button" data-tab="friends">朋友结果</button>
+          </div>
+
+          <div class="tab-panel active" id="minePanel"></div>
+          <div class="tab-panel" id="friendsPanel"></div>
+        </section>
+      </div>
+      <div class="toast" id="toast">已完成</div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://gclbvqrbnslyecacxtiw.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_-r1eeyIGrc6BzlWSVHBu0Q_zQPLC9kI";
+      const supabaseReady =
+        SUPABASE_URL.startsWith("https://") &&
+        (SUPABASE_ANON_KEY.startsWith("ey") || SUPABASE_ANON_KEY.startsWith("sb_publishable_")) &&
+        window.supabase;
+      const supabaseClient = supabaseReady
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        : null;
+
+      const personalityIds = ["IMNB", "SOLO", "BABY", "SUPERMAN", "REST", "PUSH", "POSE", "FOOD"];
+      const defaultPriority = ["IMNB", "PUSH", "POSE", "FOOD", "SOLO", "BABY", "REST", "SUPERMAN"];
+
+      const imageMap = {
+        IMNB: "public/images/personalities/imnb.png",
+        SOLO: "public/images/personalities/solo.png",
+        BABY: "public/images/personalities/baby.png",
+        SUPERMAN: "public/images/personalities/superman.png",
+        REST: "public/images/personalities/rest.png",
+        PUSH: "public/images/personalities/push.png",
+        POSE: "public/images/personalities/pose.png",
+        FOOD: "public/images/personalities/food.png",
+      };
+
+      const personalityCoordinates = {
+        IMNB: { x: -60, y: -35 },
+        PUSH: { x: -70, y: 65 },
+        SOLO: { x: -35, y: 55 },
+        POSE: { x: 45, y: 65 },
+        FOOD: { x: 70, y: 55 },
+        BABY: { x: 55, y: 30 },
+        REST: { x: 55, y: -55 },
+        SUPERMAN: { x: 30, y: -70 },
+      };
+
+      const personalityContent = {
+        IMNB: {
+          name: "懂事长",
+          label: "IMNB",
+          line: "旅行顺不顺利，全靠你在背后偷偷上班。",
+          dimensions: "规划力高｜责任感强｜怕失控｜容易默默承担",
+          profile: "你是那种出门前会查路线、查营业时间、查天气，甚至还会确认搭子有没有起床的人。别人还在“到时候再说”，你已经在心里准备 Plan B。你不一定喜欢管人，但如果没人管，你就会自动上岗。",
+          tip: "别什么都一个人扛。旅行不是公司团建，攻略做不完也不会扣绩效。",
+          axis: "行程推进 × 内收消化",
+        },
+        SOLO: {
+          name: "孤勇者",
+          label: "SOLO",
+          line: "腿已经走废了，胜负欲还能再走三公里。",
+          dimensions: "胜负欲强｜硬撑指数高｜独立性强｜被激就上头",
+          profile: "你不一定一直强势，但只要被激一下，就很容易突然燃起来。别人说再去一个观景台，你可能本来已经累到灵魂出窍，但下一秒就走到了前面。你很适合在关键时刻撑住局面，也很容易把旅行过成精神竞技赛。",
+          tip: "累了可以说累。旅行不是人类极限挑战赛，不用每次都靠意志力硬撑。",
+          axis: "行程推进 × 外放表达",
+        },
+        BABY: {
+          name: "婴幼儿",
+          label: "BABY",
+          line: "旅行可以继续，但请先让你吃饭、坐下、回血。",
+          dimensions: "感受敏感｜体力脆皮｜需求外露｜需要及时回血",
+          profile: "你的旅行状态很真实。饿了会虚弱，累了会怪叫，热了会融化，计划崩了会被社会毒打。你不是不想玩，而是身体和情绪都需要被好好安置。",
+          tip: "不舒服要早点说。别等自己快融化了，才开始在路边变成小动物。",
+          axis: "感受享受 × 外放表达",
+        },
+        SUPERMAN: {
+          name: "憋佬仔",
+          label: "Super-man",
+          line: "嘴上说“没事”，心里已经开始写旅行判决书。",
+          dimensions: "隐性记仇｜低表达｜高内耗｜冷处理倾向",
+          profile: "你不一定会当场爆炸，但不代表你真的没情绪。迟到、敷衍、拍照难看、吵架没人哄，这些事都会被你悄悄存起来。你很会自己消化，也很容易消化过头，最后从“我没事”变成“我不想说了”。",
+          tip: "受委屈了别全咽下去。有些话说出来不会毁掉关系，憋太久才会。",
+          axis: "感受享受 × 内收消化",
+        },
+        REST: {
+          name: "一休哥",
+          label: "REST",
+          line: "景点还没看完，身体已经申请提前退房。",
+          dimensions: "休息优先｜低推进欲｜边界清楚｜松弛接受",
+          profile: "你很清楚自己的体力边界。走不动就坐下，不想硬撑，也不想为了打卡把自己走成旅游标本。对你来说，旅行不是完成任务，而是让自己舒服地活着回来。",
+          tip: "想休息不丢人。景点可以少去一个，腿和精神状态要完整带回来。",
+          axis: "感受享受 × 内收消化",
+        },
+        PUSH: {
+          name: "急急国王",
+          label: "PUSH",
+          line: "大家还在发呆，你已经开始问：“所以现在去哪？”",
+          dimensions: "行动力强｜等待耐心低｜推进欲强｜卡顿焦虑",
+          profile: "你旅行时很难接受事情卡住。迟到要催，闭馆要换地方，矛盾要解决，路线要继续往前走。你不一定真的很凶，但你很容易急，因为你受不了大家一起原地待机。",
+          tip: "慢一点也没关系。不是所有空白时间都需要被安排，有时候发呆也是行程的一部分。",
+          axis: "行程推进 × 外放表达",
+        },
+        POSE: {
+          name: "摄政王",
+          label: "POSE",
+          line: "风景可以错过，照片不能废掉。",
+          dimensions: "出片执念高｜被看见感强｜审美要求高｜P 图自救力强",
+          profile: "你对旅行照片有天然统治欲。光线、角度、背景、人流量、搭子的拍照技术，都是你会在意的事情。来都来了，如果没有一张能发的照片，你会觉得这趟旅行少了点证据。",
+          tip: "照片很重要，但人更重要。别为了出片把自己和搭子都逼成摄影助理。",
+          axis: "感受享受 × 外放表达",
+        },
+        FOOD: {
+          name: "大馋丫头",
+          label: "FOOD",
+          line: "一座城市好不好玩，主要看它好不好吃。",
+          dimensions: "美食优先｜氛围感强｜情绪修复靠吃｜容易被好吃的说服",
+          profile: "你对旅行的记忆大多和吃有关。景点可以少去一个，但饭不能随便吃。漂亮饭、街边摊、奶茶、小吃、夜市，对你来说都是认识一座城市的重要方式。",
+          tip: "好吃的很多，但胃只有一个。别为了每顿都不错过，把自己吃成旅行事故。",
+          axis: "感受享受 × 外放表达",
+        },
+      };
+
+      const questions = [
+        {
+          id: "Q1",
+          tags: "时间观念｜冲突表达｜隐性记仇",
+          text: "搭子迟到了两个小时，仍然慢悠悠的，一点都不着急赶路，你会：",
+          options: {
+            A: "简直是低山臭水遇知音，我也刚睡醒",
+            B: "不可能发生，提前两小时就会开始夺命连环 Call",
+            C: "不语，只是一味地在心里偷偷记仇，发誓今天不帮 ta 出片了",
+            D: "我的超雄重度抑郁症重度焦虑症重度狂躁双相情感障碍精神分裂马上要发作了！",
+          },
+        },
+        {
+          id: "Q2",
+          tags: "金钱观｜预算边界｜公平感",
+          text: "旅行途中，突然发现一家不在计划内、风景绝美但价格高昂的漂亮饭，你会？",
+          options: {
+            A: "奢侈一把！出片要紧，明天吃泡面就行了！",
+            B: "看同伴眼色，他吃我就吃",
+            C: "扇了钱包一巴掌，希望它能肿起来",
+            D: "疯狂安利附近街边摊的美食",
+          },
+        },
+        {
+          id: "Q3",
+          tags: "控制感｜失败归因｜情绪弹性",
+          text: "和朋友一起来了原本最期待的展馆临时闭馆，你：",
+          options: {
+            A: "立刻打开地图，寻找 Plan B 或在周边逛逛",
+            B: "我终于见识到外面社会的厉害了！我真是没招了！",
+            C: "我觉得淡淡的就会顺顺的，于是我摊开手允许一切我期待的流走",
+            D: "事已至此，拍张照吧！",
+          },
+        },
+        {
+          id: "Q4",
+          tags: "体力需求｜需求表达｜讨好倾向",
+          text: "你走得浑身酸痛，但搭子准备再去一个观景台，你：",
+          options: {
+            A: "原地坐下，等朋友回来，然后不躲不藏不逃，稳稳地接住他",
+            B: "每走两步怪叫一声，暗示自己的身体已报废",
+            C: "和朋友在一起怎么都开心！gogogo 和朋友一起出发喽！",
+            D: "突然燃起胜负欲，走到 ta 前面，看谁耗得过谁！",
+          },
+        },
+        {
+          id: "Q5",
+          tags: "关系修复｜冲突主动性｜防御机制",
+          text: "行程一半，你和搭子因为一件小事产生矛盾了。你更可能？",
+          options: {
+            A: "错不起，我对了！然后秒切战斗人格开始辩论",
+            B: "惹到我，你算是踢到棉花了！你说什么都对！",
+            C: "立刻转移话题：“那边有好喝的奶茶哎”",
+            D: "想解释的话到嘴边又咽了下去，以此获得饱腹感，然后开始冷战！",
+          },
+        },
+        {
+          id: "Q6",
+          tags: "被看见感｜需求表达｜情感判断",
+          text: "旅伴帮你拍照，连拍十张后，没有一张能用的。你会？",
+          options: {
+            A: "找出吴彦祖/刘亦菲写真，要求对方学习",
+            B: "一笑了之，反正我也没这么喜欢拍照",
+            C: "感叹一句：无所谓，我的身材很曼妙！",
+            D: "我自有 P 图大法来解决这个问题！",
+          },
+        },
+      ];
+
+      const scoringRules = {
+        Q1: { A: { BABY: 2, REST: 1 }, B: { IMNB: 2, PUSH: 1 }, C: { SUPERMAN: 2, POSE: 1 }, D: { BABY: 2, PUSH: 1 } },
+        Q2: { A: { POSE: 2, FOOD: 1 }, B: { FOOD: 2, BABY: 1 }, C: { SUPERMAN: 2, REST: 1 }, D: { FOOD: 2, IMNB: 1 } },
+        Q3: { A: { IMNB: 2, PUSH: 1 }, B: { BABY: 2, REST: 1 }, C: { REST: 2, BABY: 1 }, D: { POSE: 2, SUPERMAN: 1 } },
+        Q4: { A: { REST: 2, SOLO: 1 }, B: { BABY: 2, REST: 1 }, C: { PUSH: 2, FOOD: 1 }, D: { SOLO: 2, PUSH: 1 } },
+        Q5: { A: { PUSH: 2, SOLO: 1 }, B: { SUPERMAN: 2, REST: 1 }, C: { FOOD: 2, BABY: 1 }, D: { SUPERMAN: 2, SOLO: 1 } },
+        Q6: { A: { POSE: 2, IMNB: 1 }, B: { REST: 2, BABY: 1 }, C: { SOLO: 2, BABY: 1 }, D: { POSE: 2, SUPERMAN: 1 } },
+      };
+
+      const groupText = {
+        groupSummary: `这趟旅行大概会从“大家随便玩玩”开始，最后变成一部轻喜剧。\n\n有人负责把大家从原地发呆里拎出来：“所以我们现在去哪？”有人本来已经累了，但一听到“要不算了”，胜负欲突然上线，开始往前冲。也有人一路负责缓和气氛，快吵架了就说：“那边有奶茶哎。”\n\n你们不是纯特种兵，也不是纯松弛派。你们更像一支“边走边疯、边吃边和好、边拍边回血”的旅行小队。只要别把行程排成军事训练，这趟旅行大概率会很好玩。`,
+        travelRecommendation: [
+          "你们最适合去松弛城市 + 美食 + 轻打卡的地方，比如成都、长沙、广州、台北、福冈、清迈、厦门。这类城市有得吃、有得逛、有得拍，也能随时坐下休息，不会把旅行变成人类体能测试。",
+          "行程最好不要排太满，每天只定 1–2 个核心目标就够了。比如一个主要目的地，加一顿必须吃的饭。剩下的时间留给临时发挥：想冲的人可以去看日落，想休息的人可以找咖啡店回血，想吃的人可以继续探索附近美食。",
+          "你们不适合高强度特种兵旅行，也不适合完全无计划旅行。最舒服的模式是：上午慢慢起床，中午认真吃饭，下午轻打卡，晚上散步、夜市、拍照，累的人可以随时撤退。",
+        ],
+        cityCollection: {
+          title: "成都｜边走边疯，但要坐下吃饭",
+          intro: "适合这组“一急、一冲、一脆、一憋”的旅行小队。合集会优先推荐成都的轻打卡点、美食街区、拍照散步地和茶馆咖啡店，让想冲的人有地方去，想歇的人能坐下，想吃的人能回血，想拍的人也有素材。",
+          ratios: [
+            ["轻打卡", 30],
+            ["美食回血", 35],
+            ["拍照散步", 20],
+            ["坐下续命", 15],
+          ],
+          places: ["人民公园", "宽窄巷子", "东郊记忆", "玉林路", "建设路", "奎星楼街", "太古里周边"],
+        },
+      };
+
+      const views = [...document.querySelectorAll(".view")];
+      const screen = document.querySelector("#screen");
+      const topTag = document.querySelector("#topTag");
+      const toast = document.querySelector("#toast");
+      const questionTitle = document.querySelector("#questionTitle");
+      const questionCount = document.querySelector("#questionCount");
+      const questionText = document.querySelector("#questionText");
+      const questionMode = document.querySelector("#questionMode");
+      const progressText = document.querySelector("#progressText");
+      const progressBar = document.querySelector("#progressBar");
+      const optionsRoot = document.querySelector("#options");
+      const minePanel = document.querySelector("#minePanel");
+      const friendsPanel = document.querySelector("#friendsPanel");
+      const playerNameInput = document.querySelector("#playerName");
+      const roomCodeInput = document.querySelector("#roomCode");
+
+      let currentView = "home";
+      let questionIndex = 0;
+      let myAnswers = [];
+      let myResult = null;
+      let currentPlayerName = "";
+      let currentRoomCode = "";
+      let roomResults = [];
+      let roomChannel = null;
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1400);
+      }
+
+      function makeRoomCode() {
+        return Math.random().toString(36).slice(2, 8).toUpperCase();
+      }
+
+      function getRoomKey(roomCode = currentRoomCode) {
+        return `pitravel-room-${roomCode || "default"}`;
+      }
+
+      function dbRowToRoomUser(row) {
+        return {
+          name: row.user_name,
+          answers: row.answers,
+        };
+      }
+
+      function roomUserToDbRow(user) {
+        const calculated = calculatePersonality(user.answers);
+        return {
+          room_code: currentRoomCode,
+          user_name: user.name,
+          answers: user.answers,
+          result: calculated.result,
+          percent: calculated.displayPercent,
+          updated_at: new Date().toISOString(),
+        };
+      }
+
+      function encodeRoomData() {
+        return encodeURIComponent(JSON.stringify({
+          v: 1,
+          room: currentRoomCode,
+          results: roomResults.map(({ name, answers, result, displayPercent }) => ({
+            name,
+            answers,
+            result,
+            percent: displayPercent,
+          })),
+        }));
+      }
+
+      function hydrateRoomFromUrl() {
+        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        const data = hash.get("data");
+        const roomFromUrl = hash.get("room");
+        if (roomFromUrl) currentRoomCode = roomFromUrl.toUpperCase();
+        if (!data) return;
+        try {
+          const parsed = JSON.parse(decodeURIComponent(data));
+          if (parsed.room) currentRoomCode = parsed.room.toUpperCase();
+          if (Array.isArray(parsed.results)) {
+            roomResults = parsed.results
+              .filter((item) => item.name && Array.isArray(item.answers) && item.answers.length === questions.length)
+              .map((item) => ({ name: item.name, answers: item.answers }));
+          }
+        } catch (error) {
+          roomResults = [];
+        }
+      }
+
+      function loadRoomFromStorage() {
+        if (!currentRoomCode) return;
+        try {
+          const saved = JSON.parse(localStorage.getItem(getRoomKey()) || "[]");
+          if (Array.isArray(saved) && saved.length > roomResults.length) roomResults = saved;
+        } catch (error) {
+          roomResults = [];
+        }
+      }
+
+      function saveRoomState(updateHash = true) {
+        if (!currentRoomCode) return;
+        localStorage.setItem(getRoomKey(), JSON.stringify(roomResults));
+        if (updateHash) {
+          const hash = new URLSearchParams();
+          hash.set("room", currentRoomCode);
+          hash.set("data", encodeRoomData());
+          history.replaceState(null, "", `${location.pathname}#${hash.toString()}`);
+        }
+      }
+
+      async function loadRoomFromSupabase() {
+        if (!supabaseClient || !currentRoomCode) return false;
+        const { data, error } = await supabaseClient
+          .from("travel_test_results")
+          .select("user_name, answers, result, percent, updated_at")
+          .eq("room_code", currentRoomCode)
+          .order("updated_at", { ascending: false });
+        if (error) {
+          showToast("房间同步失败，先使用本地结果。");
+          return false;
+        }
+        roomResults = (data || [])
+          .filter((row) => row.user_name && Array.isArray(row.answers) && row.answers.length === questions.length)
+          .map(dbRowToRoomUser);
+        saveRoomState(false);
+        return true;
+      }
+
+      async function saveRoomToSupabase(user) {
+        if (!supabaseClient || !currentRoomCode) return false;
+        const { error } = await supabaseClient
+          .from("travel_test_results")
+          .upsert(roomUserToDbRow(user), { onConflict: "room_code,user_name" });
+        if (error) {
+          showToast("结果同步失败，已先保存在本机。");
+          return false;
+        }
+        return true;
+      }
+
+      async function refreshRoomResults() {
+        if (supabaseClient) {
+          const synced = await loadRoomFromSupabase();
+          if (synced) return;
+        }
+        loadRoomFromStorage();
+      }
+
+      function subscribeRoom() {
+        if (!supabaseClient || !currentRoomCode) return;
+        if (roomChannel) supabaseClient.removeChannel(roomChannel);
+        roomChannel = supabaseClient
+          .channel(`travel-room-${currentRoomCode}`)
+          .on(
+            "postgres_changes",
+            {
+              event: "*",
+              schema: "public",
+              table: "travel_test_results",
+              filter: `room_code=eq.${currentRoomCode}`,
+            },
+            async () => {
+              await loadRoomFromSupabase();
+              if (currentView === "result") renderFriends();
+            }
+          )
+          .subscribe();
+      }
+
+      function syncRoomInputs() {
+        currentRoomCode = (roomCodeInput.value || currentRoomCode || makeRoomCode()).trim().toUpperCase();
+        roomCodeInput.value = currentRoomCode;
+        currentPlayerName = playerNameInput.value.trim();
+      }
+
+      async function addCurrentResultToRoom() {
+        const result = calculatePersonality(myAnswers);
+        const cleanName = currentPlayerName || "我";
+        const currentUser = { name: cleanName, answers: [...myAnswers] };
+        roomResults = roomResults.filter((user) => user.name !== cleanName);
+        roomResults.unshift(currentUser);
+        myResult = result;
+        saveRoomState();
+        await saveRoomToSupabase(currentUser);
+        await refreshRoomResults();
+      }
+
+      async function copyRoomLink() {
+        saveRoomState();
+        const url = window.location.href;
+        try {
+          await navigator.clipboard.writeText(url);
+          showToast("房间链接已复制，发给朋友继续加入。");
+        } catch (error) {
+          showToast("房间链接已更新，可以复制地址栏发给朋友。");
+        }
+      }
+
+      async function showView(name) {
+        currentView = name;
+        views.forEach((view) => view.classList.toggle("active", view.dataset.view === name));
+        topTag.textContent = name === "result" ? "旅行人格报告" : name === "quiz" ? "旅行题进行中" : "旅行人格测试";
+        screen.scrollTop = 0;
+        if (name === "quiz") renderQuestion();
+        if (name === "result") {
+          await refreshRoomResults();
+          renderResults();
+        }
+      }
+
+      function calculatePersonality(answers) {
+        const scores = Object.fromEntries(personalityIds.map((id) => [id, 0]));
+        answers.forEach((answer, index) => {
+          const rule = scoringRules[`Q${index + 1}`][answer];
+          Object.entries(rule).forEach(([id, score]) => {
+            scores[id] += score;
+          });
+        });
+        const result = resolveTie(scores, answers);
+        const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+        const rawPercent = totalScore ? scores[result] / totalScore : 0;
+        const displayPercent = Math.min(96, Math.max(72, Math.round(rawPercent * 100)));
+        return { scores, result, rawPercent, displayPercent };
+      }
+
+      function resolveTie(scores, answers) {
+        const maxScore = Math.max(...Object.values(scores));
+        let tied = Object.keys(scores).filter((id) => scores[id] === maxScore);
+        const has = (id) => tied.includes(id);
+        if (has("POSE") && ["A", "D"].includes(answers[5])) return "POSE";
+        if (has("FOOD") && (["A", "B", "D"].includes(answers[1]) || answers[4] === "C")) return "FOOD";
+        if (has("IMNB") && has("PUSH")) {
+          if (answers[2] === "A") return "IMNB";
+          if (answers[4] === "A" || ["C", "D"].includes(answers[3])) return "PUSH";
+        }
+        if (has("REST") && has("BABY")) {
+          if (answers[3] === "A") return "REST";
+          if (answers[3] === "B") return "BABY";
+        }
+        if (has("SUPERMAN") && has("SOLO")) {
+          if (["B", "D"].includes(answers[4])) return "SUPERMAN";
+          if (answers[3] === "D" || answers[5] === "C") return "SOLO";
+        }
+        for (let i = answers.length - 1; i >= 0; i -= 1) {
+          const rule = scoringRules[`Q${i + 1}`][answers[i]];
+          const triggered = Object.keys(rule).filter((id) => tied.includes(id));
+          if (triggered.length === 1) return triggered[0];
+        }
+        return defaultPriority.find((id) => tied.includes(id));
+      }
+
+      function getPersonalityContent(result) {
+        return {
+          id: result,
+          ...personalityContent[result],
+          coordinate: personalityCoordinates[result],
+          image: imageMap[result],
+        };
+      }
+
+      function calculateGroupResults(users) {
+        const enriched = users.map((user, index) => {
+          const result = calculatePersonality(user.answers);
+          return {
+            ...user,
+            ...result,
+            coordinate: {
+              x: personalityCoordinates[result.result].x + (index - 1.5) * 4,
+              y: personalityCoordinates[result.result].y + (index % 2 === 0 ? 4 : -4),
+            },
+          };
+        });
+        const pairs = [];
+        for (let i = 0; i < enriched.length; i += 1) {
+          for (let j = i + 1; j < enriched.length; j += 1) {
+            const a = enriched[i];
+            const b = enriched[j];
+            const dx = personalityCoordinates[a.result].x - personalityCoordinates[b.result].x;
+            const dy = personalityCoordinates[a.result].y - personalityCoordinates[b.result].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const score = Math.max(52, Math.min(92, Math.round(92 - distance * 0.22)));
+            pairs.push({ a, b, score, distance });
+          }
+        }
+        const sortedPairs = pairs.sort((a, b) => b.score - a.score);
+        const best = sortedPairs[0];
+        const hardest = sortedPairs[sortedPairs.length - 1];
+        const matchPairs = [];
+        if (best) {
+          matchPairs.push({
+            type: "最高 Match",
+            pair: `${best.a.name} × ${best.b.name}`,
+            people: [best.a.name, best.b.name],
+            mood: "match",
+            score: best.score,
+            desc: `${best.a.name} 和 ${best.b.name} 的旅行节奏比较容易接上，一个人的情绪不会太用力地撞到另一个人的边界。适合慢慢走、慢慢吃、边玩边修复。`,
+            risk: "太舒服也可能导致问题被糊弄过去，真的不开心时还是要把话说出来。",
+          });
+        }
+        if (hardest && hardest !== best) {
+          matchPairs.push({
+            type: "最容易拉扯",
+            pair: `${hardest.a.name} × ${hardest.b.name}`,
+            people: [hardest.a.name, hardest.b.name],
+            mood: "tension",
+            score: hardest.score,
+            desc: `${hardest.a.name} 和 ${hardest.b.name} 的处理节奏差异更明显，一个可能想马上推进，一个可能想先缓一缓。一起出门时很容易出现“你怎么不懂我”的小型拉扯。`,
+            risk: "出发前先约定好休息、拍照、吃饭和临时改计划的处理方式。",
+          });
+        }
+        return {
+          users: enriched,
+          groupSummary: groupText.groupSummary,
+          matchPairs,
+          travelRecommendation: groupText.travelRecommendation,
+          cityCollection: groupText.cityCollection,
+        };
+      }
+
+      function renderQuestion() {
+        const item = questions[questionIndex];
+        questionTitle.textContent = `${item.id}/${questions.length}`;
+        questionCount.textContent = `${questionIndex + 1} / ${questions.length}`;
+        questionMode.textContent = item.tags;
+        questionText.textContent = item.text;
+        progressText.textContent = `答题进度 ${questionIndex + 1} / ${questions.length}`;
+        progressBar.style.width = `${((questionIndex + 1) / questions.length) * 100}%`;
+        optionsRoot.innerHTML = Object.entries(item.options)
+          .map(([letter, option]) => `<button class="option" type="button" data-answer="${letter}"><span class="letter">${letter}</span><span class="option-text">${option}</span></button>`)
+          .join("");
+      }
+
+      function axisPointStyle(coordinate) {
+        const left = (coordinate.x + 100) / 2;
+        const top = (100 - coordinate.y) / 2;
+        return `left:${left}%;top:${top}%`;
+      }
+
+      function renderAxis(activeId, groupUsers = null) {
+        const labels = `<span class="axis-label axis-left">行程推进</span><span class="axis-label axis-right">感受享受</span><span class="axis-label axis-top">外放表达</span><span class="axis-label axis-bottom">内收消化</span>`;
+        if (groupUsers) {
+          return `<div class="axis">${labels}${groupUsers.map((user) => {
+            const content = getPersonalityContent(user.result);
+            return `<span class="point group" style="${axisPointStyle(user.coordinate)}">${user.name} ${content.name}</span>`;
+          }).join("")}</div>`;
+        }
+        return `<div class="axis">${labels}${personalityIds.map((id) => {
+          const content = getPersonalityContent(id);
+          const cls = id === activeId ? "point mine" : "point";
+          return `<span class="${cls}" style="${axisPointStyle(content.coordinate)}">${content.name}</span>`;
+        }).join("")}</div>`;
+      }
+
+      function renderPairVisual(pair, users) {
+        const [firstName, secondName] = pair.people;
+        const first = users.find((user) => user.name === firstName);
+        const second = users.find((user) => user.name === secondName);
+        if (!first || !second) return "";
+        const firstContent = getPersonalityContent(first.result);
+        const secondContent = getPersonalityContent(second.result);
+        const badge = pair.mood === "match" ? "抱一下" : "别打了";
+        return `
+          <div class="pair-visual ${pair.mood}">
+            <img class="left" src="${firstContent.image}" alt="${first.name}" />
+            <span class="pair-badge">${badge}</span>
+            <img class="right" src="${secondContent.image}" alt="${second.name}" />
+          </div>
+        `;
+      }
+
+      function renderResults() {
+        if (!myResult) myResult = calculatePersonality(myAnswers);
+        renderMine();
+        renderFriends();
+        setActiveTab("mine");
+      }
+
+      function renderMine() {
+        const content = getPersonalityContent(myResult.result);
+        minePanel.innerHTML = `
+          <section class="result-card">
+            <div class="person-hero">
+              <img class="person-img" src="${content.image}" alt="${content.name}" />
+              <div class="person-title">
+                <h2>${content.name}<br />${content.label}</h2>
+                <span class="percent">匹配度 ${myResult.displayPercent}%</span>
+              </div>
+            </div>
+            <div class="quote">${content.line}</div>
+            <div class="content-block"><h3>命中维度</h3><p>${content.dimensions}</p></div>
+            <div class="content-block"><h3>用户画像</h3><p>${content.profile}</p></div>
+            <div class="content-block"><h3>旅行小提醒</h3><p>${content.tip}</p></div>
+            <button class="wide-action primary" type="button" data-share-room>复制房间链接，邀请朋友一起测</button>
+            <p class="muted" style="margin: 10px 0 0">${supabaseClient ? "朋友输入同一个房间码完成测试后，结果会自动同步到这里。" : "还没配置 Supabase，当前只能在本机或通过链接接力查看结果。"}</p>
+          </section>
+        `;
+      }
+
+      function renderFriends() {
+        const group = calculateGroupResults(roomResults);
+        if (group.users.length < 2) {
+          friendsPanel.innerHTML = `
+            <section class="notice">
+              <h3>看看你们的旅行友情关系</h3>
+              <p>这个房间现在有 ${group.users.length} 位成员完成测试。等至少 2 个人答完，就会生成真实的 Match / Not Match 和旅行友情报告。${supabaseClient ? "同房间码会自动同步。" : "当前还没连接 Supabase，只能本机保存。"}</p>
+            </section>
+            <section class="empty-room">
+              <h3>房间 ${currentRoomCode}</h3>
+              <p>${group.users.length ? `已加入：${group.users.map((user) => user.name).join("、")}` : "还没有成员完成测试。"}</p>
+              <button class="wide-action primary" style="margin-top:14px" type="button" data-share-room>复制房间链接</button>
+            </section>
+          `;
+          return;
+        }
+        friendsPanel.innerHTML = `
+          <section class="notice">
+            <h3>看看你们的旅行友情关系</h3>
+            <p>基于 ${group.users.map((user) => user.name).join("、")} 的真实测试结果，生成你们的旅行相处模式、Match 指数和适合一起去的地点合集。</p>
+          </section>
+
+          <section class="section-title"><h2>四人结果</h2><span>小队图鉴</span></section>
+          <div class="group-grid">
+            ${group.users.map((user) => {
+              const content = getPersonalityContent(user.result);
+              return `<div class="mini-card"><img src="${content.image}" alt="${content.name}" /><div><strong>${user.name}</strong><span>${content.name} ${content.label}</span></div></div>`;
+            }).join("")}
+          </div>
+
+          <section class="content-block"><h3>多人坐标轴</h3>${renderAxis(null, group.users)}</section>
+
+          <section class="content-block story"><h3>这组的整体状态</h3><p>${group.groupSummary}</p></section>
+          <button class="wide-action primary" type="button" data-share-room>复制房间链接</button>
+
+          <section class="section-title"><h2>Match / Not Match</h2><span>两对关系</span></section>
+          <div class="pair-grid">
+            ${group.matchPairs.map((pair) => `<div class="pair-card ${pair.mood}">${renderPairVisual(pair, group.users)}<strong>${pair.type}：${pair.pair}</strong><span class="pair-score">Match 指数：${pair.score}%</span><p class="muted">${pair.desc}</p><p class="muted" style="margin-top:8px"><b>小风险：</b>${pair.risk}</p></div>`).join("")}
+          </div>
+
+          <section class="section-title"><h2>适合的旅行方式</h2><span>三段建议</span></section>
+          <div class="travel-list">${group.travelRecommendation.map((text) => `<p>${text}</p>`).join("")}</div>
+          <button class="wide-action primary" style="margin-top:12px" type="button" data-toast="成都旅行地点合集已生成。">生成旅行地点合集</button>
+
+          ${renderCityCollection(group.cityCollection)}
+        `;
+      }
+
+      function renderCityCollection(collection) {
+        return `
+          <section class="section-title"><h2>城市地点合集</h2><span>成都</span></section>
+          <section class="collection">
+            <h2 style="margin:0 0 8px">${collection.title}</h2>
+            <p class="muted">${collection.intro}</p>
+            <div class="ratio-bars">
+              ${collection.ratios.map(([name, value]) => `<div class="ratio"><span>${name}</span><div class="ratio-line"><span style="width:${value}%"></span></div><strong>${value}%</strong></div>`).join("")}
+            </div>
+            <div class="chips">${collection.places.map((place) => `<span class="chip">${place}</span>`).join("")}</div>
+            <div class="button-row">
+              <button class="wide-action" type="button" data-toast="已为你打开成都地点合集。">查看地点合集</button>
+              <button class="wide-action primary" type="button" data-toast="已保存到我的地图。">保存到我的地图</button>
+            </div>
+          </section>
+        `;
+      }
+
+      function setActiveTab(tabName) {
+        document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === tabName));
+        minePanel.classList.toggle("active", tabName === "mine");
+        friendsPanel.classList.toggle("active", tabName === "friends");
+        screen.scrollTop = 0;
+      }
+
+      document.addEventListener("click", async (event) => {
+        const target = event.target.closest("button");
+        if (!target) return;
+        if (target.dataset.go) {
+          if (target.dataset.go === "quiz") {
+            syncRoomInputs();
+            if (!currentPlayerName) {
+              showToast("先填一个用户名，朋友才知道你是谁。");
+              playerNameInput.focus();
+              return;
+            }
+            await refreshRoomResults();
+            subscribeRoom();
+            saveRoomState(false);
+            questionIndex = 0;
+            myAnswers = [];
+            myResult = null;
+          }
+          await showView(target.dataset.go);
+          return;
+        }
+        if (target.dataset.answer) {
+          myAnswers[questionIndex] = target.dataset.answer;
+          if (questionIndex < questions.length - 1) {
+            questionIndex += 1;
+            renderQuestion();
+          } else {
+            await addCurrentResultToRoom();
+            await showView("result");
+          }
+          return;
+        }
+        if (target.dataset.tab) {
+          if (target.dataset.tab === "friends") {
+            await refreshRoomResults();
+            renderFriends();
+          }
+          setActiveTab(target.dataset.tab);
+          return;
+        }
+        if (target.dataset.toast) {
+          showToast(target.dataset.toast);
+          return;
+        }
+        if (target.dataset.shareRoom !== undefined) {
+          copyRoomLink();
+          return;
+        }
+        if (target.dataset.back !== undefined) {
+          if (currentView === "home") showToast("已经在首页了。");
+          else await showView("home");
+        }
+      });
+
+      hydrateRoomFromUrl();
+      if (!currentRoomCode) currentRoomCode = makeRoomCode();
+      roomCodeInput.value = currentRoomCode;
+      refreshRoomResults().then(() => {
+        subscribeRoom();
+        if (currentView === "result") renderFriends();
+      });
+      renderQuestion();
+    </script>
   </body>
 </html>
